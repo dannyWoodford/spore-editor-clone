@@ -1,0 +1,28 @@
+* {
+	box-sizing: border-box;
+}
+
+html,
+body,
+.App,
+#root {
+	height: 100%;
+	width: 100%;
+	font-family: $font-family, sans-serif;
+	outline: none;
+	background: $color-black;
+}
+
+.bg-canvas {
+	height: 100%;
+	width: 100%;
+	background: blue;
+
+	canvas {
+		height: 100%;
+		width: 100%;
+		outline: none;
+		background: red;
+		z-index: $z-Index-canvas;
+	}
+}
