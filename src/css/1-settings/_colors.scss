@@ -3,50 +3,5 @@ $color-white: #ffffff;
 $color-black: #000000;
 $color-off-white: #bcbcbc;
 
-$color-bg-pink: rgb(0, 28, 149);
-$color-bg-pink-neon: #4245ff;
-$color-bg-pink-border: adjust-color($color-bg-pink, $red: -26, $green: 25, $blue: 52);
-$color-bg-pink-border-dark: adjust-color($color-bg-pink, $red: -128, $green: -61, $blue: -61);
-$color-bg-pink-border-light: adjust-color($color-bg-pink, $red: 25, $green: 91, $blue: 91);
-$color-bg-pink-border-inset: adjust-color($color-bg-pink, $red: -62, $green: 24, $blue: 86);
-$color-bg-pink-center-bg: adjust-color($color-bg-pink, $red: 25, $green: 24, $blue: 24);
-$color-bg-pink-center-bg-dark: adjust-color($color-bg-pink, $red: -54, $green: -24, $blue: -24);
-$color-bg-pink-center-bg-light: adjust-color($color-bg-pink, $red: 1, $green: 51, $blue: 51);
-$color-bg-pink-center-bg-dark-hover: adjust-color($color-bg-pink, $red: -72, $green: -33, $blue: -33);
-$color-bg-pink-center-bg-light-hover: adjust-color($color-bg-pink, $red: 25, $green: 63, $blue: 63);
-$color-bg-pink-center-text: adjust-color($color-bg-pink, $red: 16, $green: 5, $blue: 5);
-$color-bg-pink-center-text-dark: adjust-color($color-bg-pink, $red: -22, $green: -30, $blue: -30);
-$color-bg-pink-center-text-light: adjust-color($color-bg-pink, $red: 25, $green: 91, $blue: 91);
-
-$color-bg-blue: adjust-color($color-bg-pink, $red: -86, $green: 32, $blue: 116);
-$color-bg-blue-clock-shadow-light: adjust-color($color-bg-blue, $red: 30, $green: -31, $blue: -31);
-$color-bg-blue-clock-shadow-dark: adjust-color($color-bg-blue, $red: 0, $green: -60, $blue: -203);
-
-
-$color-bg-gradient: linear-gradient(90deg, $color-bg-pink, $color-bg-blue);
-$color-bg-gradient-opacity: rgba($color-bg-pink, 0.4);
-
-$color-bg--home: $color-bg-gradient;
-$color-bg--about: $transparent;
-$color-bg--art: linear-gradient(90deg, rgba($color-bg-pink, 0.8), rgba($color-bg-blue, 0.8));
-$color-bg--blender: linear-gradient(90deg, rgba($color-bg-pink, 0.8), rgba($color-bg-blue, 0.8));
-$color-bg--projects: linear-gradient(90deg, rgba($color-bg-pink, 0.8), rgba($color-bg-blue, 0.8));
-
-
-
-// ORIG
-// $color-bg-pink: rgb(230, 112, 112);
-// $color-bg-pink-border: #cc89a4;
-// $color-bg-pink-border-dark: #663333;
-// $color-bg-pink-border-light: #ffcbcb;
-// $color-bg-pink-border-inset: #a888c6;
-// $color-bg-pink-center-bg: #ff8888;
-// $color-bg-pink-center-bg-dark: #b05858;
-// $color-bg-pink-center-bg-light: #e7a3a3;
-// $color-bg-pink-center-bg-dark-hover: #9e4f4f;
-// $color-bg-pink-center-bg-light-hover: #ffafaf;
-// $color-bg-pink-center-text: #f67575;
-// $color-bg-pink-center-text-dark: #d05252;
-// $color-bg-pink-center-text-light: #ffcbcb;
-
-// $color-bg-blue: #9090e4;
+$color-bg-primary: #5E5C6C;
+$color-bg-secondary: #094074;

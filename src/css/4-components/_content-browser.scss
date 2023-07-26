@@ -1,0 +1,54 @@
+.content-browser {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	width: 40%;
+	height: 100%;
+	background: rgba($color-bg-primary, 0.4);
+	top: 0;
+	left: 0;
+	z-index: $z-Index-highest;
+	padding: 20px;
+	border-radius: 15px;
+
+	.top-bar {
+		height: 130px;
+		width: 100%;
+		background: rgba($color-bg-primary, 0.7);
+		border-radius: 15px;
+	}
+
+	.content-container {
+		height: 100%;
+		width: 100%;
+		margin: 20px 0;
+		padding: 10px;
+		background: rgba($color-bg-primary, 0.3);
+		border-radius: 15px;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+    align-content: flex-start;
+
+		.item {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			height: min-content;
+			flex-basis: 23%;
+			margin: 5px;
+			padding: 5px;
+			background: rgba($color-bg-secondary, 0.6);
+			border-radius: 15px;
+			color: $color-white;
+
+			img {
+				max-width: 100%;
+				filter: invert(1);
+				user-select: none;
+				pointer-events: none;
+			}
+		}
+	}
+}
