@@ -8,9 +8,11 @@ const useMousePosition = () => {
 	}
 
 	useEffect(() => {
-		window.addEventListener('pointermove', updateMousePosition)
+		window.addEventListener('drag', updateMousePosition)
 
-		return () => window.removeEventListener('pointermove', updateMousePosition)
+		return () => {
+			window.removeEventListener('drag', updateMousePosition)
+		}
 	}, [])
 
 	return mousePosition

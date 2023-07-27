@@ -4,8 +4,9 @@ import { Environment } from '@react-three/drei'
 export default function Background() {
 	return (
 		<>
-			<hemisphereLight skyColor={'blue'} groundColor={'green'} intensity={0.3} position={[0, 300, 50]} />
+			<hemisphereLight name='hemisphereLight' skyColor={'blue'} groundColor={'green'} intensity={0.3} position={[0, 300, 50]} />
 			<Environment
+				name='Environment'
 				files={process.env.PUBLIC_URL + '/texture.hdr'}
 				background={true}
 				ground={{

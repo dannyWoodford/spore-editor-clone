@@ -4,8 +4,7 @@ import * as THREE from 'three'
 
 import useMousePosition from '../helpers/useMousePosition'
 
-
-const Raycasting = () => {
+const Raycasting = ({ selected, prevSelected }) => {
 	const { scene, camera } = useThree()
 
 	const pointer = new THREE.Vector2()
@@ -18,7 +17,8 @@ const Raycasting = () => {
 	const rayCasterObjects = () => {
 		let raycastList = []
 		scene.traverse((child) => {
-			if (child.type === 'Group' && child.name !== '') {
+			// Only include "ground" objects or created object
+			if (child.name === 'platform' || child.name === 'platform-base' || child.userData.shape === true) {
 				raycastList.push(child)
 			}
 		})
@@ -33,24 +33,48 @@ const Raycasting = () => {
 		raycaster.setFromCamera(pointer, camera)
 
 		// See if the ray from the camera into the world hits one of our meshes
-		const intersects = raycaster.intersectObjects(rayCasterObjects(), true)
+		const intersects = raycaster.intersectObjects(rayCasterObjects())
 
 		if (intersects.length > 0) {
-			if (intersects[0].object.name === 'NavigableLocation') {
-				console.log('%cNavigableLocation', 'color:red;font-size:14px;')
+			if (!selected) {
+				// console.log('%cNO selected', 'color:blue;font-size:19px;', selected)
+				return
+			}
+
+			// console.log('%cselected', 'color:red;font-size:14px;', prevSelected, selected.name)
+			if (prevSelected === selected.name) {
+				// console.log('%cprevSelected - selected', 'color:red;font-size:14px;', prevSelected, selected.name)
+				return
+			}
+
+			if (intersects[0].object.name === selected.name && intersects.length > 1) {
+				// console.log('%cSELECTED', 'color:green;font-size:12px;', intersects)
+				selected.position.set(intersects[1].point.x, intersects[1].point.y, intersects[1].point.z)
 			} else {
-				console.log('%cELSE', 'color:red;font-size:14px;')
+				// console.log('%cintersects', 'color:red;font-size:12px;', intersects)
+				selected.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z)
+			}
+
+			// Object Visibility
+			if (!selected.visible) {
+				// Visibility is initially false. Once mouse position is converted to 3D space set to true.
+				selected.visible = true
 			}
 		} else {
-			return;
+			// intersects is not on "ground" or with another created object
+			// console.log('%cELSE', 'color:red;font-size:14px;', selected)
+			// if (selected?.position) {
+			// 	console.log('%cELSE', 'color:blue;font-size:14px;', intersects)
+			// }
+			return null
 		}
 	}
 
-		useFrame(() => {
-			onNavObjectMove()
-		})
+	useFrame(() => {
+		onNavObjectMove()
+	})
 
 	return <></>
 }
 
-export default Raycasting;
+export default Raycasting

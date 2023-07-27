@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Text } from '@react-three/drei'
 
-function Loading() {
+export default function Loading() {
 	const loadingGroup = useRef()
 	const loader = useRef()
 
@@ -25,5 +25,3 @@ function Loading() {
 		</group>
 	)
 }
-
-export default Loading
