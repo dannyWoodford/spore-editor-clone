@@ -11,7 +11,7 @@ const ContentBrowser = () => {
 
 	return (
 		<div className='content-browser'>
-			<div className='top-bar'></div>
+			{/* <div className='top-bar'></div> */}
 			<div className='content-container'>
 				<div className='item' id='box' draggable='true' onDragStart={(e) => dragStart(e)}>
 					<img alt='' src={process.env.PUBLIC_URL + '/content-browser/shapes/box.svg'} />
