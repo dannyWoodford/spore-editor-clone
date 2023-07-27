@@ -4,8 +4,8 @@ import * as THREE from 'three'
 
 import useMousePosition from '../helpers/useMousePosition'
 
-const Raycasting = ({ selected, prevSelected }) => {
-	const { scene, camera } = useThree()
+const Raycasting = ({ selected, prevSelected, isDragging }) => {
+	const { scene, camera, invalidate } = useThree()
 
 	const pointer = new THREE.Vector2()
 	const raycaster = new THREE.Raycaster()
@@ -18,7 +18,7 @@ const Raycasting = ({ selected, prevSelected }) => {
 		let raycastList = []
 		scene.traverse((child) => {
 			// Only include "ground" objects or created object
-			if (child.name === 'platform' || child.name === 'platform-base' || child.userData.shape === true) {
+			if (child.name === 'platform' || child.name === 'platform-base' || child.name === 'boundry-sphere' || child.userData.shape === true) {
 				raycastList.push(child)
 			}
 		})
@@ -37,21 +37,22 @@ const Raycasting = ({ selected, prevSelected }) => {
 
 		if (intersects.length > 0) {
 			if (!selected) {
-				// console.log('%cNO selected', 'color:blue;font-size:19px;', selected)
+				console.log('%cNO selected', 'color:blue;font-size:19px;', selected)
 				return
 			}
 
-			// console.log('%cselected', 'color:red;font-size:14px;', prevSelected, selected.name)
 			if (prevSelected === selected.name) {
-				// console.log('%cprevSelected - selected', 'color:red;font-size:14px;', prevSelected, selected.name)
+				console.log('%cprevSelected - selected', 'color:red;font-size:14px;', prevSelected, selected.name)
 				return
 			}
 
 			if (intersects[0].object.name === selected.name && intersects.length > 1) {
-				// console.log('%cSELECTED', 'color:green;font-size:12px;', intersects)
+				console.log('%cSELECTED', 'color:green;font-size:12px;', intersects[1].object.name)
 				selected.position.set(intersects[1].point.x, intersects[1].point.y, intersects[1].point.z)
 			} else {
-				// console.log('%cintersects', 'color:red;font-size:12px;', intersects)
+				console.log('%cintersects', 'color:red;font-size:12px;', intersects[0].object.name)
+				console.log('%cintersects', 'color:red;font-size:12px;', intersects[0].point)
+				console.log('%cisDragging', 'color:red;font-size:12px;', isDragging)
 				selected.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z)
 			}
 
@@ -60,17 +61,14 @@ const Raycasting = ({ selected, prevSelected }) => {
 				// Visibility is initially false. Once mouse position is converted to 3D space set to true.
 				selected.visible = true
 			}
-		} else {
-			// intersects is not on "ground" or with another created object
-			// console.log('%cELSE', 'color:red;font-size:14px;', selected)
-			// if (selected?.position) {
-			// 	console.log('%cELSE', 'color:blue;font-size:14px;', intersects)
-			// }
-			return null
+
+			invalidate()
 		}
 	}
 
 	useFrame(() => {
+		if (!isDragging) return
+
 		onNavObjectMove()
 	})
 

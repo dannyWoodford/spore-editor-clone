@@ -1,11 +1,11 @@
 import React from 'react'
-import { Environment } from '@react-three/drei'
+// import { Environment } from '@react-three/drei'
 
 export default function Background() {
 	return (
 		<>
 			<hemisphereLight name='hemisphereLight' skyColor={'blue'} groundColor={'green'} intensity={0.3} position={[0, 300, 50]} />
-			<Environment
+			{/* <Environment
 				name='Environment'
 				files={process.env.PUBLIC_URL + '/texture.hdr'}
 				background={true}
@@ -14,7 +14,7 @@ export default function Background() {
 					radius: 100, // Radius of the world. (Default 60)
 					scale: 1000, // Scale of the backside projected sphere that holds the env texture (Default: 1000)
 				}}
-			/>
+			/> */}
 		</>
 	)
 }

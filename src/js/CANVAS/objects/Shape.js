@@ -18,23 +18,25 @@ export default function Shape({ shape, setSelected, selected, name }) {
 		sphere: 'pink',
 		cone: 'green',
 		cylinder: 'yellow',
-		octahedron: 'grey',
+		octahedron: 'orange',
 		icosahedron: 'blue',
 	}
 
 	useEffect(() => {
 		if (!mesh.current) return
-		if (selected?.name === name) return
+		if (selected?.name === name) {
+			console.log('already selected', name, selected?.name)
+			return
+		}
 
-		// console.log('setSelected', name, selected?.name)
 		setSelected(mesh.current)
-	}, [])
+	})
 
 	return (
 		// Disable visibility initially and set to true in Raycasting.js once mouse position is converted to 3D space
-		<mesh ref={mesh} name={name} userData={{ shape: true }} visible={false}>
+		<mesh ref={mesh} name={name} userData={{ shape: true }} visible={false} onPointerDown={() => setSelected(mesh.current)}>
 			<primitive object={allShapes[shape]} />
-			<meshStandardMaterial color={allColors[shape]} />
+			<meshLambertMaterial color={allColors[shape]} />
 		</mesh>
 	)
 }

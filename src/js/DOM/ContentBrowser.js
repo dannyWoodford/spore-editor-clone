@@ -3,7 +3,7 @@ import React from 'react'
 const ContentBrowser = () => {
 	const dragStart = (e) => {
 		e.dataTransfer.setData(e.target.id, '')
-		
+
 		let targetImage = e.target.querySelector('img')
 
 		e.dataTransfer.setDragImage(targetImage, 0, 0)

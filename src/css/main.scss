@@ -6,8 +6,14 @@
 @import '3-base/misc';
 @import '4-components/content-browser';
 
-
 .stats {
+	left: auto !important;
+	right: 0 !important;
+	top: auto !important;
+	bottom: 0 !important;
+}
+
+.gl-stats {
 	left: auto !important;
 	right: 270px !important;
 	top: auto !important;
