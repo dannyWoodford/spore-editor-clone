@@ -36,21 +36,13 @@ const Raycasting = ({ selected, prevSelected, initialDragCreate }) => {
 		const intersects = raycaster.intersectObjects(rayCasterObjects())
 
 		if (intersects.length > 0) {
-			if (!selected) {
-				// console.log('%cNO selected', 'color:blue;font-size:19px;', selected)
-				return
-			}
+			if (!selected) return
 
-			if (prevSelected === selected.name) {
-				// console.log('%cprevSelected - selected', 'color:red;font-size:14px;', prevSelected, selected.name)
-				return
-			}
+			if (prevSelected === selected.name) return
 
 			if (intersects[0].object.name === selected.name && intersects.length > 1) {
-				// console.log('%cSELECTED', 'color:green;font-size:12px;', intersects[1].object.name)
 				selected.position.set(intersects[1].point.x, intersects[1].point.y, intersects[1].point.z)
 			} else {
-				// console.log('%cintersects', 'color:red;font-size:12px;', intersects[0].object.name)
 				selected.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z)
 			}
 

@@ -6,7 +6,6 @@ export default function Drop({ sceneObjects, setSceneObjects, selected, setPrevS
 
 	gl.domElement.addEventListener('dragenter', (e) => {
 		e.preventDefault()
-		// console.log('dragenter')
 		setInitialDragCreate(true)
 
 		setSceneObjects([...sceneObjects, e.dataTransfer.types[0]])
@@ -14,13 +13,10 @@ export default function Drop({ sceneObjects, setSceneObjects, selected, setPrevS
 
 	gl.domElement.addEventListener('dragover', (e) => {
 		e.preventDefault()
-		// console.log('dragover')
 	})
 
 	useEffect(() => {
 		const updatePrevState = () => {
-			// console.log('setPrevSelected', selected?.name)
-			// console.log('drag')
 			setInitialDragCreate(false)
 			setPrevSelected(selected?.name)
 		}

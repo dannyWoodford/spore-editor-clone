@@ -29,11 +29,9 @@ export default function Shape({ shape, setSelectedHandler, setTransformSelectedH
 	useEffect(() => {
 		if (!mesh.current) return
 		if (selected?.name === name) {
-			// console.log('already selected', name, selected?.name)
 			return
 		}
 
-		// console.log('setSelected on create', name, selected?.name)
 		setSelectedHandler(mesh.current)
 	})
 
