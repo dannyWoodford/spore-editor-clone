@@ -1,33 +1,36 @@
 import React, { useEffect } from 'react'
 import { useThree } from '@react-three/fiber'
 
-export default function Drop({ sceneObjects, setSceneObjects, selected, setPrevSelected }) {
+export default function Drop({ sceneObjects, setSceneObjects, selected, setPrevSelected, setInitialDragCreate }) {
 	const { gl } = useThree()
 
 	gl.domElement.addEventListener('dragenter', (e) => {
 		e.preventDefault()
+		// console.log('dragenter')
+		setInitialDragCreate(true)
 
 		setSceneObjects([...sceneObjects, e.dataTransfer.types[0]])
 	})
 
 	gl.domElement.addEventListener('dragover', (e) => {
 		e.preventDefault()
-		// console.log('dragenter')
+		// console.log('dragover')
 	})
 
 	useEffect(() => {
 		const updatePrevState = () => {
 			// console.log('setPrevSelected', selected?.name)
 			// console.log('drag')
+			setInitialDragCreate(false)
 			setPrevSelected(selected?.name)
 		}
 
-			window.addEventListener('drop', updatePrevState)
+		window.addEventListener('drop', updatePrevState)
 
 		return () => {
 			window.removeEventListener('drop', updatePrevState)
 		}
-	}, [selected, setPrevSelected])
+	}, [selected, setPrevSelected, setInitialDragCreate])
 
 	return <></>
 }

@@ -17,6 +17,8 @@ export default function Scene() {
 	const [prevSelected, setPrevSelected] = useState('')
 	const [sceneObjects, setSceneObjects] = useState([])
 
+	const [initialDragCreate, setInitialDragCreate] = useState(false)
+
 	const { invalidate } = useThree()
 
 	const setSelectedHandler = (mesh) => {
@@ -34,8 +36,6 @@ export default function Scene() {
 	const addSceneObjects = useMemo(() => {
 		if (!sceneObjects.length) return
 
-		// console.log('sceneObjects', sceneObjects)
-
 		return sceneObjects.map((obj, i) => {
 			if (obj) {
 				return (
@@ -52,6 +52,8 @@ export default function Scene() {
 				return null
 			}
 		})
+
+		// eslint-disable-next-line
 	}, [sceneObjects])
 
 	const { mode } = useControls({ mode: { value: 'translate', options: ['translate', 'rotate', 'scale'] } })
@@ -67,7 +69,6 @@ export default function Scene() {
 		}
 	}, [transformSelected])
 
-
 	return (
 		<>
 			<Controls />
@@ -78,8 +79,14 @@ export default function Scene() {
 					<Ground>{addSceneObjects}</Ground>
 				</Bvh>
 
-				<Drop selected={selected} setPrevSelected={setPrevSelected} sceneObjects={sceneObjects} setSceneObjects={setSceneObjects} />
-				<Raycasting selected={selected} prevSelected={prevSelected} />
+				<Drop
+					selected={selected}
+					setPrevSelected={setPrevSelected}
+					sceneObjects={sceneObjects}
+					setSceneObjects={setSceneObjects}
+					setInitialDragCreate={setInitialDragCreate}
+				/>
+				<Raycasting selected={selected} prevSelected={prevSelected} initialDragCreate={initialDragCreate} />
 				{transformSelected && <TransformControls object={transformSelected} mode={mode} />}
 			</Suspense>
 		</>

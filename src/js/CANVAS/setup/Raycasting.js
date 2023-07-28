@@ -4,7 +4,7 @@ import * as THREE from 'three'
 
 import useMousePosition from '../helpers/useMousePosition'
 
-const Raycasting = ({ selected, prevSelected }) => {
+const Raycasting = ({ selected, prevSelected, initialDragCreate }) => {
 	const { scene, camera, invalidate } = useThree()
 
 	const pointer = new THREE.Vector2()
@@ -51,7 +51,6 @@ const Raycasting = ({ selected, prevSelected }) => {
 				selected.position.set(intersects[1].point.x, intersects[1].point.y, intersects[1].point.z)
 			} else {
 				// console.log('%cintersects', 'color:red;font-size:12px;', intersects[0].object.name)
-				// console.log('%cintersects', 'color:red;font-size:12px;', intersects[0].point.x)
 				selected.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z)
 			}
 
@@ -66,6 +65,8 @@ const Raycasting = ({ selected, prevSelected }) => {
 	}
 
 	useFrame(() => {
+		if (!initialDragCreate) return
+
 		onNavObjectMove()
 	})
 

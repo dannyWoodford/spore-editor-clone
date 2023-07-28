@@ -45,7 +45,8 @@ export default function Shape({ shape, setSelectedHandler, setTransformSelectedH
 			userData={{ shape: true }}
 			onClick={() => setTransformSelectedHandler(mesh.current)}
 			onPointerOver={() => setHovered(true)}
-			onPointerOut={() => setHovered(false)}>
+			onPointerOut={() => setHovered(false)}
+			visible={false}>
 			<primitive object={allShapes[shape]} />
 			<meshLambertMaterial color={allColors[shape]} />
 		</mesh>

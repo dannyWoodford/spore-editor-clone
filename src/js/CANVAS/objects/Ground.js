@@ -2,7 +2,7 @@ import React from 'react'
 import { useTexture, Cylinder, Circle } from '@react-three/drei'
 
 const Ground = ({ children }) => {
-	const [circleBrick] = useTexture([process.env.PUBLIC_URL + '/brick1.bmp'])
+	const [circleBrick] = useTexture([process.env.PUBLIC_URL + '/textures/brick1.bmp'])
 
 	return (
 		<group position={[0, 1.5, 0]} name='ground'>
@@ -10,8 +10,8 @@ const Ground = ({ children }) => {
 				<meshBasicMaterial color='darkgrey' map={circleBrick} />
 			</Cylinder>
 
-			<Circle args={[50]} position={[0, -1.75, 0]} name='platform-base' rotation={[-Math.PI / 2, 0, 0]}>
-				<meshBasicMaterial color='green' />
+			<Circle args={[60]} position={[0, -1.75, 0]} name='platform-base' rotation={[-Math.PI / 2, 0, 0]}>
+				<meshBasicMaterial color='#00570d' />
 			</Circle>
 
 			{children}
