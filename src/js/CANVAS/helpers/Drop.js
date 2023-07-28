@@ -6,6 +6,8 @@ export default function Drop({ sceneObjects, setSceneObjects, selected, setPrevS
 
 	gl.domElement.addEventListener('dragenter', (e) => {
 		e.preventDefault()
+		console.log('dragenter', e.dataTransfer.types[0])
+		// console.log('dragenter', e.dataTransfer.types[1])
 
 		setSceneObjects([...sceneObjects, e.dataTransfer.types[0]])
 	})

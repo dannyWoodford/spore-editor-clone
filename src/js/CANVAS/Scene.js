@@ -34,7 +34,7 @@ export default function Scene() {
 	const addSceneObjects = useMemo(() => {
 		if (!sceneObjects.length) return
 
-		// console.log('sceneObjects', sceneObjects)
+		console.log('sceneObjects', sceneObjects)
 
 		return sceneObjects.map((obj, i) => {
 			if (obj) {
