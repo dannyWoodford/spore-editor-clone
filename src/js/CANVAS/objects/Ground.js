@@ -10,8 +10,8 @@ const Ground = ({ children }) => {
 				<meshBasicMaterial color='darkgrey' map={circleBrick} />
 			</Cylinder>
 
-			<Circle args={[90]} position={[0, -1.75, 0]} name='platform-base' rotation={[-Math.PI / 2, 0, 0]}>
-				<meshBasicMaterial color='grey' />
+			<Circle args={[50]} position={[0, -1.75, 0]} name='platform-base' rotation={[-Math.PI / 2, 0, 0]}>
+				<meshBasicMaterial color='green' />
 			</Circle>
 
 			{children}

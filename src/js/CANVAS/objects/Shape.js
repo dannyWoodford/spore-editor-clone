@@ -1,7 +1,11 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
+import { useCursor } from '@react-three/drei'
 
-export default function Shape({ shape, setSelected, selected, name }) {
+export default function Shape({ shape, setSelectedHandler, setTransformSelectedHandler, selected, name }) {
+	const [hovered, setHovered] = useState(false)
+	useCursor(hovered)
+
 	const mesh = useRef()
 
 	const allShapes = {
@@ -25,16 +29,23 @@ export default function Shape({ shape, setSelected, selected, name }) {
 	useEffect(() => {
 		if (!mesh.current) return
 		if (selected?.name === name) {
-			console.log('already selected', name, selected?.name)
+			// console.log('already selected', name, selected?.name)
 			return
 		}
 
-		setSelected(mesh.current)
+		// console.log('setSelected on create', name, selected?.name)
+		setSelectedHandler(mesh.current)
 	})
 
 	return (
 		// Disable visibility initially and set to true in Raycasting.js once mouse position is converted to 3D space
-		<mesh ref={mesh} name={name} userData={{ shape: true }} visible={false} onPointerDown={() => setSelected(mesh.current)}>
+		<mesh
+			ref={mesh}
+			name={name}
+			userData={{ shape: true }}
+			onClick={() => setTransformSelectedHandler(mesh.current)}
+			onPointerOver={() => setHovered(true)}
+			onPointerOut={() => setHovered(false)}>
 			<primitive object={allShapes[shape]} />
 			<meshLambertMaterial color={allColors[shape]} />
 		</mesh>
