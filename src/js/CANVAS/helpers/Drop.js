@@ -15,6 +15,7 @@ export default function Drop() {
 	gl.domElement.addEventListener('dragenter', (e) => {
 		e.preventDefault()
 		setInitialDragCreate(true)
+		console.log('sceneObjects', sceneObjects)
 
 		setSceneObjects([...sceneObjects, e.dataTransfer.types[0]])
 	})
@@ -27,6 +28,7 @@ export default function Drop() {
 		const updatePrevState = () => {
 			setInitialDragCreate(false)
 			setPrevSelected(selected?.name)
+			console.log('updatePrevState', selected?.name)
 		}
 
 		window.addEventListener('drop', updatePrevState)

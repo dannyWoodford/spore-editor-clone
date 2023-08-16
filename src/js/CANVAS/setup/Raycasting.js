@@ -49,6 +49,8 @@ const Raycasting = () => {
 
 			if (prevSelected === selected.name) return
 
+			console.log('sceneObjects', selected.name)
+
 			if (intersects[0].object.name === selected.name && intersects.length > 1) {
 				selected.position.set(intersects[1].point.x, intersects[1].point.y, intersects[1].point.z)
 			} else {
