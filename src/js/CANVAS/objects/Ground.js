@@ -4,10 +4,11 @@ import { useAtom } from 'jotai'
 import { parcelTotalAtom } from './../../GlobalState'
 
 const Ground = ({ children }) => {
-		const [parcelTotal, setParcelTotal] = useAtom(parcelTotalAtom)
+	const [parcelTotal, setParcelTotal] = useAtom(parcelTotalAtom)
+
 	const [circleBrick] = useTexture([process.env.PUBLIC_URL + '/textures/brick1.bmp'])
 
-	const addSceneObjects = useMemo(() => {
+	const createParcel = useMemo(() => {
 		return (
 			<Box args={[parcelTotal * 10, 0.2, parcelTotal * 10]} position={[0, -1.7, 0]}>
 				{/* <meshLambertMaterial color='red' /> */}
@@ -24,7 +25,7 @@ const Ground = ({ children }) => {
 				<meshBasicMaterial color='darkgrey' map={circleBrick} />
 			</Cylinder> */}
 
-			{addSceneObjects}
+			{createParcel}
 
 			<Circle args={[60]} position={[0, -1.75, 0]} name='platform-base' rotation={[-Math.PI / 2, 0, 0]}>
 				<meshBasicMaterial color='#00570d' />

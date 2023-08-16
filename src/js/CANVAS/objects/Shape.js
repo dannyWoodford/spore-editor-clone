@@ -1,8 +1,17 @@
 import React, { useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
+import { useThree } from '@react-three/fiber'
 import { useCursor } from '@react-three/drei'
 
-export default function Shape({ shape, setSelectedHandler, setTransformSelectedHandler, selected, name }) {
+import { useAtom } from 'jotai'
+import { selectedAtom, transformSelectedAtom } from './../../GlobalState'
+
+export default function Shape({ shape, name }) {
+	const [selected, setSelected] = useAtom(selectedAtom)
+	const [transformSelected, setTransformSelected] = useAtom(transformSelectedAtom)
+
+	const { invalidate } = useThree()
+
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
 
@@ -34,6 +43,18 @@ export default function Shape({ shape, setSelectedHandler, setTransformSelectedH
 
 		setSelectedHandler(mesh.current)
 	})
+
+	const setSelectedHandler = (mesh) => {
+		setSelected(mesh)
+
+		invalidate()
+	}
+
+	const setTransformSelectedHandler = (mesh) => {
+		setTransformSelected(mesh)
+
+		invalidate()
+	}
 
 	return (
 		// Disable visibility initially and set to true in Raycasting.js once mouse position is converted to 3D space

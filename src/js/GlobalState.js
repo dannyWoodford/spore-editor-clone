@@ -3,11 +3,8 @@ import { atom } from 'jotai'
 export const initialPromptAtom = atom(false)
 export const parcelTotalAtom = atom(3)
 
-
-
-// import { proxy } from 'valtio'
-
-// export const globalState = proxy({
-// 	intro: { initialPrompt: false, parcelTotal: 3 },
-// 	// scene: { selected: '', transformSelected: '', prevSelected: '', initialDragCreate: false },
-// })
+export const selectedAtom = atom('')
+export const transformSelectedAtom = atom('')
+export const prevSelectedAtom = atom('')
+export const initialDragCreateAtom = atom(false)
+export const sceneObjectsAtom = atom([])

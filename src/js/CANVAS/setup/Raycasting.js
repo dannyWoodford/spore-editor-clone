@@ -2,9 +2,18 @@ import React from 'react'
 import { useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
+import { useAtom } from 'jotai'
+import { selectedAtom, prevSelectedAtom, initialDragCreateAtom } from './../../GlobalState'
+
+
 import useMousePosition from '../helpers/useMousePosition'
 
-const Raycasting = ({ selected, prevSelected, initialDragCreate }) => {
+const Raycasting = () => {
+		const [selected, setSelected] = useAtom(selectedAtom)
+		const [prevSelected, setPrevSelected] = useAtom(prevSelectedAtom)
+
+		const [initialDragCreate, setInitialDragCreate] = useAtom(initialDragCreateAtom)
+
 	const { scene, camera, invalidate } = useThree()
 
 	const pointer = new THREE.Vector2()
