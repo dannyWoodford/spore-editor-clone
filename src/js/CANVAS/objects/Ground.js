@@ -1,19 +1,22 @@
 import React, { useMemo } from 'react'
 import { useTexture, Circle, Box } from '@react-three/drei'
+import { useSnapshot } from 'valtio'
+import { globalState } from './../../GlobalState'
 
-const Ground = ({ parcelTotal, children }) => {
+const Ground = ({ children }) => {
+	const snap = useSnapshot(globalState)
 	const [circleBrick] = useTexture([process.env.PUBLIC_URL + '/textures/brick1.bmp'])
 
-		const addSceneObjects = useMemo(() => {
-			return (
-				<Box args={[parcelTotal * 10, 0.2, parcelTotal * 10]} position={[0, -1.7, 0]}>
-					{/* <meshLambertMaterial color='red' /> */}
-					<meshBasicMaterial color='darkgrey' map={circleBrick} />
-				</Box>
-			)
+	const addSceneObjects = useMemo(() => {
+		return (
+			<Box args={[snap.intro.parcelTotal * 10, 0.2, snap.intro.parcelTotal * 10]} position={[0, -1.7, 0]}>
+				{/* <meshLambertMaterial color='red' /> */}
+				<meshBasicMaterial color='darkgrey' map={circleBrick} />
+			</Box>
+		)
 
-			// eslint-disable-next-line
-		}, [parcelTotal])
+		// eslint-disable-next-line
+	}, [snap.intro.parcelTotal])
 
 	return (
 		<group position={[0, 1.5, 0]} name='ground'>

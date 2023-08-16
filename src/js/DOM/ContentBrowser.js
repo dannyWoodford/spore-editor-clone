@@ -1,6 +1,11 @@
 import React from 'react'
+import { globalState } from './../GlobalState'
+import { useSnapshot } from 'valtio'
 
-const ContentBrowser = ({ initialPrompt }) => {
+const ContentBrowser = () => {
+		const snap = useSnapshot(globalState)
+
+
 	const dragStart = (e) => {
 		e.dataTransfer.setData(e.target.id, '')
 
@@ -10,7 +15,7 @@ const ContentBrowser = ({ initialPrompt }) => {
 	}
 
 	return (
-		<div className={`content-browser ${initialPrompt ? 'show' : ''}`}>
+		<div className={`content-browser ${snap.intro.initialPrompt ? 'show' : ''}`}>
 			{/* <div className='top-bar'></div> */}
 			<div className='content-container'>
 				<div className='item' id='box' draggable='true' onDragStart={(e) => dragStart(e)}>

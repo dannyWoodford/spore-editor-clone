@@ -1,6 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { useSnapshot } from 'valtio'
+import { globalState } from './../GlobalState'
 
-export default function ParcelPrompt({ initialPrompt, initialPromptHandler, parcelTotalHandler }) {
+export default function ParcelPrompt() {
+	const snap = useSnapshot(globalState)
+
 	const [count, setCount] = useState(3)
 
 	const ogInput = useRef()
@@ -11,13 +15,13 @@ export default function ParcelPrompt({ initialPrompt, initialPromptHandler, parc
 		mirrorInput.current.value = count
 		ogInput.current.value = count
 
-		parcelTotalHandler(count)
+		globalState.intro.parcelTotal = count
 
 		// eslint-disable-next-line
 	}, [count])
 
 	return (
-		<div className={`parcel-prompt-bg ${initialPrompt ? 'hide-prompt' : ''}`}>
+		<div className={`parcel-prompt-bg ${snap.intro.initialPrompt ? 'hide-prompt' : ''}`}>
 			<div className='parcel-prompt'>
 				<h1 className='title'>Base Dimensions</h1>
 				<hr id='divider'></hr>
@@ -47,7 +51,7 @@ export default function ParcelPrompt({ initialPrompt, initialPromptHandler, parc
 				<p className='text note'>*Note: To place structures on your land, you must own enough consecutive parcels</p>
 				<div className='button-container'>
 					<button className='button cancel'>Cancel</button>
-					<button className='button ready' onClick={initialPromptHandler}>
+					<button className='button ready' onClick={() => (globalState.intro.initialPrompt = true)}>
 						Ready
 					</button>
 				</div>
