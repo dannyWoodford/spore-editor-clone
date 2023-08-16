@@ -1,10 +1,15 @@
 import React from 'react'
 import { useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { useGlobalState } from './../../GlobalState'
 
 import useMousePosition from '../helpers/useMousePosition'
 
-const Raycasting = ({ selected, prevSelected, initialDragCreate }) => {
+const Raycasting = () => {
+	const selected = useGlobalState((state) => state.selected)
+	const prevSelected = useGlobalState((state) => state.prevSelected)
+	const initialDragCreate = useGlobalState((state) => state.initialDragCreate)
+
 	const { scene, camera, invalidate } = useThree()
 
 	const pointer = new THREE.Vector2()

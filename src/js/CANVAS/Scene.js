@@ -1,7 +1,8 @@
-import React, { Suspense, useState, useMemo, useEffect } from 'react'
+import React, { Suspense, useMemo, useEffect } from 'react'
 import { useThree } from '@react-three/fiber'
 import { TransformControls, Bvh } from '@react-three/drei'
 import { useControls } from 'leva'
+import { useGlobalState } from './../GlobalState'
 
 import Loading from './setup/Loading'
 import Controls from './setup/Controls'
@@ -11,43 +12,16 @@ import Ground from './objects/Ground'
 import Shape from './objects/Shape'
 import Raycasting from './setup/Raycasting'
 
-export default function Scene({ parcelTotal }) {
-	const [selected, setSelected] = useState('')
-	const [transformSelected, setTransformSelected] = useState('')
-	const [prevSelected, setPrevSelected] = useState('')
-	const [sceneObjects, setSceneObjects] = useState([])
-
-	const [initialDragCreate, setInitialDragCreate] = useState(false)
-
-	const { invalidate } = useThree()
-
-	const setSelectedHandler = (mesh) => {
-		setSelected(mesh)
-
-		invalidate()
-	}
-
-	const setTransformSelectedHandler = (mesh) => {
-		setTransformSelected(mesh)
-
-		invalidate()
-	}
+export default function Scene() {
+	const transformSelected = useGlobalState((state) => state.transformSelected)
+	const sceneObjects = useGlobalState((state) => state.sceneObjects)
 
 	const addSceneObjects = useMemo(() => {
 		if (!sceneObjects.length) return
 
 		return sceneObjects.map((obj, i) => {
 			if (obj) {
-				return (
-					<Shape
-						shape={obj}
-						key={i}
-						name={obj + '-' + i}
-						setSelectedHandler={setSelectedHandler}
-						setTransformSelectedHandler={setTransformSelectedHandler}
-						selected={selected}
-					/>
-				)
+				return <Shape shape={obj} key={i} name={obj + '-' + i} />
 			} else {
 				return null
 			}
@@ -76,17 +50,11 @@ export default function Scene({ parcelTotal }) {
 			<Suspense fallback={<Loading />}>
 				<Bvh firstHitOnly>
 					<Background />
-					<Ground parcelTotal={parcelTotal}>{addSceneObjects}</Ground>
+					<Ground>{addSceneObjects}</Ground>
 				</Bvh>
 
-				<Drop
-					selected={selected}
-					setPrevSelected={setPrevSelected}
-					sceneObjects={sceneObjects}
-					setSceneObjects={setSceneObjects}
-					setInitialDragCreate={setInitialDragCreate}
-				/>
-				<Raycasting selected={selected} prevSelected={prevSelected} initialDragCreate={initialDragCreate} />
+				<Drop />
+				<Raycasting />
 				{transformSelected && <TransformControls object={transformSelected} mode={mode} />}
 			</Suspense>
 		</>

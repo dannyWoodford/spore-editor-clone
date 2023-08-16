@@ -1,8 +1,16 @@
 import React, { useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
+import { useThree } from '@react-three/fiber'
 import { useCursor } from '@react-three/drei'
+import { useGlobalState } from './../../GlobalState'
 
-export default function Shape({ shape, setSelectedHandler, setTransformSelectedHandler, selected, name }) {
+export default function Shape({ shape, name }) {
+	const selected = useGlobalState((state) => state.selected)
+	const setSelected = useGlobalState((state) => state.setSelected)
+	const setTransformSelected = useGlobalState((state) => state.setTransformSelected)
+
+	const { invalidate } = useThree()
+
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
 
@@ -32,8 +40,17 @@ export default function Shape({ shape, setSelectedHandler, setTransformSelectedH
 			return
 		}
 
-		setSelectedHandler(mesh.current)
+		console.log('fire', name)
+		setSelected(mesh.current)
+
+		// invalidate()
 	})
+
+	const setTransformSelectedHandler = (mesh) => {
+		setTransformSelected(mesh)
+
+		invalidate()
+	}
 
 	return (
 		// Disable visibility initially and set to true in Raycasting.js once mouse position is converted to 3D space
