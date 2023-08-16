@@ -1,10 +1,9 @@
 import React from 'react'
-import { globalState } from './../GlobalState'
-import { useSnapshot } from 'valtio'
+import { initialPromptAtom } from './../GlobalState'
+import { useAtom } from 'jotai'
 
 const ContentBrowser = () => {
-		const snap = useSnapshot(globalState)
-
+		const [initialPrompt, setInitialPrompt] = useAtom(initialPromptAtom)
 
 	const dragStart = (e) => {
 		e.dataTransfer.setData(e.target.id, '')
@@ -15,7 +14,7 @@ const ContentBrowser = () => {
 	}
 
 	return (
-		<div className={`content-browser ${snap.intro.initialPrompt ? 'show' : ''}`}>
+		<div className={`content-browser ${initialPrompt ? 'show' : ''}`}>
 			{/* <div className='top-bar'></div> */}
 			<div className='content-container'>
 				<div className='item' id='box' draggable='true' onDragStart={(e) => dragStart(e)}>

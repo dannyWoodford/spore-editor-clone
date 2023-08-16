@@ -3,6 +3,9 @@ import { useThree } from '@react-three/fiber'
 import { TransformControls, Bvh } from '@react-three/drei'
 import { useControls } from 'leva'
 
+import { useAtom } from 'jotai'
+import { parcelTotalAtom } from './../GlobalState'
+
 import Loading from './setup/Loading'
 import Controls from './setup/Controls'
 import Background from './setup/Background'
