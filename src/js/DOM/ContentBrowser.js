@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ContentBrowser = () => {
+const ContentBrowser = ({ initialPrompt }) => {
 	const dragStart = (e) => {
 		e.dataTransfer.setData(e.target.id, '')
 
@@ -10,7 +10,7 @@ const ContentBrowser = () => {
 	}
 
 	return (
-		<div className='content-browser'>
+		<div className={`content-browser ${initialPrompt ? 'show' : ''}`}>
 			{/* <div className='top-bar'></div> */}
 			<div className='content-container'>
 				<div className='item' id='box' draggable='true' onDragStart={(e) => dragStart(e)}>

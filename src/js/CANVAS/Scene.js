@@ -11,7 +11,7 @@ import Ground from './objects/Ground'
 import Shape from './objects/Shape'
 import Raycasting from './setup/Raycasting'
 
-export default function Scene() {
+export default function Scene({ parcelTotal }) {
 	const [selected, setSelected] = useState('')
 	const [transformSelected, setTransformSelected] = useState('')
 	const [prevSelected, setPrevSelected] = useState('')
@@ -56,7 +56,7 @@ export default function Scene() {
 		// eslint-disable-next-line
 	}, [sceneObjects])
 
-	const { mode } = useControls({ mode: { value: 'translate', options: ['translate', 'rotate', 'scale'] } })
+	const { mode } = useControls({ mode: { value: 'translate', options: ['translate', 'rotate'] } })
 
 	useEffect(() => {
 		let levaControls = document.querySelector('#leva__root')
@@ -76,7 +76,7 @@ export default function Scene() {
 			<Suspense fallback={<Loading />}>
 				<Bvh firstHitOnly>
 					<Background />
-					<Ground>{addSceneObjects}</Ground>
+					<Ground parcelTotal={parcelTotal}>{addSceneObjects}</Ground>
 				</Bvh>
 
 				<Drop
