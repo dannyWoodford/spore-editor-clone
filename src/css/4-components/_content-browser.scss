@@ -2,7 +2,7 @@
 	display: flex;
 	flex-direction: column;
 	position: absolute;
-	width: 40%;
+	width: 30%;
 	height: 100%;
 	background: rgba($color-bg-primary, 0.4);
 	top: 0;
@@ -12,7 +12,7 @@
 	border-radius: 15px;
 	opacity: 0;
 	transform: translateX(-1000px);
-	
+
 	&.show {
 		opacity: 1;
 		transition: all 0.5s ease-in-out;
@@ -20,24 +20,55 @@
 	}
 
 	.top-bar {
-		height: 130px;
 		width: 100%;
-		background: rgba($color-bg-primary, 0.7);
-		border-radius: 15px;
+		// background: rgba($color-bg-primary, 0.7);
+		border-radius: 15px 15px 0 0;
+		position: relative;
+		display: flex;
+		flex-direction: row;
+
+		.tab {
+			position: relative;
+			display: block;
+			height: 100%;
+			width: 25%;
+			background: rgba($color-bg-primary, 0.3);
+			border-radius: 15px 15px 0 0;
+			cursor: pointer;
+
+			.tab-name {
+				color: $color-white;
+				text-align: center;
+				margin-bottom: 5px;
+			}
+
+			&.active {
+				background: rgba($color-bg-primary, 0.7);
+			}
+		}
 	}
 
 	.content-container {
 		height: 100%;
 		width: 100%;
-		margin: 20px 0;
 		padding: 10px;
-		background: rgba($color-bg-primary, 0.3);
-		border-radius: 15px;
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		justify-content: flex-start;
-		align-content: flex-start;
+		background: rgba($color-bg-primary, 0.7);
+		border-radius: 0 0 15px 15px;
+		display: block;
+
+		.content {
+			height: 100%;
+			width: 100%;
+			display: none;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+			align-content: flex-start;
+
+				&.active {
+				display: flex;
+			}
+		}
 
 		.item {
 			display: flex;
@@ -46,6 +77,7 @@
 			height: min-content;
 			cursor: grab;
 			flex-basis: 23%;
+			width: 23%;
 			margin: 5px;
 			padding: 5px;
 			background: rgba($color-bg-secondary, 0.6);
@@ -53,7 +85,7 @@
 			color: $color-white;
 
 			img {
-				max-width: 100%;
+				max-height: 120px;
 				filter: invert(1);
 				user-select: none;
 				pointer-events: none;

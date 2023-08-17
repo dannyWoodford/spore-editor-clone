@@ -2,6 +2,8 @@ import React, { Suspense, useState, useMemo, useEffect } from 'react'
 import { useThree } from '@react-three/fiber'
 import { TransformControls, Bvh } from '@react-three/drei'
 import { useControls } from 'leva'
+import { useSnapshot } from 'valtio'
+import { globalState } from './../GlobalState'
 
 import Loading from './setup/Loading'
 import Controls from './setup/Controls'
@@ -9,17 +11,37 @@ import Background from './setup/Background'
 import Drop from './helpers/Drop'
 import Ground from './objects/Ground'
 import Shape from './objects/Shape'
+import Model from './objects/Model'
 import Raycasting from './setup/Raycasting'
 
-export default function Scene({ parcelTotal }) {
+export default function Scene() {
+	const { invalidate } = useThree()
+	const snap = useSnapshot(globalState)
+
 	const [selected, setSelected] = useState('')
 	const [transformSelected, setTransformSelected] = useState('')
 	const [prevSelected, setPrevSelected] = useState('')
 	const [sceneObjects, setSceneObjects] = useState([])
-
 	const [initialDragCreate, setInitialDragCreate] = useState(false)
 
-	const { invalidate } = useThree()
+	useEffect(() => {
+		console.log('%cselected', 'color:red;font-size:12px;', selected)
+	}, [selected])
+
+	useEffect(() => {
+		console.log('%ctransformSelected', 'color:red;font-size:12px;', transformSelected)
+	}, [transformSelected])
+
+	useEffect(() => {
+		console.log('%cprevSelected', 'color:red;font-size:12px;', prevSelected)
+	}, [prevSelected])
+
+	useEffect(() => {
+		console.log('%csceneObjects', 'color:red;font-size:12px;', sceneObjects)
+	}, [sceneObjects])
+
+
+
 
 	const setSelectedHandler = (mesh) => {
 		setSelected(mesh)
@@ -38,16 +60,33 @@ export default function Scene({ parcelTotal }) {
 
 		return sceneObjects.map((obj, i) => {
 			if (obj) {
-				return (
-					<Shape
-						shape={obj}
-						key={i}
-						name={obj + '-' + i}
-						setSelectedHandler={setSelectedHandler}
-						setTransformSelectedHandler={setTransformSelectedHandler}
-						selected={selected}
-					/>
-				)
+				// console.log('obj', obj)
+				if (obj.type === 'model') {
+					return (
+						<Model
+							shape={obj.name}
+							key={i}
+							name={obj.name + '-' + i}
+							path={obj.path}
+							setSelectedHandler={setSelectedHandler}
+							setTransformSelectedHandler={setTransformSelectedHandler}
+							selected={selected}
+						/>
+					)
+				} else if (obj.type === 'shape') {
+					return (
+						<Shape
+							shape={obj.name}
+							key={i}
+							name={obj.name + '-' + i}
+							setSelectedHandler={setSelectedHandler}
+							setTransformSelectedHandler={setTransformSelectedHandler}
+							selected={selected}
+						/>
+					)
+				} else {
+					return null
+				}
 			} else {
 				return null
 			}
@@ -56,18 +95,23 @@ export default function Scene({ parcelTotal }) {
 		// eslint-disable-next-line
 	}, [sceneObjects])
 
-	const { mode } = useControls({ mode: { value: 'translate', options: ['translate', 'rotate'] } })
+	const { mode } = useControls('Transforms', {
+		mode: {
+			value: 'translate',
+			options: ['translate', 'rotate'],
+		},
+	})
 
 	useEffect(() => {
 		let levaControls = document.querySelector('#leva__root')
 		levaControls.style.display = 'none'
 
-		if (transformSelected) {
+		if (snap.intro.initialPrompt) {
 			levaControls.style.display = 'block'
 		} else {
 			levaControls.style.display = 'none'
 		}
-	}, [transformSelected])
+	}, [snap.intro.initialPrompt])
 
 	return (
 		<>
@@ -76,7 +120,7 @@ export default function Scene({ parcelTotal }) {
 			<Suspense fallback={<Loading />}>
 				<Bvh firstHitOnly>
 					<Background />
-					<Ground parcelTotal={parcelTotal}>{addSceneObjects}</Ground>
+					<Ground>{addSceneObjects}</Ground>
 				</Bvh>
 
 				<Drop

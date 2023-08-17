@@ -1,16 +1,20 @@
 import React from 'react'
-import { useThree } from '@react-three/fiber'
+// import { useThree } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
+import { useSnapshot } from 'valtio'
+import { globalState } from './../../GlobalState'
 
 export default function Controls() {
-	const { camera } = useThree()
+		const snap = useSnapshot(globalState)
 
-	camera.filmOffset = -10
+	// const { camera } = useThree()
+
+	// camera.filmOffset = -10
 
 	return (
 		<>
-			<OrbitControls makeDefault maxPolarAngle={Math.PI / 2.05} maxDistance={60} />
-			<PerspectiveCamera makeDefault fov={45} position={[20, 10, -20]} />
+			<OrbitControls makeDefault maxPolarAngle={Math.PI / 2.05} maxDistance={snap.maxDistance} />
+			<PerspectiveCamera makeDefault fov={45} position={[40, 15, 0]} />
 		</>
 	)
 }

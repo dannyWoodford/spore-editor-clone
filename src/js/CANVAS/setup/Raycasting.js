@@ -18,7 +18,7 @@ const Raycasting = ({ selected, prevSelected, initialDragCreate }) => {
 		let raycastList = []
 		scene.traverse((child) => {
 			// Only include "ground" objects or created object
-			if (child.name === 'platform' || child.name === 'platform-base' || child.name === 'boundry-sphere' || child.userData.shape === true) {
+			if (child.name === 'platform' || child.name === 'platform-base' || child.name === 'boundry-sphere' || child.userData.sceneObject === true) {
 				raycastList.push(child)
 			}
 		})

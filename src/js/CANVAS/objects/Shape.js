@@ -40,11 +40,13 @@ export default function Shape({ shape, setSelectedHandler, setTransformSelectedH
 		<mesh
 			ref={mesh}
 			name={name}
-			userData={{ shape: true }}
+			userData={{ sceneObject: true }}
 			onClick={() => setTransformSelectedHandler(mesh.current)}
 			onPointerOver={() => setHovered(true)}
 			onPointerOut={() => setHovered(false)}
-			visible={false}>
+			visible={false}
+			castShadow
+			>
 			<primitive object={allShapes[shape]} />
 			<meshLambertMaterial color={allColors[shape]} />
 		</mesh>

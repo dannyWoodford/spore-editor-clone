@@ -13,7 +13,7 @@ function App() {
 			<ParcelPrompt />
 			<ContentBrowser />
 			<div className='bg-canvas'>
-				<Canvas frameloop='demand'>
+				<Canvas frameloop='demand' shadows>
 					<Scene />
 
 					<AdaptiveDpr pixelated />

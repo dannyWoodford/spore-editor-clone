@@ -4,11 +4,33 @@ import { useThree } from '@react-three/fiber'
 export default function Drop({ sceneObjects, setSceneObjects, selected, setPrevSelected, setInitialDragCreate }) {
 	const { gl } = useThree()
 
+	const createNewObject = (arr) => {
+		let newObj = {
+			name: '',
+			type: '',
+			path: '',
+		}
+
+		arr.forEach((str) => {
+			if (str.startsWith('name=')) {
+				newObj['name'] = str.substring(5)
+			} else if (str.startsWith('type=')) {
+				newObj['type'] = str.substring(5)
+			} else if (str.startsWith('path=')) {
+				newObj['path'] = str.substring(5)
+			}
+		})
+
+		return newObj
+	}
+
 	gl.domElement.addEventListener('dragenter', (e) => {
 		e.preventDefault()
 		setInitialDragCreate(true)
 
-		setSceneObjects([...sceneObjects, e.dataTransfer.types[0]])
+		let objData = createNewObject(e.dataTransfer.types)
+
+		setSceneObjects([...sceneObjects, objData])
 	})
 
 	gl.domElement.addEventListener('dragover', (e) => {
