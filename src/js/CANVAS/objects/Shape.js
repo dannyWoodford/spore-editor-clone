@@ -33,7 +33,9 @@ export default function Shape({ shape, setSelectedHandler, setTransformSelectedH
 		}
 
 		setSelectedHandler(mesh.current)
-	})
+
+		// eslint-disable-next-line
+	}, [])
 
 	return (
 		// Disable visibility initially and set to true in Raycasting.js once mouse position is converted to 3D space
@@ -46,7 +48,7 @@ export default function Shape({ shape, setSelectedHandler, setTransformSelectedH
 			onPointerOut={() => setHovered(false)}
 			visible={false}
 			castShadow
-			>
+			receiveShadow>
 			<primitive object={allShapes[shape]} />
 			<meshLambertMaterial color={allColors[shape]} />
 		</mesh>

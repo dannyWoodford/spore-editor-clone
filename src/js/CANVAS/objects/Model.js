@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { useCursor, Gltf } from '@react-three/drei'
 
-export default function Model({ shape, setSelectedHandler, setTransformSelectedHandler, selected, name, path }) {
+export default function Model({ setSelectedHandler, setTransformSelectedHandler, selected, name, path }) {
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
 
@@ -14,7 +14,9 @@ export default function Model({ shape, setSelectedHandler, setTransformSelectedH
 		}
 
 		setSelectedHandler(mesh.current)
-	})
+
+		// eslint-disable-next-line
+	}, [])
 
 	return (
 		// Disable visibility initially and set to true in Raycasting.js once mouse position is converted to 3D space

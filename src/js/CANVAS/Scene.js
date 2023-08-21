@@ -8,6 +8,7 @@ import { globalState } from './../GlobalState'
 import Loading from './setup/Loading'
 import Controls from './setup/Controls'
 import Background from './setup/Background'
+import Lighting from './setup/Lighting'
 import Drop from './helpers/Drop'
 import Ground from './objects/Ground'
 import Shape from './objects/Shape'
@@ -24,24 +25,25 @@ export default function Scene() {
 	const [sceneObjects, setSceneObjects] = useState([])
 	const [initialDragCreate, setInitialDragCreate] = useState(false)
 
-	useEffect(() => {
-		console.log('%cselected', 'color:red;font-size:12px;', selected)
-	}, [selected])
+	// useEffect(() => {
+	// 	console.log('%cselected', 'color:red;font-size:12px;', selected)
+	// }, [selected])
 
-	useEffect(() => {
-		console.log('%ctransformSelected', 'color:red;font-size:12px;', transformSelected)
-	}, [transformSelected])
+	// useEffect(() => {
+	// 	console.log('%ctransformSelected', 'color:red;font-size:12px;', typeof transformSelected)
+	// }, [transformSelected])
 
-	useEffect(() => {
-		console.log('%cprevSelected', 'color:red;font-size:12px;', prevSelected)
-	}, [prevSelected])
+	// useEffect(() => {
+	// 	console.log('%cprevSelected', 'color:red;font-size:12px;', prevSelected)
+	// }, [prevSelected])
 
-	useEffect(() => {
-		console.log('%csceneObjects', 'color:red;font-size:12px;', sceneObjects)
-	}, [sceneObjects])
+	// useEffect(() => {
+	// 	console.log('%cinitialDragCreate', 'color:red;font-size:12px;', initialDragCreate)
+	// }, [initialDragCreate])
 
-
-
+	// useEffect(() => {
+	// 	console.log('%csceneObjects', 'color:red;font-size:12px;', sceneObjects)
+	// }, [sceneObjects])
 
 	const setSelectedHandler = (mesh) => {
 		setSelected(mesh)
@@ -60,11 +62,9 @@ export default function Scene() {
 
 		return sceneObjects.map((obj, i) => {
 			if (obj) {
-				// console.log('obj', obj)
 				if (obj.type === 'model') {
 					return (
 						<Model
-							shape={obj.name}
 							key={i}
 							name={obj.name + '-' + i}
 							path={obj.path}
@@ -118,8 +118,10 @@ export default function Scene() {
 			<Controls />
 
 			<Suspense fallback={<Loading />}>
+				<Lighting />
+				<Background />
+
 				<Bvh firstHitOnly>
-					<Background />
 					<Ground>{addSceneObjects}</Ground>
 				</Bvh>
 
@@ -131,7 +133,7 @@ export default function Scene() {
 					setInitialDragCreate={setInitialDragCreate}
 				/>
 				<Raycasting selected={selected} prevSelected={prevSelected} initialDragCreate={initialDragCreate} />
-				{transformSelected && <TransformControls object={transformSelected} mode={mode} />}
+				{typeof transformSelected === 'object' && <TransformControls object={transformSelected} mode={mode} />}
 			</Suspense>
 		</>
 	)

@@ -65,8 +65,18 @@
 			justify-content: flex-start;
 			align-content: flex-start;
 
-				&.active {
+			&.active {
 				display: flex;
+			}
+
+			&.--models {
+				.item {
+					img {
+						max-height: 120px;
+						filter: none;
+						pointer-events: none;
+					}
+				}
 			}
 		}
 
@@ -84,10 +94,13 @@
 			border-radius: 15px;
 			color: $color-white;
 
+			h4 {
+				pointer-events: none;
+			}
+
 			img {
 				max-height: 120px;
 				filter: invert(1);
-				user-select: none;
 				pointer-events: none;
 			}
 		}
