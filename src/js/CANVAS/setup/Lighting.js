@@ -31,6 +31,7 @@ export default function Lighting() {
 	// 	intensity: { value: 1, min: 0, max: 20 },
 	// })
 
+	
 	return (
 		<group>
 			{quality === 'low' && <hemisphereLight name='hemisphereLight' skyColor={'blue'} groundColor={'green'} intensity={1} position={[0, 200, 50]} />}
