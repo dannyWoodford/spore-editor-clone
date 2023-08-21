@@ -8,13 +8,15 @@
 		"@testing-library/jest-dom": "^5.17.0",
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
+		"@types/three": "^0.146.0",
 		"breakpoint-sass": "^3.0.0",
 		"leva": "^0.9.35",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-scripts": "^5.0.1",
 		"sass": "^1.64.1",
-		"three": "^0.154.0"
+		"three": "^0.154.0",
+		"valtio": "^1.11.2"
 	},
 	"scripts": {
 		"start": "GENERATE_SOURCEMAP=false react-scripts start",

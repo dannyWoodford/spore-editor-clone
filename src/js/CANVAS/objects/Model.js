@@ -1,30 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
-import { useCursor } from '@react-three/drei'
+import { useCursor, Gltf } from '@react-three/drei'
 
-export default function Shape({ shape, setSelectedHandler, setTransformSelectedHandler, selected, name }) {
+export default function Model({ setSelectedHandler, setTransformSelectedHandler, selected, name, path }) {
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
 
 	const mesh = useRef()
-
-	const allShapes = {
-		box: new THREE.BoxGeometry(.5, .5, .5),
-		sphere: new THREE.SphereGeometry(.5),
-		cone: new THREE.ConeGeometry(.5, .8),
-		cylinder: new THREE.CylinderGeometry(.5, .5, .8),
-		octahedron: new THREE.OctahedronGeometry(.5, 1),
-		icosahedron: new THREE.IcosahedronGeometry(.5, 1),
-	}
-
-	const allColors = {
-		box: 'red',
-		sphere: 'pink',
-		cone: 'green',
-		cylinder: 'yellow',
-		octahedron: 'orange',
-		icosahedron: 'blue',
-	}
 
 	useEffect(() => {
 		if (!mesh.current) return
@@ -40,12 +22,17 @@ export default function Shape({ shape, setSelectedHandler, setTransformSelectedH
 		// add "size" attribute to Object3D so the height can be factored into placement on ground by raycaster
 		mesh.current.size = box3.getSize(size)
 
+		// Fix model origin. In real project this should be done on model side in blender
+		mesh.current.children[0].translateX(-(size.x / 2))
+		mesh.current.children[0].translateY(-(size.y / 2))
+		mesh.current.children[0].translateZ(size.z / 2)
+
 		// eslint-disable-next-line
 	}, [])
 
 	return (
 		// Disable visibility initially and set to true in Raycasting.js once mouse position is converted to 3D space
-		<mesh
+		<group
 			ref={mesh}
 			name={name}
 			userData={{ sceneObject: true }}
@@ -55,8 +42,9 @@ export default function Shape({ shape, setSelectedHandler, setTransformSelectedH
 			visible={false}
 			castShadow
 			receiveShadow>
-			<primitive object={allShapes[shape]} />
-			<meshLambertMaterial color={allColors[shape]} />
-		</mesh>
+			<group name='center-offset' castShadow receiveShadow>
+				<Gltf src={process.env.PUBLIC_URL + path} castShadow receiveShadow />
+			</group>
+		</group>
 	)
 }

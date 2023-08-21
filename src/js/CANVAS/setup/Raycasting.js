@@ -18,7 +18,16 @@ const Raycasting = ({ selected, prevSelected, initialDragCreate }) => {
 		let raycastList = []
 		scene.traverse((child) => {
 			// Only include "ground" objects or created object
-			if (child.name === 'platform' || child.name === 'platform-base' || child.name === 'boundry-sphere' || child.userData.shape === true) {
+
+			// Explanation of (child.userData.sceneObject === true && child.name !== selected.name)
+			// "child.userData.sceneObject === true" allows you to stack sceneObjects
+			// and "child.name !== selected.name" makes sure raycaster doesn't hit the current selected object and cause an infinite climb
+			if (
+				child.name === 'platform' ||
+				child.name === 'platform-base' ||
+				child.name === 'boundary-sphere' ||
+				(child.userData.sceneObject === true && child.name !== selected.name)
+			) {
 				raycastList.push(child)
 			}
 		})
@@ -41,9 +50,11 @@ const Raycasting = ({ selected, prevSelected, initialDragCreate }) => {
 			if (prevSelected === selected.name) return
 
 			if (intersects[0].object.name === selected.name && intersects.length > 1) {
-				selected.position.set(intersects[1].point.x, intersects[1].point.y, intersects[1].point.z)
+				// add "selected.size.y / 2" to "intersects[1].point.y" to make sure bottom of object is place on ground
+				selected.position.set(intersects[1].point.x, intersects[1].point.y + selected.size.y / 2, intersects[1].point.z)
 			} else {
-				selected.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z)
+				// add "selected.size.y / 2" to "intersects[1].point.y" to make sure bottom of object is place on ground
+				selected.position.set(intersects[0].point.x, intersects[0].point.y + selected.size.y / 2, intersects[0].point.z)
 			}
 
 			// Object Visibility

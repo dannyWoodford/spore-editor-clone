@@ -5,13 +5,15 @@ import { Stats, AdaptiveDpr, AdaptiveEvents } from '@react-three/drei'
 
 import Scene from './CANVAS/Scene'
 import ContentBrowser from './DOM/ContentBrowser'
+import ParcelPrompt from './DOM/ParcelPrompt'
 
 function App() {
 	return (
 		<div className='App'>
+			<ParcelPrompt />
 			<ContentBrowser />
 			<div className='bg-canvas'>
-				<Canvas frameloop='demand'>
+				<Canvas frameloop='demand' shadows>
 					<Scene />
 
 					<AdaptiveDpr pixelated />
