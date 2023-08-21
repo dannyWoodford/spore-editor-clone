@@ -13,8 +13,8 @@ export default function Lighting() {
 			value: 'high',
 			options: ['high', 'medium', 'low'],
 			onChange: () => {
+				// force update because of "on demand" rendering style
 				invalidate()
-				console.log('fire 3')
 			},
 			transient: false,
 		},
@@ -44,9 +44,9 @@ export default function Lighting() {
 			)}
 			{quality === 'high' && (
 				<group>
-					<SoftShadows size={73} focus={1.24} samples={12} />
+					<SoftShadows size={53} focus={1.14} samples={14} />
 					<directionalLight position={[12, 35, -22]} intensity={0.3} />
-					<spotLight position={[120, 40, 85]} intensity={0.8} angle={0.1} penumbra={1} castShadow shadow-mapSize={[1024, 1024]} shadow-bias={-0.000001} />
+					<spotLight position={[120, 40, 85]} intensity={0.8} angle={0.12} penumbra={1} castShadow shadow-mapSize={[1024, 1024]} shadow-bias={-0.000001} />
 				</group>
 			)}
 		</group>
