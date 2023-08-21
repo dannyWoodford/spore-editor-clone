@@ -9,12 +9,12 @@ export default function Shape({ shape, setSelectedHandler, setTransformSelectedH
 	const mesh = useRef()
 
 	const allShapes = {
-		box: new THREE.BoxGeometry(2, 2, 2),
-		sphere: new THREE.SphereGeometry(2),
-		cone: new THREE.ConeGeometry(2, 3),
-		cylinder: new THREE.CylinderGeometry(2, 2, 3),
-		octahedron: new THREE.OctahedronGeometry(2, 1),
-		icosahedron: new THREE.IcosahedronGeometry(2, 1),
+		box: new THREE.BoxGeometry(.5, .5, .5),
+		sphere: new THREE.SphereGeometry(.5),
+		cone: new THREE.ConeGeometry(.5, .8),
+		cylinder: new THREE.CylinderGeometry(.5, .5, .8),
+		octahedron: new THREE.OctahedronGeometry(.5, 1),
+		icosahedron: new THREE.IcosahedronGeometry(.5, 1),
 	}
 
 	const allColors = {
@@ -33,6 +33,12 @@ export default function Shape({ shape, setSelectedHandler, setTransformSelectedH
 		}
 
 		setSelectedHandler(mesh.current)
+
+		let box3 = new THREE.Box3().setFromObject(mesh.current)
+		let size = new THREE.Vector3()
+
+		// add "size" attribute to Object3D so the height can be factored into placement on ground by raycaster
+		mesh.current.size = box3.getSize(size)
 
 		// eslint-disable-next-line
 	}, [])

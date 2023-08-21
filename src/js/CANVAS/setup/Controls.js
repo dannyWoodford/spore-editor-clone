@@ -5,7 +5,7 @@ import { useSnapshot } from 'valtio'
 import { globalState } from './../../GlobalState'
 
 export default function Controls() {
-		const snap = useSnapshot(globalState)
+	const snap = useSnapshot(globalState)
 
 	// const { camera } = useThree()
 

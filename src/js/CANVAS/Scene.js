@@ -1,7 +1,6 @@
 import React, { Suspense, useState, useMemo, useEffect } from 'react'
 import { useThree } from '@react-three/fiber'
-import { TransformControls, Bvh } from '@react-three/drei'
-import { useControls } from 'leva'
+import { Bvh } from '@react-three/drei'
 import { useSnapshot } from 'valtio'
 import { globalState } from './../GlobalState'
 
@@ -14,6 +13,7 @@ import Ground from './objects/Ground'
 import Shape from './objects/Shape'
 import Model from './objects/Model'
 import Raycasting from './setup/Raycasting'
+import { PivotControls } from './objects/pivotControls/index'
 
 export default function Scene() {
 	const { invalidate } = useThree()
@@ -24,26 +24,6 @@ export default function Scene() {
 	const [prevSelected, setPrevSelected] = useState('')
 	const [sceneObjects, setSceneObjects] = useState([])
 	const [initialDragCreate, setInitialDragCreate] = useState(false)
-
-	// useEffect(() => {
-	// 	console.log('%cselected', 'color:red;font-size:12px;', selected)
-	// }, [selected])
-
-	// useEffect(() => {
-	// 	console.log('%ctransformSelected', 'color:red;font-size:12px;', typeof transformSelected)
-	// }, [transformSelected])
-
-	// useEffect(() => {
-	// 	console.log('%cprevSelected', 'color:red;font-size:12px;', prevSelected)
-	// }, [prevSelected])
-
-	// useEffect(() => {
-	// 	console.log('%cinitialDragCreate', 'color:red;font-size:12px;', initialDragCreate)
-	// }, [initialDragCreate])
-
-	// useEffect(() => {
-	// 	console.log('%csceneObjects', 'color:red;font-size:12px;', sceneObjects)
-	// }, [sceneObjects])
 
 	const setSelectedHandler = (mesh) => {
 		setSelected(mesh)
@@ -95,13 +75,6 @@ export default function Scene() {
 		// eslint-disable-next-line
 	}, [sceneObjects])
 
-	const { mode } = useControls('Transforms', {
-		mode: {
-			value: 'translate',
-			options: ['translate', 'rotate'],
-		},
-	})
-
 	useEffect(() => {
 		let levaControls = document.querySelector('#leva__root')
 		levaControls.style.display = 'none'
@@ -119,9 +92,9 @@ export default function Scene() {
 
 			<Suspense fallback={<Loading />}>
 				<Lighting />
-				<Background />
 
 				<Bvh firstHitOnly>
+					<Background />
 					<Ground>{addSceneObjects}</Ground>
 				</Bvh>
 
@@ -133,7 +106,15 @@ export default function Scene() {
 					setInitialDragCreate={setInitialDragCreate}
 				/>
 				<Raycasting selected={selected} prevSelected={prevSelected} initialDragCreate={initialDragCreate} />
-				{typeof transformSelected === 'object' && <TransformControls object={transformSelected} mode={mode} />}
+				<PivotControls
+					object={typeof transformSelected === 'object' ? transformSelected : undefined}
+					visible={typeof transformSelected === 'object'}
+					depthTest={false}
+					lineWidth={2}
+					scale={1.5}
+					anchor={typeof transformSelected === 'object' ? [0, -transformSelected.size.y / 2, 0] : [0, 0, 0]}
+					// anchor={typeof transformSelected === 'object' ? [-transformSelected.size.x / 2, -transformSelected.size.y / 2, -transformSelected.size.z / 2] : [0, 0, 0]}
+				/>
 			</Suspense>
 		</>
 	)

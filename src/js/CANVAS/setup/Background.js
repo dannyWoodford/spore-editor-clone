@@ -7,7 +7,7 @@ import { globalState } from './../../GlobalState'
 export default function Background() {
 	const snap = useSnapshot(globalState)
 
-	const [enivironment] = useTexture([process.env.PUBLIC_URL + '/textures/FS002_Night.png'])
+	const [nightSky] = useTexture([process.env.PUBLIC_URL + '/textures/FS002_Night.png'])
 
 	return (
 		<>
@@ -26,8 +26,8 @@ export default function Background() {
 				infiniteGrid={true}
 			/>
 
-			<Sphere args={[snap.maxDistance]} position={[0, 0, 0]} name='boundry-sphere'>
-				<meshBasicMaterial side={THREE.BackSide} map={enivironment} />
+			<Sphere args={[snap.maxDistance]} position={[0, 0, 0]} name='boundary-sphere'>
+				<meshBasicMaterial side={THREE.BackSide} map={nightSky} />
 			</Sphere>
 		</>
 	)
