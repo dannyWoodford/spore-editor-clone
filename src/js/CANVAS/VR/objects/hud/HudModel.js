@@ -1,9 +1,16 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react'
-import { Gltf } from '@react-three/drei'
+import { Gltf, Sphere } from '@react-three/drei'
 import * as THREE from 'three'
 import { useThree, useFrame } from '@react-three/fiber'
+import { Interactive } from '@react-three/xr'
 
-export default function Model({ name, path, type, sceneObjects, setSceneObjects }) {
+import { useGlobalState } from '../../../../GlobalState'
+
+export default function HudModel({ name, path, type }) {
+	const sceneObjects = useGlobalState((state) => state.sceneObjects)
+	const setSceneObjects = useGlobalState((state) => state.setSceneObjects)
+
+
 	const { scene } = useThree()
 
 	const [test, setTest] = useState(false)
@@ -92,21 +99,45 @@ export default function Model({ name, path, type, sceneObjects, setSceneObjects 
 	// 	setTest(false)
 	// }
 
-	return (
-		<group
-			ref={mesh}
-			name={name}
-			// userData={{ sceneObject: true }}
-			rotation={[0, Math.PI / 2, 0]}
-			castShadow
-			receiveShadow>
-			<group name='center-offset' castShadow receiveShadow>
-				<Gltf src={process.env.PUBLIC_URL + path} 
-				// scale={[0.04, 0.04, 0.04]} 
-				castShadow receiveShadow 
+	const selectStartHandler = () => {
+		let objData = {
+			name: name,
+			type: type,
+			path: path,
+		}
 
-				/>
+		// console.log('objData', objData)
+		// console.log('setSceneObjects', [...sceneObjects, objData])
+
+		setSceneObjects([...sceneObjects, objData])
+
+		setTest(true)
+	}
+
+	const selectEndHandler = () => {
+		setTest(false)
+	}
+
+	return (
+		<Interactive
+			// ref={groupRef}
+			onSelectStart={() => selectStartHandler()}
+			onSelectEnd={() => selectEndHandler()}>
+
+			<Sphere args={[1]} position={[0, 0.1, 0]} scale={[0.01, 0.01, 0.01]}>
+				<meshBasicMaterial color={test ? 'red' : 'white'} />
+			</Sphere>
+
+			<group
+				ref={mesh}
+				// userData={{ sceneObject: true }}
+				rotation={[0, Math.PI / 2, 0]}
+				castShadow
+				receiveShadow>
+				<group name='center-offset' castShadow receiveShadow>
+					<Gltf src={process.env.PUBLIC_URL + path} scale={[0.04, 0.04, 0.04]} castShadow receiveShadow />
+				</group>
 			</group>
-		</group>
+		</Interactive>
 	)
 }

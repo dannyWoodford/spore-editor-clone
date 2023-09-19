@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import '../css/main.scss'
 import { VRButton, XR } from '@react-three/xr'
 import { Canvas } from '@react-three/fiber'
 import { Stats, AdaptiveDpr, AdaptiveEvents } from '@react-three/drei'
 
-import { useSnapshot } from 'valtio'
-import { globalState } from './GlobalState'
+import { useGlobalState } from './GlobalState'
 
+import Loading from './CANVAS/setup/Loading'
 import Scene from './CANVAS/Scene'
 import ContentBrowser from './DOM/ContentBrowser'
 import ParcelPrompt from './DOM/ParcelPrompt'
@@ -14,20 +14,24 @@ import ParcelPrompt from './DOM/ParcelPrompt'
 import VRScene from './CANVAS/VR/VRScene'
 
 export default function App() {
-	const snap = useSnapshot(globalState)
+	const initialPrompt = useGlobalState((state) => state.intro.initialPrompt)
+	const vrEnabled = useGlobalState((state) => state.vr.enabled)
+	const setVrEnabled = useGlobalState((state) => state.vr.setEnabled)
 
 	return (
 		<div className='App'>
 			<ParcelPrompt />
 			<ContentBrowser />
-			{snap.intro.initialPrompt && <VRButton />}
+			{initialPrompt && <VRButton />}
 			<div className='bg-canvas'>
 				<Canvas frameloop='demand' shadows>
-					<XR onSessionStart={() => (globalState.vr.enabled = true)} onSessionEnd={() => (globalState.vr.enabled = false)}>
-						{snap.vr.enabled && <VRScene />}
-					</XR>
+					<Suspense fallback={<Loading />}>
+						<XR onSessionStart={() => (setVrEnabled(true))} onSessionEnd={() => (setVrEnabled(false))}>
+							{vrEnabled && <VRScene />}
+						</XR>
 
-					{!snap.vr.enabled && <Scene />}
+						{!vrEnabled && <Scene />}
+					</Suspense>
 
 					<AdaptiveDpr pixelated />
 					<AdaptiveEvents />

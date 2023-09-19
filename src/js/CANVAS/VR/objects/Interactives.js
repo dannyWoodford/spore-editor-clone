@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Interactive, RayGrab } from '@react-three/xr'
-import { Text, Box } from '@react-three/drei'
+import { Text, Box, Gltf } from '@react-three/drei'
 
-import Model2 from './Model2'
+import Model from './hud/HudModel'
 
 const Interactives = () => {
 	const [hover, setHover] = useState(false)
@@ -24,11 +24,19 @@ const Interactives = () => {
 
 			<RayGrab>
 				<Box position={[1, 3, -10]} args={[1, 1, 1]}>
-					<meshBasicMaterial color='red' />
+					<meshBasicMaterial color='blue' />
 				</Box>
 			</RayGrab>
 
-			<Model2 position={[1, 3, -60]} path={'/content-browser/models/Banner_01.glb'} />
+			{/* <RayGrab>
+				<Gltf position={[1, 2, -5]} src={process.env.PUBLIC_URL + '/content-browser/models/Banner_01.glb'} castShadow receiveShadow />
+			</RayGrab> */}
+
+			{/* <Model2 position={[1, 3, -6]} path={'/content-browser/models/Banner_01.glb'} /> */}
+			{/* <Box position={[0, 1, 0]} args={[1, 1, 1]}>
+				<meshBasicMaterial color='red' />
+			</Box> */}
+			<Model path={'/content-browser/models/Banner_01.glb'} />
 		</group>
 	)
 }

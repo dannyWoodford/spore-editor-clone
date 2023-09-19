@@ -20,7 +20,7 @@
 		"sass": "^1.64.1",
 		"three": "^0.154.0",
 		"three-mesh-ui": "^6.5.4",
-		"valtio": "^1.11.2"
+		"zustand": "^4.4.1"
 	},
 	"scripts": {
 		"start": "GENERATE_SOURCEMAP=false export HTTPS=true&&SSL_CRT_FILE=cert.pem&&SSL_KEY_FILE=key.pem react-scripts start",

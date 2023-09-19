@@ -6,7 +6,7 @@ import { useFrame } from '@react-three/fiber'
 
 import Panel from './hud/Panel'
 
-const HUD = () => {
+export default function HUD() {
 	const [showHUD, setShowHUD] = useState(false)
 	const leftController = useController('left')
 	const [ref, api] = useBox(() => ({ type: 'Kinematic', args: [0.17, 0.05, 0.175] }))
@@ -31,7 +31,6 @@ const HUD = () => {
 		// api.rotation.set(-Math.PI / 8, 0, 0)
 	})
 
-
 	const showHUDHandler = useCallback((bol) => setShowHUD(bol), [])
 
 	useXREvent('squeezestart', () => showHUDHandler(true), { handedness: 'left' })
@@ -48,5 +47,3 @@ const HUD = () => {
 		</mesh>
 	)
 }
-
-export default HUD

@@ -2,11 +2,13 @@ import React, { useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
 import { useCursor, Gltf } from '@react-three/drei'
 
+
 export default function Model({ setSelectedHandler, setTransformSelectedHandler, selected, name, path }) {
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
 
 	const mesh = useRef()
+	const model = useRef()
 
 	useEffect(() => {
 		if (!mesh.current) return
@@ -39,11 +41,9 @@ export default function Model({ setSelectedHandler, setTransformSelectedHandler,
 			onClick={() => setTransformSelectedHandler(mesh.current)}
 			onPointerOver={() => setHovered(true)}
 			onPointerOut={() => setHovered(false)}
-			visible={false}
-			castShadow
-			receiveShadow>
-			<group name='center-offset' castShadow receiveShadow>
-				<Gltf src={process.env.PUBLIC_URL + path} castShadow receiveShadow />
+			visible={false}>
+			<group name='center-offset'>
+				<Gltf ref={model} src={process.env.PUBLIC_URL + path} castShadow receiveShadow />
 			</group>
 		</group>
 	)

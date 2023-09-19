@@ -1,8 +1,14 @@
-import { proxy } from 'valtio'
+import { create } from 'zustand'
 
-export const globalState = proxy({
-	intro: { initialPrompt: false, parcelTotal: 3 },
-	maxDistance: 100,
-	vr: { enabled: false },
-	// scene: { selected: '', transformSelected: '', prevSelected: '', initialDragCreate: false },
-})
+export const useGlobalState = create((set) => ({
+	intro: {
+		maxDistance: 60,
+		initialPrompt: false,
+		parcelTotal: 3,
+		setInitialPrompt: () => set((state) => ({ intro: { ...state.intro, initialPrompt: true } })),
+		changeParcelTotal: (num) => set((state) => ({ intro: { ...state.intro, parcelTotal: num } })),
+	},
+	sceneObjects: [],
+	setSceneObjects: (arr) => set(() => ({ sceneObjects: arr })),
+	vr: { enabled: false, setEnabled: (bol) => set((state) => ({ vr: { ...state.vr, enabled: bol } })) },
+}))

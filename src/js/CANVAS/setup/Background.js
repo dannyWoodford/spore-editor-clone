@@ -1,11 +1,10 @@
 import React from 'react'
 import { Sphere, useTexture, Grid } from '@react-three/drei'
 import * as THREE from 'three'
-import { useSnapshot } from 'valtio'
-import { globalState } from './../../GlobalState'
+import { useGlobalState } from './../../GlobalState'
 
 export default function Background() {
-	const snap = useSnapshot(globalState)
+	const maxDistance = useGlobalState((state) => state.intro.maxDistance)
 
 	const [nightSky] = useTexture([process.env.PUBLIC_URL + '/textures/FS002_Night.png'])
 
@@ -26,7 +25,7 @@ export default function Background() {
 				infiniteGrid={true}
 			/>
 
-			<Sphere args={[snap.maxDistance]} position={[0, 0, 0]} name='boundary-sphere'>
+			<Sphere args={[maxDistance]} position={[0, 0, 0]} name='boundary-sphere'>
 				<meshBasicMaterial side={THREE.BackSide} map={nightSky} />
 			</Sphere>
 		</>

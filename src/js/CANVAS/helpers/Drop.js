@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react'
 import { useThree } from '@react-three/fiber'
+import { useGlobalState } from '../../GlobalState'
 
-export default function Drop({ sceneObjects, setSceneObjects, selected, setPrevSelected, setInitialDragCreate }) {
+export default function Drop({ selected, setPrevSelected, setInitialDragCreate }) {
+	const sceneObjects = useGlobalState((state) => state.sceneObjects)
+	const setSceneObjects = useGlobalState((state) => state.setSceneObjects)
+
 	const { gl } = useThree()
 
 	const createNewObject = (arr) => {

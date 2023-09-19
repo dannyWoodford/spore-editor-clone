@@ -1,8 +1,7 @@
 import React, { Suspense, useState, useMemo, useEffect } from 'react'
 import { useThree } from '@react-three/fiber'
 import { Bvh } from '@react-three/drei'
-import { useSnapshot } from 'valtio'
-import { globalState } from './../GlobalState'
+import { useGlobalState } from './../GlobalState'
 
 import Loading from './setup/Loading'
 import Controls from './setup/Controls'
@@ -17,12 +16,12 @@ import { PivotControls } from './objects/pivotControls/index'
 
 export default function Scene() {
 	const { invalidate } = useThree()
-	const snap = useSnapshot(globalState)
+	const initialPrompt = useGlobalState((state) => state.intro.initialPrompt)
+	const sceneObjects = useGlobalState((state) => state.sceneObjects)
 
 	const [selected, setSelected] = useState('')
 	const [transformSelected, setTransformSelected] = useState('')
 	const [prevSelected, setPrevSelected] = useState('')
-	const [sceneObjects, setSceneObjects] = useState([])
 	const [initialDragCreate, setInitialDragCreate] = useState(false)
 
 	const setSelectedHandler = (mesh) => {
@@ -44,14 +43,17 @@ export default function Scene() {
 			if (obj) {
 				if (obj.type === 'model') {
 					return (
-						<Model
-							key={i}
-							name={obj.name + '-' + i}
-							path={obj.path}
-							setSelectedHandler={setSelectedHandler}
-							setTransformSelectedHandler={setTransformSelectedHandler}
-							selected={selected}
-						/>
+						<group key={i}>
+							<Suspense fallback={<Loading />}>
+								<Model
+									name={obj.name + '-' + i}
+									path={obj.path}
+									setSelectedHandler={setSelectedHandler}
+									setTransformSelectedHandler={setTransformSelectedHandler}
+									selected={selected}
+								/>
+							</Suspense>
+						</group>
 					)
 				} else if (obj.type === 'shape') {
 					return (
@@ -79,12 +81,12 @@ export default function Scene() {
 		let levaControls = document.querySelector('#leva__root')
 		levaControls.style.display = 'none'
 
-		if (snap.intro.initialPrompt) {
+		if (initialPrompt) {
 			levaControls.style.display = 'block'
 		} else {
 			levaControls.style.display = 'none'
 		}
-	}, [snap.intro.initialPrompt])
+	}, [initialPrompt])
 
 	return (
 		<>
@@ -98,13 +100,7 @@ export default function Scene() {
 					<Ground>{addSceneObjects}</Ground>
 				</Bvh>
 
-				<Drop
-					selected={selected}
-					setPrevSelected={setPrevSelected}
-					sceneObjects={sceneObjects}
-					setSceneObjects={setSceneObjects}
-					setInitialDragCreate={setInitialDragCreate}
-				/>
+				<Drop selected={selected} setPrevSelected={setPrevSelected} setInitialDragCreate={setInitialDragCreate} />
 				<Raycasting selected={selected} prevSelected={prevSelected} initialDragCreate={initialDragCreate} />
 				<PivotControls
 					object={typeof transformSelected === 'object' ? transformSelected : undefined}

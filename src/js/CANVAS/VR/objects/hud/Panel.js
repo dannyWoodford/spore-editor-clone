@@ -3,7 +3,7 @@ import * as THREE from 'three'
 import { extend, useFrame } from '@react-three/fiber'
 import ThreeMeshUI from 'three-mesh-ui'
 
-import Model from '../Model'
+import HudModel from './HudModel'
 
 extend(ThreeMeshUI)
 
@@ -46,7 +46,7 @@ export default function Panel() {
 						},
 					]}>
 					<text content={`${obj[1].displayName}`} />
-					<Model path={obj[1].path} />
+					<HudModel name={`${obj[1].displayName}`} path={obj[1].path} type={'model'} />
 				</block>
 			)
 		})

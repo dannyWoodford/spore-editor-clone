@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { globalState } from './../GlobalState'
-import { useSnapshot } from 'valtio'
+import { useGlobalState } from './../GlobalState'
 
 const ContentBrowser = () => {
-	const snap = useSnapshot(globalState)
+	const initialPrompt = useGlobalState((state) => state.intro.initialPrompt)
+
 	const [active, setActive] = useState('Models')
 
 	const images = {}
@@ -36,7 +36,7 @@ const ContentBrowser = () => {
 	}
 
 	return (
-		<div className={`content-browser ${snap.intro.initialPrompt ? 'show' : ''}`}>
+		<div className={`content-browser ${initialPrompt ? 'show' : ''}`}>
 			<div className='top-bar'>
 				<div className={`tab ${active === 'Models' ? 'active' : ''}`} onClick={() => setActive('Models')}>
 					<h2 className='tab-name'>Models</h2>
