@@ -13,6 +13,10 @@ import ParcelPrompt from './DOM/ParcelPrompt'
 
 import VRScene from './CANVAS/VR/VRScene'
 
+import Controls from './CANVAS/setup/Controls'
+import Background from './CANVAS/setup/Background'
+import Lighting from './CANVAS/setup/Lighting'
+
 export default function App() {
 	const initialPrompt = useGlobalState((state) => state.intro.initialPrompt)
 	const vrEnabled = useGlobalState((state) => state.vr.enabled)
@@ -26,7 +30,11 @@ export default function App() {
 			<div className='bg-canvas'>
 				<Canvas frameloop='demand' shadows>
 					<Suspense fallback={<Loading />}>
-						<XR onSessionStart={() => (setVrEnabled(true))} onSessionEnd={() => (setVrEnabled(false))}>
+						<Controls />
+						<Background />
+						<Lighting />
+
+						<XR onSessionStart={() => setVrEnabled(true)} onSessionEnd={() => setVrEnabled(false)}>
 							{vrEnabled && <VRScene />}
 						</XR>
 

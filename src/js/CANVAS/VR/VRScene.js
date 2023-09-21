@@ -1,26 +1,18 @@
-import React, { useEffect, Suspense, useMemo } from 'react'
-import { Controllers, Hands, useXR, TeleportationPlane } from '@react-three/xr'
-import { Physics } from '@react-three/cannon'
+import React, { useEffect, useMemo } from 'react'
+import { Controllers, Hands } from '@react-three/xr'
+import * as THREE from 'three'
+
 import { useGlobalState } from '../../GlobalState'
 
-import Loading from '../setup/Loading'
-import Lighting from '../setup/Lighting'
-import Background from '../setup/Background'
-import Ground from './objects/Ground'
+import Ground from '../objects/Ground'
 import Interactives from './objects/Interactives'
-import HUD from './objects/HUD'
+import HUD from './hud/HUD'
 import Model from './objects/Model'
+import MovementController from './controls/MovementController'
+import TeleportTravel from './controls/TeleportTravel'
 
 export default function VRScene() {
 	const sceneObjects = useGlobalState((state) => state.sceneObjects)
-
-	// const player = useXR((state) => state)
-
-	// useEffect(() => {
-	// 	if (player) {
-	// 		console.log('player', player)
-	// 	}
-	// }, [player])
 
 	useEffect(() => {
 		if (sceneObjects) {
@@ -34,14 +26,8 @@ export default function VRScene() {
 		return sceneObjects.map((obj, i) => {
 			if (obj) {
 				if (obj.type === 'model') {
-					return (
-						<Model
-							key={i}
-							name={obj.name + '-' + i}
-							path={obj.path}
-						/>
-					)
-				} 
+					return <Model key={i} name={obj.name + '-' + i} path={obj.path} />
+				}
 				// else if (obj.type === 'shape') {
 				// 	return (
 				// 		<Shape
@@ -53,7 +39,7 @@ export default function VRScene() {
 				// 			selected={selected}
 				// 		/>
 				// 	)
-				// } 
+				// }
 				else {
 					return null
 				}
@@ -66,45 +52,21 @@ export default function VRScene() {
 	}, [sceneObjects])
 
 	return (
-		<>
-			<Physics
-				iterations={20}
-				tolerance={0.0001}
-				defaultContactMaterial={{
-					friction: 0.9,
-					restitution: 0.7,
-					contactEquationStiffness: 1e7,
-					contactEquationRelaxation: 1,
-					frictionEquationStiffness: 1e7,
-					frictionEquationRelaxation: 2,
-				}}
-				gravity={[0, -4, 0]}
-				allowSleep={false}
-				// Adjust to the headset refresh rate
-				step={1 / 90}>
-				<Controllers />
-				<Hands />
+		<group name='vr-scene'>
+			<Controllers />
+			<Hands />
 
-				<Suspense fallback={<Loading />}>
-					<Lighting />
+			<MovementController />
+			<MovementController hand='left' applyRotation={false} applyHorizontal={true} />
+			<HUD />
 
-					<Background />
-					<Ground>{addSceneObjects}</Ground>
-					{/* <Interactives /> */}
-					<HUD />
-				</Suspense>
+			<Ground>{addSceneObjects}</Ground>
 
-				<TeleportationPlane
-					/** Whether to allow teleportation from left controller. Default is `false` */
-					leftHand={true}
-					/** Whether to allow teleportation from right controller. Default is `false` */
-					rightHand={false}
-					/** The maximum distance from the camera to the teleportation point. Default is `10` */
-					maxDistance={30}
-					/** The radial size of the teleportation marker. Default is `0.25` */
-					size={0.25}
-				/>
-			</Physics>
-		</>
+			{/* <TeleportTravel useNormal={true}>
+				<Ground>{addSceneObjects}</Ground>
+			</TeleportTravel> */}
+
+			{/* <Interactives /> */}
+		</group>
 	)
 }

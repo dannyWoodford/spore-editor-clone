@@ -1,15 +1,13 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { Gltf } from '@react-three/drei'
 import * as THREE from 'three'
-import { useThree, useFrame } from '@react-three/fiber'
+import { useXR } from '@react-three/xr'
+import { useFrame, useThree } from '@react-three/fiber'
 
-export default function Model({ name, path, type, sceneObjects, setSceneObjects }) {
-	const { scene } = useThree()
-
-	const [test, setTest] = useState(false)
+export default function Model({ name, path, useNormal = true }) {
+	const { scene} = useThree()
 
 	const mesh = useRef()
-	const helper = useRef()
 
 	useEffect(() => {
 		if (!mesh.current) return
@@ -24,87 +22,93 @@ export default function Model({ name, path, type, sceneObjects, setSceneObjects 
 		mesh.current.children[0].translateX(-(size.x / 4))
 		mesh.current.children[0].translateY(-(size.y / 2))
 		mesh.current.children[0].translateZ(size.x / 2)
-		// mesh.current.children[0].translateZ(5)
-
-		// helper.current = new THREE.Box3Helper(box3, 0xffff00)
-
-		// scene.add(helper.current)
-
-		// const meshWorldPos = new THREE.Vector3(0, 0, 0)
-		// mesh.current.children[0].getWorldPosition(meshWorldPos)
-
-		// const helperWorldPos = new THREE.Vector3(0, 0, 0)
-		// helper.current.getWorldPosition(helperWorldPos)
-
-		// console.log('center-offset', mesh.current.children[0])
-		// console.log('meshWorldPos', meshWorldPos)
-		// console.log('helper', helper.current)
-		// console.log('helperWorldPos', helperWorldPos)
-
-		// console.log('size', size)
-		// console.log('mesh.current.children[0]', mesh.current.children[0])
-
 		// eslint-disable-next-line
 	}, [])
 
-	// useFrame(() => {
-	// 	// helper.position.set(meshWorldPos)
-	// 	helper.current.updateMatrixWorld(true)
+	// ------ Raycasting ---------------------------------------------------------------------------------------------------------------------------------------
+	const rayCasterObjects = () => {
+		let raycastList = []
+		scene.traverse((child) => {
+			// Only include "ground" objects or created object
 
-	// 	// console.log('helper', helper.current)
+			// Explanation of (child.userData.sceneObject === true && child.name !== selected.name)
+			// "child.userData.sceneObject === true" allows you to stack sceneObjects
+			// and "child.name !== selected.name" makes sure raycaster doesn't hit the current selected object and cause an infinite climb
+			if (
+				child.name === 'platform' ||
+				child.name === 'platform-base' ||
+				child.name === 'boundary-sphere' ||
+				child.userData.sceneObject === true 
+				// || 
+				// (child.userData.sceneObject === true && child.name !== name)
+			) {
+				// console.log('child', child)
+				raycastList.push(child)
+			}
+		})
 
-	// })
+		// console.log('raycastList', raycastList)
 
-	// 	const groupRef = useRef()
-	// 	const grabbingController = useRef()
-	// 	const previousTransform = useMemo(() => new THREE.Matrix4(), [])
+		return raycastList
+	}
 
-	// useFrame(() => {
-	// 	const controller = grabbingController.current
-	// 	const group = groupRef.current
-	// 	if (!controller) return
 
-	// 	// group.removeFromParent()
+	// ------ Drag ---------------------------------------------------------------------------------------------------------------------------------------
+	const ray = useRef(new THREE.Raycaster())
 
-	// 	group.applyMatrix4(previousTransform)
-	// 	group.applyMatrix4(controller.matrixWorld)
-	// 	group.updateMatrixWorld({force: true})
+	const rayDir = useRef({
+		pos: new THREE.Vector3(),
+		dir: new THREE.Vector3(),
+	})
 
-	// 	console.log('controller', controller)
-	// 	console.log('controller.matrixWorld', controller.matrixWorld)
-	// 	console.log('group', group)
-	// 	console.log('previousTransform', previousTransform)
+	const { controllers } = useXR()
 
-	// 	previousTransform.copy(controller.matrixWorld).invert()
-	// })
+	useFrame(() => {
+		if (controllers.length > 0 && ray.current && mesh.current) {
+			// console.log('controllers', controllers)
 
-	// const selectStartHandler = (e) => {
-	// 	grabbingController.current = e.target.controller
-	// 	previousTransform.copy(e.target.controller.matrixWorld).invert()
-	// 	setTest(true)
-	// }
+			controllers[1].controller.getWorldDirection(rayDir.current.dir)
+			controllers[1].controller.getWorldPosition(rayDir.current.pos)
+			rayDir.current.dir.multiplyScalar(-1)
+			ray.current.set(rayDir.current.pos, rayDir.current.dir)
 
-	// const selectEndHandler = (e) => {
-	// 	if (e.target.controller === grabbingController.current) {
-	// 		grabbingController.current = undefined
-	// 	}
+			const intersects = ray.current.intersectObjects(rayCasterObjects())
 
-	// 	setTest(false)
-	// }
+			// console.log('intersects 111', intersects)
+
+			if (intersects.length > 0) {
+				if (useNormal) {
+					const p = intersects[0].point
+
+					mesh.current.position.set(0, 0, 0)
+
+					const n = intersects[0].face.normal.clone()
+					n.transformDirection(intersects[0].object.matrixWorld)
+
+					mesh.current.lookAt(n)
+					mesh.current.rotateOnAxis(new THREE.Vector3(1, 0, 0), Math.PI / 2)
+					mesh.current.position.copy(p)
+				} else {
+					mesh.current.position.copy(intersects[0].point)
+				}
+			}
+		}
+	})
 
 	return (
 		<group
 			ref={mesh}
 			name={name}
-			// userData={{ sceneObject: true }}
+			userData={{ sceneObject: true }}
 			rotation={[0, Math.PI / 2, 0]}
 			castShadow
 			receiveShadow>
 			<group name='center-offset' castShadow receiveShadow>
-				<Gltf src={process.env.PUBLIC_URL + path} 
-				// scale={[0.04, 0.04, 0.04]} 
-				castShadow receiveShadow 
-
+				<Gltf
+					src={process.env.PUBLIC_URL + path}
+					// scale={[0.04, 0.04, 0.04]}
+					castShadow
+					receiveShadow
 				/>
 			</group>
 		</group>

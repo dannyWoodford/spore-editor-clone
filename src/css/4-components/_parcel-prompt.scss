@@ -8,26 +8,27 @@
 	background: #00000099;
 	z-index: $z-Index-prompt;
 	opacity: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	&.hide-prompt {
-		transition: opacity 1.0s ease-in-out;
+		transition: opacity 0.4s ease-in-out;
 		opacity: 0;
 		pointer-events: none;
 
 		.parcel-prompt {
 			transition: transform 0.5s ease-in-out;
-			transform: translateX(-400px);
+			transform: translateY(-400px);
 		}
 	}
 }
 
 .parcel-prompt {
-	position: absolute;
-	top: 20%;
-	left: 0;
-	height: 684px;
+	position: relative;
+	// height: 684px;
 	width: 402px;
-	border-radius: 0 16px 16px 0;
+	border-radius: 16px;
 	background: $color-bg-atlas-blue;
 	color: $color-white;
 	display: flex;
@@ -36,11 +37,7 @@
 	text-align: center;
 	padding: 6px 20px;
 	-webkit-text-stroke-width: 1px;
-	-webkit-text-stroke-color: black;
-
-	.hide-prompt {
-		opacity: 0;
-	}
+	-webkit-text-stroke-color: $color-black;
 
 	.title {
 		font-size: 40px;

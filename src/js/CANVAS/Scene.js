@@ -4,9 +4,6 @@ import { Bvh } from '@react-three/drei'
 import { useGlobalState } from './../GlobalState'
 
 import Loading from './setup/Loading'
-import Controls from './setup/Controls'
-import Background from './setup/Background'
-import Lighting from './setup/Lighting'
 import Drop from './helpers/Drop'
 import Ground from './objects/Ground'
 import Shape from './objects/Shape'
@@ -89,29 +86,22 @@ export default function Scene() {
 	}, [initialPrompt])
 
 	return (
-		<>
-			<Controls />
+		<group name='standard-scene'>
+			<Bvh firstHitOnly>
+				<Ground>{addSceneObjects}</Ground>
+			</Bvh>
 
-			<Suspense fallback={<Loading />}>
-				<Lighting />
-
-				<Bvh firstHitOnly>
-					<Background />
-					<Ground>{addSceneObjects}</Ground>
-				</Bvh>
-
-				<Drop selected={selected} setPrevSelected={setPrevSelected} setInitialDragCreate={setInitialDragCreate} />
-				<Raycasting selected={selected} prevSelected={prevSelected} initialDragCreate={initialDragCreate} />
-				<PivotControls
-					object={typeof transformSelected === 'object' ? transformSelected : undefined}
-					visible={typeof transformSelected === 'object'}
-					depthTest={false}
-					lineWidth={2}
-					scale={1.5}
-					anchor={typeof transformSelected === 'object' ? [0, -transformSelected.size.y / 2, 0] : [0, 0, 0]}
-					// anchor={typeof transformSelected === 'object' ? [-transformSelected.size.x / 2, -transformSelected.size.y / 2, -transformSelected.size.z / 2] : [0, 0, 0]}
-				/>
-			</Suspense>
-		</>
+			<Drop selected={selected} setPrevSelected={setPrevSelected} setInitialDragCreate={setInitialDragCreate} />
+			<Raycasting selected={selected} prevSelected={prevSelected} initialDragCreate={initialDragCreate} />
+			<PivotControls
+				object={typeof transformSelected === 'object' ? transformSelected : undefined}
+				visible={typeof transformSelected === 'object'}
+				depthTest={false}
+				lineWidth={2}
+				scale={1.5}
+				anchor={typeof transformSelected === 'object' ? [0, -transformSelected.size.y / 2, 0] : [0, 0, 0]}
+				// anchor={typeof transformSelected === 'object' ? [-transformSelected.size.x / 2, -transformSelected.size.y / 2, -transformSelected.size.z / 2] : [0, 0, 0]}
+			/>
+		</group>
 	)
 }

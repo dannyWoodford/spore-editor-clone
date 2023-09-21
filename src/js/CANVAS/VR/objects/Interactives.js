@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Interactive, RayGrab } from '@react-three/xr'
-import { Text, Box, Gltf } from '@react-three/drei'
+import { Text, Box } from '@react-three/drei'
 
-import Model from './hud/HudModel'
+import Model from './../hud/HudModel'
 
 const Interactives = () => {
 	const [hover, setHover] = useState(false)
