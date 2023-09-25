@@ -5,7 +5,10 @@ import { allModels, allShapes } from './../ContentBrowserItems'
 const ContentBrowser = () => {
 	const initialPrompt = useGlobalState((state) => state.intro.initialPrompt)
 
-	const [active, setActive] = useState('Models')
+	const [active, setActive] = useState('wall')
+
+	// sub-types
+	// wall, item, floor, roof
 
 	const images = {}
 
@@ -38,21 +41,27 @@ const ContentBrowser = () => {
 
 	const addModelItems = useMemo(() => {
 		return Object.entries(allModels).map((obj, index) => {
-			return (
-				<div
-					key={index}
-					className='item'
-					data-type={obj[1].type}
-					data-name={obj[0]}
-					data-path={obj[1].path}
-					draggable='true'
-					onDragStart={(e) => onDragStartHandler(e)}>
-					<img alt='' src={process.env.PUBLIC_URL + obj[1].thumbnail} />
-					<h4>{obj[1].displayName}</h4>
-				</div>
-			)
+			// console.log('obj[1].modelType', obj[1].modelType, active)
+
+			if (obj[1].modelType === active) {
+				return (
+					<div
+						key={index}
+						className='item'
+						data-type={obj[1].type}
+						data-name={obj[0]}
+						data-path={obj[1].path}
+						draggable='true'
+						onDragStart={(e) => onDragStartHandler(e)}>
+						<img alt='' src={process.env.PUBLIC_URL + obj[1].thumbnail} />
+						<h4>{obj[1].displayName}</h4>
+					</div>
+				)
+			} else {
+				return null
+			}
 		})
-	}, [])
+	}, [active])
 
 	const addShapeItems = useMemo(() => {
 		return Object.entries(allShapes).map((obj, index) => {
@@ -68,16 +77,33 @@ const ContentBrowser = () => {
 	return (
 		<div className={`content-browser ${initialPrompt ? 'show' : ''}`}>
 			<div className='top-bar'>
-				<div className={`tab ${active === 'Models' ? 'active' : ''}`} onClick={() => setActive('Models')}>
-					<h2 className='tab-name'>Models</h2>
-				</div>
-				<div className={`tab ${active === 'Shapes' ? 'active' : ''}`} onClick={() => setActive('Shapes')}>
-					<h2 className='tab-name'>Shapes</h2>
-				</div>
+				<h1 className='top-bar-title'>{active}</h1>
 			</div>
 			<div className='content-container'>
-				<div className={`content --shapes ${active === 'Shapes' ? 'active' : ''}`}>{addShapeItems}</div>
-				<div className={`content --models ${active === 'Models' ? 'active' : ''}`}>{addModelItems}</div>
+				<div className='side-bar'>
+					<div className={`tab ${active === 'wall' ? 'active' : ''}`} onClick={() => setActive('wall')}>
+						<h3 className='tab-name'>Wall</h3>
+					</div>
+					<div className={`tab ${active === 'roof' ? 'active' : ''}`} onClick={() => setActive('roof')}>
+						<h3 className='tab-name'>Roof</h3>
+					</div>
+					<div className={`tab ${active === 'floor' ? 'active' : ''}`} onClick={() => setActive('floor')}>
+						<h3 className='tab-name'>Floor</h3>
+					</div>
+					<div className={`tab ${active === 'item' ? 'active' : ''}`} onClick={() => setActive('item')}>
+						<h3 className='tab-name'>Items</h3>
+					</div>
+					<div className={`tab ${active === 'shapes' ? 'active' : ''}`} onClick={() => setActive('shapes')}>
+						<h3 className='tab-name'>Shapes</h3>
+					</div>
+				</div>
+				<div className='content-container-main' style={{ borderRadius: active === 'wall' ? '0 8px 8px 8px' : '8px 8px 8px 8px' }}>
+					<div className={`content --shapes ${active === 'shapes' ? 'active' : ''}`}>{addShapeItems}</div>
+					<div className={`content --models ${active === 'wall' ? 'active' : ''}`}>{addModelItems}</div>
+					<div className={`content --models ${active === 'roof' ? 'active' : ''}`}>{addModelItems}</div>
+					<div className={`content --models ${active === 'floor' ? 'active' : ''}`}>{addModelItems}</div>
+					<div className={`content --models ${active === 'item' ? 'active' : ''}`}>{addModelItems}</div>
+				</div>
 			</div>
 		</div>
 	)
