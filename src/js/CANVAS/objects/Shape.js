@@ -1,20 +1,25 @@
 import React, { useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
 import { useCursor } from '@react-three/drei'
+import { useGlobalState } from './../../GlobalState'
 
-export default function Shape({ shape, setSelectedHandler, setTransformSelectedHandler, selected, name }) {
+export default function Shape({ shape, name }) {
+	const selected = useGlobalState((state) => state.selected)
+	const setSelected = useGlobalState((state) => state.setSelected)
+	const setTransformSelected = useGlobalState((state) => state.setTransformSelected)
+
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
 
 	const mesh = useRef()
 
 	const allShapes = {
-		box: new THREE.BoxGeometry(.5, .5, .5),
-		sphere: new THREE.SphereGeometry(.5),
-		cone: new THREE.ConeGeometry(.5, .8),
-		cylinder: new THREE.CylinderGeometry(.5, .5, .8),
-		octahedron: new THREE.OctahedronGeometry(.5, 1),
-		icosahedron: new THREE.IcosahedronGeometry(.5, 1),
+		box: new THREE.BoxGeometry(0.5, 0.5, 0.5),
+		sphere: new THREE.SphereGeometry(0.5),
+		cone: new THREE.ConeGeometry(0.5, 0.8),
+		cylinder: new THREE.CylinderGeometry(0.5, 0.5, 0.8),
+		octahedron: new THREE.OctahedronGeometry(0.5, 1),
+		icosahedron: new THREE.IcosahedronGeometry(0.5, 1),
 	}
 
 	const allColors = {
@@ -32,7 +37,7 @@ export default function Shape({ shape, setSelectedHandler, setTransformSelectedH
 			return
 		}
 
-		setSelectedHandler(mesh.current)
+		setSelected(mesh.current)
 
 		let box3 = new THREE.Box3().setFromObject(mesh.current)
 		let size = new THREE.Vector3()
@@ -48,8 +53,8 @@ export default function Shape({ shape, setSelectedHandler, setTransformSelectedH
 		<mesh
 			ref={mesh}
 			name={name}
-			userData={{ sceneObject: true }}
-			onClick={() => setTransformSelectedHandler(mesh.current)}
+			userData={{ moveableObj: true }}
+			onClick={() => setTransformSelected(mesh.current)}
 			onPointerOver={() => setHovered(true)}
 			onPointerOut={() => setHovered(false)}
 			visible={false}

@@ -2,8 +2,13 @@ import React, { useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
 import { useCursor, Gltf } from '@react-three/drei'
 
+import { useGlobalState } from './../../GlobalState'
 
-export default function Model({ setSelectedHandler, setTransformSelectedHandler, selected, name, path }) {
+export default function Model({ name, path }) {
+	const selected = useGlobalState((state) => state.selected)
+	const setSelected = useGlobalState((state) => state.setSelected)
+	const setTransformSelected = useGlobalState((state) => state.setTransformSelected)
+
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
 
@@ -16,7 +21,7 @@ export default function Model({ setSelectedHandler, setTransformSelectedHandler,
 			return
 		}
 
-		setSelectedHandler(mesh.current)
+		setSelected(mesh.current)
 
 		let box3 = new THREE.Box3().setFromObject(mesh.current)
 		let size = new THREE.Vector3()
@@ -37,8 +42,8 @@ export default function Model({ setSelectedHandler, setTransformSelectedHandler,
 		<group
 			ref={mesh}
 			name={name}
-			userData={{ sceneObject: true }}
-			onClick={() => setTransformSelectedHandler(mesh.current)}
+			userData={{ moveableObj: true }}
+			onClick={() => setTransformSelected(mesh.current)}
 			onPointerOver={() => setHovered(true)}
 			onPointerOut={() => setHovered(false)}
 			visible={false}>

@@ -13,12 +13,11 @@ const Ground = ({ children }) => {
 
 	const addBaseParcel = useMemo(() => {
 		return (
-			<Box args={[parcelTotal * 10, 0.2, parcelTotal * 10]} position={[0, -0.2, 0]} name='platform' receiveShadow>
+			<Box args={[parcelTotal * 10, 0.2, parcelTotal * 10]} position={[0, -0.2, 0]} name='platform' userData={{ staticObj: true }} receiveShadow>
 				<meshLambertMaterial color='lightgrey' transparent={true} opacity={0.9} />
 			</Box>
 		)
 
-		// eslint-disable-next-line
 	}, [parcelTotal])
 
 	
@@ -28,7 +27,7 @@ const Ground = ({ children }) => {
 			{addBaseParcel}
 
 			{enabled && (
-				<Circle args={[maxDistance]} position={[0, -1.75, 0]} name='platform-base' rotation={[-Math.PI / 2, 0, 0]}>
+				<Circle args={[maxDistance]} position={[0, -1.75, 0]} name='platform-base' userData={{ staticObj: true }} rotation={[-Math.PI / 2, 0, 0]}>
 					<meshBasicMaterial color='#00570d' />
 				</Circle>
 			)}

@@ -2,9 +2,12 @@ import React, { useEffect } from 'react'
 import { useThree } from '@react-three/fiber'
 import { useGlobalState } from '../../GlobalState'
 
-export default function Drop({ selected, setPrevSelected, setInitialDragCreate }) {
+export default function Drop() {
 	const sceneObjects = useGlobalState((state) => state.sceneObjects)
 	const setSceneObjects = useGlobalState((state) => state.setSceneObjects)
+	const selected = useGlobalState((state) => state.selected)
+	const setPrevSelectedName = useGlobalState((state) => state.setPrevSelectedName)
+	const setInitialDragCreate = useGlobalState((state) => state.setInitialDragCreate)
 
 	const { gl } = useThree()
 
@@ -44,7 +47,7 @@ export default function Drop({ selected, setPrevSelected, setInitialDragCreate }
 	useEffect(() => {
 		const updatePrevState = () => {
 			setInitialDragCreate(false)
-			setPrevSelected(selected?.name)
+			setPrevSelectedName(selected?.name)
 		}
 
 		window.addEventListener('drop', updatePrevState)
@@ -52,7 +55,7 @@ export default function Drop({ selected, setPrevSelected, setInitialDragCreate }
 		return () => {
 			window.removeEventListener('drop', updatePrevState)
 		}
-	}, [selected, setPrevSelected, setInitialDragCreate])
+	}, [selected, setPrevSelectedName, setInitialDragCreate])
 
 	return <></>
 }

@@ -1,15 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { Gltf, Sphere } from '@react-three/drei'
+import React, { useRef, useEffect } from 'react'
+import { Gltf } from '@react-three/drei'
 import * as THREE from 'three'
-import { Interactive } from '@react-three/xr'
+import { Interactive, useXREvent } from '@react-three/xr'
 
 import { useGlobalState } from '../../../GlobalState'
 
 export default function HudModel({ name, path, type, rotation }) {
 	const sceneObjects = useGlobalState((state) => state.sceneObjects)
 	const setSceneObjects = useGlobalState((state) => state.setSceneObjects)
-
-	const [test, setTest] = useState(false)
+	const selected = useGlobalState((state) => state.selected)
+	const setPrevSelectedName = useGlobalState((state) => state.setPrevSelectedName)
+	const initialDragCreate = useGlobalState((state) => state.initialDragCreate)
+	const setInitialDragCreate = useGlobalState((state) => state.setInitialDragCreate)
 
 	const modelGroup = useRef()
 
@@ -23,7 +25,7 @@ export default function HudModel({ name, path, type, rotation }) {
 		modelGroup.current.size = box3.getSize(size)
 
 		// Fix model origin. In real project this should be done on model side in blender
-		modelGroup.current.children[0].translateX(-(size.x / 4))
+		modelGroup.current.children[0].translateX(-(size.x / 2))
 		modelGroup.current.children[0].translateY(-(size.y / 2))
 		modelGroup.current.children[0].translateZ(size.x / 2)
 
@@ -31,6 +33,8 @@ export default function HudModel({ name, path, type, rotation }) {
 	}, [])
 
 	const selectStartHandler = () => {
+		setInitialDragCreate(true)
+
 		let objData = {
 			name: name,
 			type: type,
@@ -38,22 +42,21 @@ export default function HudModel({ name, path, type, rotation }) {
 		}
 
 		setSceneObjects([...sceneObjects, objData])
-
-		setTest(true)
 	}
 
 	const selectEndHandler = () => {
-		setTest(false)
+		if (initialDragCreate) {
+			setInitialDragCreate(false)
+			setPrevSelectedName(selected?.name)
+		}
 	}
 
-	return (
-		<Interactive onSelectStart={() => selectStartHandler()} onSelectEnd={() => selectEndHandler()} ref={modelGroup}>
-			{/* <Sphere args={[1]} position={[0, 0.1, 0]} scale={[0.01, 0.01, 0.01]}>
-				<meshBasicMaterial color={test ? 'red' : 'white'} />
-			</Sphere> */}
+	useXREvent('selectend', selectEndHandler, { handedness: 'right' })
 
+	return (
+		<Interactive ref={modelGroup} onSelectStart={() => selectStartHandler()}>
 			<group name='center-offset' rotation={rotation}>
-				<Gltf src={process.env.PUBLIC_URL + path} scale={[0.04, 0.04, 0.04]} />
+				<Gltf src={process.env.PUBLIC_URL + path} scale={[0.04, 0.04, 0.04]} userData={{ staticObj: true, isHud: true }} />
 			</group>
 		</Interactive>
 	)

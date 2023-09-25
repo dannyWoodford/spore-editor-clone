@@ -1,32 +1,39 @@
 export const allModels = {
-	banner: {
+	Banner_01: {
 		path: '/content-browser/models/Banner_01.glb',
 		thumbnail: '/content-browser/models/Banner_01.png',
 		displayName: 'Banner',
 		type: 'model',
 		hudModelRot: [0, 0, 0],
 	},
-	castle_wall: {
+	Castle_Wall_01: {
 		path: '/content-browser/models/Castle_Wall_01.glb',
 		thumbnail: '/content-browser/models/Castle_Wall_01.png',
 		displayName: 'Castle Wall',
 		type: 'model',
 		hudModelRot: [0, Math.PI / 2, 0],
 	},
-	grey_arch: {
+	Grey_Arch_01: {
 		path: '/content-browser/models/Grey_Arch_01.glb',
 		thumbnail: '/content-browser/models/Grey_Arch_01.png',
 		displayName: 'Grey Arch',
 		type: 'model',
 		hudModelRot: [0, Math.PI / 2, 0],
 	},
-	stairs_stone: {
+	Stairs_Stone_01: {
 		path: '/content-browser/models/Stairs_Stone_01.glb',
 		thumbnail: '/content-browser/models/Stairs_Stone_01.png',
 		displayName: 'Stairs Stone',
 		type: 'model',
-		hudModelRot: [0, -Math.PI / 6, 0],
+		hudModelRot: [0, 0, 0],
 	},
+	// Grey_Border_Wall_0: {
+	// 	path: '/content-browser/models/Grey_Border_Wall_01.glb',
+	// 	thumbnail: '/content-browser/models/Stairs_Stone_01.png',
+	// 	displayName: 'Grey_Border_Wall_0',
+	// 	type: 'model',
+	// 	hudModelRot: [0, 0, 0],
+	// },
 }
 
 export const allShapes = {

@@ -1,24 +1,24 @@
-import React, { useEffect, useMemo } from 'react'
-import { Controllers, Hands } from '@react-three/xr'
-import * as THREE from 'three'
+import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { useXR, Controllers, Hands } from '@react-three/xr'
+import { Bvh, Text } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
 
 import { useGlobalState } from '../../GlobalState'
 
+import Loading from '../setup/Loading'
 import Ground from '../objects/Ground'
-import Interactives from './objects/Interactives'
+// import Interactives from './objects/Interactives'
 import HUD from './hud/HUD'
 import Model from './objects/Model'
 import MovementController from './controls/MovementController'
-import TeleportTravel from './controls/TeleportTravel'
+import OrbitController from './controls/OrbitController'
+import Raycasting from './utils/Raycasting'
+// import TeleportTravel from './controls/TeleportTravel'
 
 export default function VRScene() {
 	const sceneObjects = useGlobalState((state) => state.sceneObjects)
-
-	useEffect(() => {
-		if (sceneObjects) {
-			// console.log('VR sceneObjects', sceneObjects)
-		}
-	}, [sceneObjects])
+	const isSetup = useGlobalState((state) => state.vr.isSetup)
+	const setIsSetup = useGlobalState((state) => state.vr.setIsSetup)
 
 	const addSceneObjects = useMemo(() => {
 		if (!sceneObjects.length) return
@@ -51,22 +51,62 @@ export default function VRScene() {
 		// eslint-disable-next-line
 	}, [sceneObjects])
 
+
+
+
+	const text = useRef()
+	const [textColor, setTextColor] = useState('red')
+
+	const { player } = useXR()
+
+	useEffect(() => {
+		if (player && !isSetup) {
+			player.position.set(40, 15, 0)
+			player.rotation.y = 1.6
+
+			setIsSetup(true)
+		}
+	})
+
+	useFrame(() => {
+		if (!text.current) return
+
+		if (player) {
+			text.current.lookAt(player.position)
+		}
+
+		if (textColor === 'red') {
+			setTextColor('green')
+		} 
+	})
+
 	return (
 		<group name='vr-scene'>
 			<Controllers />
 			<Hands />
 
-			<MovementController />
-			<MovementController hand='left' applyRotation={false} applyHorizontal={true} />
-			<HUD />
+			<Suspense fallback={<Loading />}>
+				<MovementController />
+				<MovementController hand='left' applyRotation={false} applyHorizontal={true} />
+				<OrbitController />
 
-			<Ground>{addSceneObjects}</Ground>
+				<HUD />
 
-			{/* <TeleportTravel useNormal={true}>
+				<Bvh firstHitOnly>
+					<Ground>{addSceneObjects}</Ground>
+				</Bvh>
+
+				{/* <TeleportTravel useNormal={true}>
 				<Ground>{addSceneObjects}</Ground>
 			</TeleportTravel> */}
 
-			{/* <Interactives /> */}
+				{/* <Interactives /> */}
+				<Raycasting />
+
+				<Text ref={text} position={[0, 2.5, 0]} fontSize={1.1} color={textColor} anchorX='center' anchorY='middle'>
+					VR SCENE:
+				</Text>
+			</Suspense>
 		</group>
 	)
 }

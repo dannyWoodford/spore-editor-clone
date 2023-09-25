@@ -5,6 +5,7 @@ import { useGlobalState } from './../../GlobalState'
 
 export default function Background() {
 	const maxDistance = useGlobalState((state) => state.intro.maxDistance)
+	const vrEnabled = useGlobalState((state) => state.vr.enabled)
 
 	const [nightSky] = useTexture([process.env.PUBLIC_URL + '/textures/FS002_Night.png'])
 
@@ -19,13 +20,13 @@ export default function Background() {
 				sectionSize={3.0}
 				sectionThickness={1.5}
 				sectionColor={'#9d4b4b'}
-				fadeDistance={100}
+				fadeDistance={vrEnabled ? maxDistance : 100}
 				fadeStrength={1}
 				followCamera={false}
 				infiniteGrid={true}
 			/>
 
-			<Sphere args={[maxDistance]} position={[0, 0, 0]} name='boundary-sphere'>
+			<Sphere args={[maxDistance]} position={[0, 0, 0]} name='boundary-sphere' userData={{ staticObj: true }}>
 				<meshBasicMaterial side={THREE.BackSide} map={nightSky} />
 			</Sphere>
 		</>

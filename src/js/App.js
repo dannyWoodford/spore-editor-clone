@@ -28,6 +28,7 @@ export default function App() {
 			<ContentBrowser />
 			{initialPrompt && <VRButton />}
 			<div className='bg-canvas'>
+				{/* frameloop will not be respected while in a VR session. */}
 				<Canvas frameloop='demand' shadows>
 					<Suspense fallback={<Loading />}>
 						<Controls />

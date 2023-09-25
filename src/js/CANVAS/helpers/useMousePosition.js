@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
+import * as THREE from 'three'
 
-const useMousePosition = () => {
-	const [mousePosition, setMousePosition] = useState({ mouseX: null, mouseY: null })
+export default function useMousePosition () {
+	const pointer = useMemo(() => new THREE.Vector2(), [])
 
 	const updateMousePosition = (ev) => {
-		setMousePosition({ mouseX: ev.clientX, mouseY: ev.clientY })
+		pointer.x = (ev.clientX / window.innerWidth) * 2 - 1
+		pointer.y = -(ev.clientY / window.innerHeight) * 2 + 1
 	}
 
 	useEffect(() => {
@@ -15,7 +17,5 @@ const useMousePosition = () => {
 		}
 	}, [])
 
-	return mousePosition
+	return pointer
 }
-
-export default useMousePosition
