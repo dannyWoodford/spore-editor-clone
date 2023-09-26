@@ -82,19 +82,24 @@ const ContentBrowser = () => {
 			<div className='content-container'>
 				<div className='side-bar'>
 					<div className={`tab ${active === 'wall' ? 'active' : ''}`} onClick={() => setActive('wall')}>
-						<h3 className='tab-name'>Wall</h3>
+						{/* <h3 className='tab-name'>Wall</h3> */}
+						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/icons/wall.svg'} />
 					</div>
 					<div className={`tab ${active === 'roof' ? 'active' : ''}`} onClick={() => setActive('roof')}>
-						<h3 className='tab-name'>Roof</h3>
+						{/* <h3 className='tab-name'>Roof</h3> */}
+						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/icons/roof.svg'} />
 					</div>
 					<div className={`tab ${active === 'floor' ? 'active' : ''}`} onClick={() => setActive('floor')}>
-						<h3 className='tab-name'>Floor</h3>
+						{/* <h3 className='tab-name'>Floor</h3> */}
+						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/icons/floor.svg'} />
 					</div>
 					<div className={`tab ${active === 'item' ? 'active' : ''}`} onClick={() => setActive('item')}>
-						<h3 className='tab-name'>Items</h3>
+						{/* <h3 className='tab-name'>Items</h3> */}
+						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/icons/items.svg'} />
 					</div>
 					<div className={`tab ${active === 'shapes' ? 'active' : ''}`} onClick={() => setActive('shapes')}>
-						<h3 className='tab-name'>Shapes</h3>
+						{/* <h3 className='tab-name'>Shapes</h3> */}
+						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/content-browser/shapes/octahedron.svg'} />
 					</div>
 				</div>
 				<div className='content-container-main' style={{ borderRadius: active === 'wall' ? '0 8px 8px 8px' : '8px 8px 8px 8px' }}>

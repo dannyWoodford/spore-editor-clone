@@ -10,7 +10,6 @@ export default function Model({ name, path }) {
 	const setTransformSelected = useGlobalState((state) => state.setTransformSelected)
 	const hudScale = useGlobalState((state) => state.vr.hudScale)
 
-
 	const mesh = useRef()
 
 	useEffect(() => {
