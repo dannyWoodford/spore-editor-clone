@@ -8,6 +8,7 @@ export default function Drop() {
 	const selected = useGlobalState((state) => state.selected)
 	const setPrevSelectedName = useGlobalState((state) => state.setPrevSelectedName)
 	const setInitialDragCreate = useGlobalState((state) => state.setInitialDragCreate)
+	const setTransformSelected = useGlobalState((state) => state.setTransformSelected)
 
 	const { gl } = useThree()
 
@@ -48,6 +49,7 @@ export default function Drop() {
 		const updatePrevState = () => {
 			setInitialDragCreate(false)
 			setPrevSelectedName(selected?.name)
+			setTransformSelected(selected)
 		}
 
 		window.addEventListener('drop', updatePrevState)
@@ -55,7 +57,7 @@ export default function Drop() {
 		return () => {
 			window.removeEventListener('drop', updatePrevState)
 		}
-	}, [selected, setPrevSelectedName, setInitialDragCreate])
+	}, [selected, setPrevSelectedName, setInitialDragCreate, setTransformSelected])
 
 	return <></>
 }

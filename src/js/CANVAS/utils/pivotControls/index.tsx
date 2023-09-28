@@ -89,6 +89,10 @@ type PivotControlsProps = {
   /** Limits */
   translationLimits?: [[number, number] | undefined, [number, number] | undefined, [number, number] | undefined]
   rotationLimits?: [[number, number] | undefined, [number, number] | undefined, [number, number] | undefined]
+  
+	/** Snap */
+	translationSnap?: number
+	rotationSnap?: number
 
   /** RGB colors */
   axisColors?: [string | number, string | number, string | number]
@@ -132,6 +136,8 @@ export const PivotControls = React.forwardRef<THREE.Group, PivotControlsProps>(
       fixed = false,
       translationLimits,
       rotationLimits,
+			translationSnap,
+			rotationSnap,
       depthTest = true,
       axisColors = ['#ff2060', '#20df80', '#2080ff'],
       hoveredColor = '#ffff40',
@@ -162,6 +168,7 @@ export const PivotControls = React.forwardRef<THREE.Group, PivotControlsProps>(
           target.matrixAutoUpdate = false
           pivot.matrix = target.matrix.clone()
           pivot.children[0].visible = true
+
           return () => {
             if (doesUpdate) {
               target.matrixAutoUpdate = true
@@ -194,6 +201,7 @@ export const PivotControls = React.forwardRef<THREE.Group, PivotControlsProps>(
             .multiply(new THREE.Vector3(...anchor))
             .add(vCenter)
           vPosition.set(...offset).add(vAnchorOffset)
+
           gizmoRef.current.position.copy(vPosition)
           invalidate()
         }
@@ -217,21 +225,24 @@ export const PivotControls = React.forwardRef<THREE.Group, PivotControlsProps>(
           mL0Inv.copy(mL0).invert()
           mdL.copy(mL).multiply(mL0Inv)
           if (autoTransform) ref.current.matrix.copy(mL)
-
-          // Update the attached object, if there is any
-          const target = resolveObject(object)
-          if (target) target.matrix.copy(mL)
+					
+					// Update the attached object, if there is any
+					const target = resolveObject(object)
+					if (target) target.matrix.copy(mL)
 
           if (onDrag) onDrag(mL, mdL, mW, mdW)
           invalidate()
         },
         onDragEnd: () => {
           if (onDragEnd) onDragEnd()
+					
           invalidate()
         },
         translation,
         translationLimits,
         rotationLimits,
+				translationSnap,
+				rotationSnap,
         axisColors,
         hoveredColor,
         opacity,
@@ -253,6 +264,8 @@ export const PivotControls = React.forwardRef<THREE.Group, PivotControlsProps>(
         translation,
         translationLimits,
         rotationLimits,
+				translationSnap,
+				rotationSnap,
         depthTest,
         scale,
         lineWidth,
@@ -299,9 +312,9 @@ export const PivotControls = React.forwardRef<THREE.Group, PivotControlsProps>(
               {/* {!disableSliders && activeAxes[0] && activeAxes[1] && <PlaneSlider axis={2} dir1={xDir} dir2={yDir} />} */}
               {!disableSliders && activeAxes[0] && activeAxes[2] && <PlaneSlider axis={1} dir1={zDir} dir2={xDir} />}
               {/* {!disableSliders && activeAxes[2] && activeAxes[1] && <PlaneSlider axis={0} dir1={yDir} dir2={zDir} />} */}
-              {!disableRotations && activeAxes[0] && activeAxes[1] && <AxisRotator axis={2} dir1={xDir} dir2={yDir} />}
+              {/* {!disableRotations && activeAxes[0] && activeAxes[1] && <AxisRotator axis={2} dir1={xDir} dir2={yDir} />} */}
               {!disableRotations && activeAxes[0] && activeAxes[2] && <AxisRotator axis={1} dir1={zDir} dir2={xDir} />}
-              {!disableRotations && activeAxes[2] && activeAxes[1] && <AxisRotator axis={0} dir1={yDir} dir2={zDir} />}
+              {/* {!disableRotations && activeAxes[2] && activeAxes[1] && <AxisRotator axis={0} dir1={yDir} dir2={zDir} />} */}
             </group>
             <group ref={childrenRef}>{children}</group>
           </group>

@@ -1,10 +1,28 @@
 import React from 'react'
-import { useGlobalState } from './../../../GlobalState'
+import { useControls } from 'leva'
 
+import { useGlobalState } from './../../../GlobalState'
 import { PivotControls as ObjectTransformer } from './index'
 
 export default function PivotControls() {
 	const transformSelected = useGlobalState((state) => state.transformSelected)
+	const snapDistance = useGlobalState((state) => state.intro.snapDistance)
+	const snapAngle = useGlobalState((state) => state.intro.snapAngle)
+	const snapping = useGlobalState((state) => state.intro.snapping)
+	const setSnapping = useGlobalState((state) => state.intro.setSnapping)
+
+	useControls(
+		'Position Snapping',
+		() => ({
+			enabled: {
+				value: snapping,
+				onChange: (c) => {
+					setSnapping(c)
+				},
+			},
+		}),
+		[setSnapping]
+	)
 
 	return (
 		<ObjectTransformer
@@ -13,8 +31,10 @@ export default function PivotControls() {
 			depthTest={false}
 			lineWidth={2}
 			scale={1.5}
-			anchor={transformSelected ? [0, -transformSelected.size.y / 2, 0] : [0, 0, 0]}
-			// anchor={transformSelected ? [-transformSelected.size.x / 2, -transformSelected.size.y / 2, -transformSelected.size.z / 2] : [0, 0, 0]}
+			translationSnap={snapping ? snapDistance : null}
+			rotationSnap={snapping ? snapAngle : null}
+			/** Anchor point, like BBAnchor, each axis can be between -1/0/+1 */
+			anchor={[-1, -1, -1]}
 		/>
 	)
 }

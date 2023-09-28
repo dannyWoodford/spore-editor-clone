@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { useGlobalState } from './../GlobalState'
 import { allModels, allShapes } from './../ContentBrowserItems'
 
-const ContentBrowser = () => {
+const ContentBrowser = ({ isLeva = false }) => {
 	const initialPrompt = useGlobalState((state) => state.intro.initialPrompt)
 
 	const [active, setActive] = useState('wall')
@@ -41,8 +41,6 @@ const ContentBrowser = () => {
 
 	const addModelItems = useMemo(() => {
 		return Object.entries(allModels).map((obj, index) => {
-			// console.log('obj[1].modelType', obj[1].modelType, active)
-
 			if (obj[1].modelType === active) {
 				return (
 					<div
@@ -75,7 +73,7 @@ const ContentBrowser = () => {
 	}, [])
 
 	return (
-		<div className={`content-browser ${initialPrompt ? 'show' : ''}`}>
+		<div className={`content-browser ${initialPrompt ? 'show' : ''} ${isLeva ? 'isLeva' : ''}`}>
 			<div className='top-bar'>
 				<h1 className='top-bar-title'>{active}</h1>
 			</div>

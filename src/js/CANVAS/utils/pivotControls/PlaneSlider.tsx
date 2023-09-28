@@ -35,6 +35,7 @@ export const PlaneSlider: React.FC<{ dir1: THREE.Vector3; dir2: THREE.Vector3; a
   const {
     translation,
     translationLimits,
+		translationSnap,
     annotationsClass,
     depthTest,
     scale,
@@ -105,6 +106,12 @@ export const PlaneSlider: React.FC<{ dir1: THREE.Vector3; dir2: THREE.Vector3; a
         ray.intersectPlane(plane, intersection)
         intersection.sub(clickPoint)
         let [offsetX, offsetY] = decomposeIntoBasis(e1, e2, intersection)
+				
+				if (translationSnap) {
+					offsetX = Math.round( offsetX / translationSnap ) * translationSnap
+					offsetY = Math.round( offsetY / translationSnap ) * translationSnap
+				}
+
         /* let offsetY = (intersection.y - (intersection.x * e1.y) / e1.x) / (e2.y - (e2.x * e1.y) / e1.x)
         let offsetX = (intersection.x - offsetY * e2.x) / e1.x */
         if (minX !== undefined) {
@@ -124,12 +131,13 @@ export const PlaneSlider: React.FC<{ dir1: THREE.Vector3; dir2: THREE.Vector3; a
         if (displayValues) {
           divRef.current.innerText = `${translation.current[(axis + 1) % 3].toFixed(2)}, ${translation.current[(axis + 2) % 3].toFixed(2)}`
         }
+
         offsetMatrix.makeTranslation(offsetX * e1.x + offsetY * e2.x, offsetX * e1.y + offsetY * e2.y, offsetX * e1.z + offsetY * e2.z)
         onDrag(offsetMatrix)
       }
     },
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-    [onDrag, isHovered, translation, translationLimits, axis]
+    [onDrag, isHovered, translation, translationLimits, translationSnap, axis]
   )
 
   const onPointerUp = React.useCallback(

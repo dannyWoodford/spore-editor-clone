@@ -38,6 +38,7 @@ export const AxisArrow: React.FC<{ direction: THREE.Vector3; axis: 0 | 1 | 2 }> 
   const {
     translation,
     translationLimits,
+		translationSnap,
     annotationsClass,
     depthTest,
     scale,
@@ -90,17 +91,32 @@ export const AxisArrow: React.FC<{ direction: THREE.Vector3; axis: 0 | 1 | 2 }> 
       if (clickInfo.current) {
         const { clickPoint, dir } = clickInfo.current
         const [min, max] = translationLimits?.[axis] || [undefined, undefined]
+				
         let offset = calculateOffset(clickPoint, dir, e.ray.origin, e.ray.direction)
+				
+				if (translationSnap) {
+					offset = Math.round( offset / translationSnap ) * translationSnap
+				}
+
+				if (axis === 1) {
+					// dont translate on y axis through floor
+					offset = Math.max(offset, 0 - offset0.current)
+				}
+
+				
         if (min !== undefined) offset = Math.max(offset, min - offset0.current)
         if (max !== undefined) offset = Math.min(offset, max - offset0.current)
         translation.current[axis] = offset0.current + offset
         if (displayValues) divRef.current.innerText = `${translation.current[axis].toFixed(2)}`
+				
         offsetMatrix.makeTranslation(dir.x * offset, dir.y * offset, dir.z * offset)
+				// selected.position.set(dir.x * offset, dir.y * offset, dir.z * offset)
+
         onDrag(offsetMatrix)
       }
     },
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-    [onDrag, isHovered, translation, translationLimits, axis]
+    [onDrag, isHovered, translation, translationLimits, translationSnap, axis]
   )
 
   const onPointerUp = React.useCallback(

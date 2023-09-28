@@ -8,6 +8,7 @@ export default function Model({ name, path }) {
 	const selected = useGlobalState((state) => state.selected)
 	const setSelected = useGlobalState((state) => state.setSelected)
 	const setTransformSelected = useGlobalState((state) => state.setTransformSelected)
+	const transformInitRot = useGlobalState((state) => state.transformInitRot)
 
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
@@ -26,13 +27,22 @@ export default function Model({ name, path }) {
 		let box3 = new THREE.Box3().setFromObject(mesh.current)
 		let size = new THREE.Vector3()
 
+		// const helper = new THREE.Box3Helper(box3, 0xffff00)
+		// mesh.current.add(helper)
+
+
 		// add "size" attribute to Object3D so the height can be factored into placement on ground by raycaster
 		mesh.current.size = box3.getSize(size)
 
 		// Fix model origin. In real project this should be done on model side in blender
-		mesh.current.children[0].translateX(-(size.x / 2))
-		mesh.current.children[0].translateY(-(size.y / 2))
-		mesh.current.children[0].translateZ(size.z / 2)
+		// mesh.current.children[0].translateX(-(size.x / 2))
+		// mesh.current.children[0].translateY(-(size.y / 2))
+		// mesh.current.children[0].translateZ(size.z / 2)
+
+		
+		if (transformInitRot !== null) {
+			mesh.current.rotation.set(transformInitRot.x, transformInitRot.y, transformInitRot.z)
+		}
 
 		// eslint-disable-next-line
 	}, [])
@@ -43,12 +53,21 @@ export default function Model({ name, path }) {
 			ref={mesh}
 			name={name}
 			userData={{ moveableObj: true }}
-			onClick={() => setTransformSelected(mesh.current)}
+			onClick={(e) => {
+				e.stopPropagation()
+				setTransformSelected(mesh.current)
+			}}
 			onPointerOver={() => setHovered(true)}
 			onPointerOut={() => setHovered(false)}
 			visible={false}>
 			<group name='center-offset'>
-				<Gltf ref={model} src={process.env.PUBLIC_URL + path} castShadow receiveShadow />
+				<Gltf
+					ref={model}
+					src={process.env.PUBLIC_URL + path}
+					castShadow
+					receiveShadow
+					// inject={<meshPhysicalMaterial color='green' />}
+				/>
 			</group>
 		</group>
 	)

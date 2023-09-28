@@ -54,7 +54,10 @@ export default function Shape({ shape, name }) {
 			ref={mesh}
 			name={name}
 			userData={{ moveableObj: true }}
-			onClick={() => setTransformSelected(mesh.current)}
+			onClick={(e) => {
+				e.stopPropagation()
+				setTransformSelected(mesh.current)
+			}}
 			onPointerOver={() => setHovered(true)}
 			onPointerOut={() => setHovered(false)}
 			visible={false}

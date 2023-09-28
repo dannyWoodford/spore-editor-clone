@@ -9,6 +9,8 @@ const Raycasting = () => {
 	const selected = useGlobalState((state) => state.selected)
 	const prevSelectedName = useGlobalState((state) => state.prevSelectedName)
 	const initialDragCreate = useGlobalState((state) => state.initialDragCreate)
+	const snapDistance = useGlobalState((state) => state.intro.snapDistance)
+	const snapping = useGlobalState((state) => state.intro.snapping)
 
 	const { scene, camera, invalidate } = useThree()
 
@@ -44,11 +46,27 @@ const Raycasting = () => {
 			if (prevSelectedName === selected.name) return
 
 			if (intersects[0].object.name === selected.name && intersects.length > 1) {
-				// add "selected.size.y / 2" to "intersects[1].point.y" to make sure bottom of object is place on ground
-				selected.position.set(intersects[1].point.x, intersects[1].point.y + selected.size.y / 2, intersects[1].point.z)
+				// console.log('fire 111')
+
+				if (snapping) {
+					let offsetX = Math.round(intersects[0].point.x / snapDistance + -selected.size.x / 2) * snapDistance
+					let offsetZ = Math.round(intersects[0].point.z / snapDistance + selected.size.z / 2) * snapDistance
+
+					selected.position.set(offsetX, intersects[1].point.y, offsetZ)
+				} else {
+					selected.position.set(intersects[1].point.x + -selected.size.x / 2, intersects[1].point.y, intersects[1].point.z + selected.size.z / 2)
+				}
 			} else {
-				// add "selected.size.y / 2" to "intersects[1].point.y" to make sure bottom of object is place on ground
-				selected.position.set(intersects[0].point.x, intersects[0].point.y + selected.size.y / 2, intersects[0].point.z)
+				// console.log('fire 222', selected.position)
+
+				if (snapping) {
+					let offsetX = Math.round(intersects[0].point.x / snapDistance + -selected.size.x / 2) * snapDistance
+					let offsetZ = Math.round(intersects[0].point.z / snapDistance + selected.size.z / 2) * snapDistance
+
+					selected.position.set(offsetX, intersects[0].point.y, offsetZ)
+				} else {
+					selected.position.set(intersects[0].point.x + -selected.size.x / 2, intersects[0].point.y, intersects[0].point.z + selected.size.z / 2)
+				}
 			}
 
 			// Object Visibility

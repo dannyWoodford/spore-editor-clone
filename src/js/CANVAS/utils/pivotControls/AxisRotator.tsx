@@ -6,6 +6,10 @@ import { Html } from '@react-three/drei'
 import clamp from 'lodash.clamp'
 import { context } from './context'
 
+import { useGlobalState } from '../../../GlobalState'
+
+
+const endAngle = new THREE.Vector3(0,0,0)
 const clickDir = new THREE.Vector3()
 const intersectionDir = new THREE.Vector3()
 
@@ -58,9 +62,10 @@ const posNew = new THREE.Vector3()
 const ray = new THREE.Ray()
 const intersection = new THREE.Vector3()
 
-export const AxisRotator: React.FC<{ dir1: THREE.Vector3; dir2: THREE.Vector3; axis: 0 | 1 | 2 }> = ({ dir1, dir2, axis }) => {
+export const AxisRotator: React.FC<{ dir1: THREE.Vector3; dir2: THREE.Vector3; axis: 0 | 1 | 2; }> = ({ dir1, dir2, axis }) => {
   const {
     rotationLimits,
+		rotationSnap,
     annotationsClass,
     depthTest,
     scale,
@@ -91,6 +96,8 @@ export const AxisRotator: React.FC<{ dir1: THREE.Vector3; dir2: THREE.Vector3; a
     plane: THREE.Plane
   } | null>(null)
   const [isHovered, setIsHovered] = React.useState(false)
+	const setTransformInitRot = useGlobalState((state) => state.setTransformInitRot)
+	
 
   const onPointerDown = React.useCallback(
     (e: ThreeEvent<PointerEvent>) => {
@@ -128,13 +135,13 @@ export const AxisRotator: React.FC<{ dir1: THREE.Vector3; dir2: THREE.Vector3; a
         ray.direction.negate()
         ray.intersectPlane(plane, intersection)
         let deltaAngle = calculateAngle(clickPoint, intersection, origin, e1, e2)
+				
         let degrees = toDegrees(deltaAngle)
-
-        // @ts-ignore
-        if (e.shiftKey) {
-          degrees = Math.round(degrees / 10) * 10
+				
+				if (rotationSnap) {
+					degrees = Math.round(degrees / rotationSnap) * rotationSnap
           deltaAngle = toRadians(degrees)
-        }
+				}
 
         if (min !== undefined && max !== undefined && max - min < 2 * Math.PI) {
           deltaAngle = minimizeAngle(deltaAngle)
@@ -157,7 +164,7 @@ export const AxisRotator: React.FC<{ dir1: THREE.Vector3; dir2: THREE.Vector3; a
       }
     },
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-    [onDrag, isHovered, rotationLimits, axis]
+    [onDrag, isHovered, rotationLimits, rotationSnap, axis]
   )
 
   const onPointerUp = React.useCallback(
@@ -169,6 +176,10 @@ export const AxisRotator: React.FC<{ dir1: THREE.Vector3; dir2: THREE.Vector3; a
       angle0.current = angle.current
       clickInfo.current = null
       onDragEnd()
+
+			let endRotation = endAngle.setComponent(axis, angle.current )
+			setTransformInitRot(endRotation)
+
       camControls && (camControls.enabled = true)
       // @ts-ignore
       e.target.releasePointerCapture(e.pointerId)
