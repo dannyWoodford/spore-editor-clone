@@ -16,14 +16,14 @@ import Raycasting from './utils/Raycasting'
 // import TeleportTravel from './controls/TeleportTravel'
 
 export default function VRScene() {
-	const sceneObjects = useGlobalState((state) => state.sceneObjects)
+	const contentBrowserItems = useGlobalState((state) => state.contentBrowserItems)
 	const isSetup = useGlobalState((state) => state.vr.isSetup)
 	const setIsSetup = useGlobalState((state) => state.vr.setIsSetup)
 
-	const addSceneObjects = useMemo(() => {
-		if (!sceneObjects.length) return
+	const addContentBrowserItems = useMemo(() => {
+		if (!contentBrowserItems.length) return
 
-		return sceneObjects.map((obj, i) => {
+		return contentBrowserItems.map((obj, i) => {
 			if (obj) {
 				if (obj.type === 'model') {
 					return <Model key={i} name={obj.name + '-' + i} path={obj.path} />
@@ -49,7 +49,7 @@ export default function VRScene() {
 		})
 
 		// eslint-disable-next-line
-	}, [sceneObjects])
+	}, [contentBrowserItems])
 
 
 
@@ -93,11 +93,11 @@ export default function VRScene() {
 				<HUD />
 
 				<Bvh firstHitOnly>
-					<Ground>{addSceneObjects}</Ground>
+					<Ground>{addContentBrowserItems}</Ground>
 				</Bvh>
 
 				{/* <TeleportTravel useNormal={true}>
-				<Ground>{addSceneObjects}</Ground>
+				<Ground>{addContentBrowserItems}</Ground>
 			</TeleportTravel> */}
 
 				{/* <Interactives /> */}

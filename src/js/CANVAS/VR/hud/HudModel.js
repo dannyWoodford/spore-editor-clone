@@ -6,12 +6,12 @@ import { Interactive, useXREvent } from '@react-three/xr'
 import { useGlobalState } from '../../../GlobalState'
 
 export default function HudModel({ name, path, type, rotation }) {
-	const sceneObjects = useGlobalState((state) => state.sceneObjects)
-	const setSceneObjects = useGlobalState((state) => state.setSceneObjects)
+	const contentBrowserItems = useGlobalState((state) => state.contentBrowserItems)
+	const setContentBrowserItems = useGlobalState((state) => state.setContentBrowserItems)
 	const selected = useGlobalState((state) => state.selected)
 	const setPrevSelectedName = useGlobalState((state) => state.setPrevSelectedName)
-	const initialDragCreate = useGlobalState((state) => state.initialDragCreate)
-	const setInitialDragCreate = useGlobalState((state) => state.setInitialDragCreate)
+	const isTransforming = useGlobalState((state) => state.transforms.isTransforming)
+	const setIsTransforming = useGlobalState((state) => state.transforms.setIsTransforming)
 
 	const modelGroup = useRef()
 
@@ -33,7 +33,7 @@ export default function HudModel({ name, path, type, rotation }) {
 	}, [])
 
 	const selectStartHandler = () => {
-		setInitialDragCreate(true)
+		setIsTransforming(true)
 
 		let objData = {
 			name: name,
@@ -41,12 +41,12 @@ export default function HudModel({ name, path, type, rotation }) {
 			path: path,
 		}
 
-		setSceneObjects([...sceneObjects, objData])
+		setContentBrowserItems([...contentBrowserItems, objData])
 	}
 
 	const selectEndHandler = () => {
-		if (initialDragCreate) {
-			setInitialDragCreate(false)
+		if (isTransforming) {
+			setIsTransforming(false)
 			setPrevSelectedName(selected?.name)
 		}
 	}

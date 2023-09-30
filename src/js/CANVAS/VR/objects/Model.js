@@ -10,6 +10,9 @@ export default function Model({ name, path }) {
 	const setTransformSelected = useGlobalState((state) => state.setTransformSelected)
 	const hudScale = useGlobalState((state) => state.vr.hudScale)
 
+	const sceneObjects = useGlobalState((state) => state.sceneObjects)
+	const setSceneObjects = useGlobalState((state) => state.setSceneObjects)
+
 	const mesh = useRef()
 
 	useEffect(() => {
@@ -30,6 +33,8 @@ export default function Model({ name, path }) {
 		// mesh.current.children[0].translateX(-(size.x / 2))
 		// mesh.current.children[0].translateY(-(size.y / 2))
 		// mesh.current.children[0].translateZ(size.x / 2)
+
+		setSceneObjects([...sceneObjects, mesh.current])
 
 		// eslint-disable-next-line
 	}, [])

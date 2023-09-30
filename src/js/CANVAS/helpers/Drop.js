@@ -3,11 +3,11 @@ import { useThree } from '@react-three/fiber'
 import { useGlobalState } from '../../GlobalState'
 
 export default function Drop() {
-	const sceneObjects = useGlobalState((state) => state.sceneObjects)
-	const setSceneObjects = useGlobalState((state) => state.setSceneObjects)
+	const contentBrowserItems = useGlobalState((state) => state.contentBrowserItems)
+	const setContentBrowserItems = useGlobalState((state) => state.setContentBrowserItems)
 	const selected = useGlobalState((state) => state.selected)
 	const setPrevSelectedName = useGlobalState((state) => state.setPrevSelectedName)
-	const setInitialDragCreate = useGlobalState((state) => state.setInitialDragCreate)
+	const setIsTransforming = useGlobalState((state) => state.transforms.setIsTransforming)
 	const setTransformSelected = useGlobalState((state) => state.setTransformSelected)
 
 	const { gl } = useThree()
@@ -34,11 +34,11 @@ export default function Drop() {
 
 	gl.domElement.addEventListener('dragenter', (e) => {
 		e.preventDefault()
-		setInitialDragCreate(true)
+		setIsTransforming(true)
 
 		let objData = createNewObject(e.dataTransfer.types)
 
-		setSceneObjects([...sceneObjects, objData])
+		setContentBrowserItems([...contentBrowserItems, objData])
 	})
 
 	gl.domElement.addEventListener('dragover', (e) => {
@@ -47,7 +47,7 @@ export default function Drop() {
 
 	useEffect(() => {
 		const updatePrevState = () => {
-			setInitialDragCreate(false)
+			setIsTransforming(false)
 			setPrevSelectedName(selected?.name)
 			setTransformSelected(selected)
 		}
@@ -57,7 +57,7 @@ export default function Drop() {
 		return () => {
 			window.removeEventListener('drop', updatePrevState)
 		}
-	}, [selected, setPrevSelectedName, setInitialDragCreate, setTransformSelected])
+	}, [selected, setPrevSelectedName, setIsTransforming, setTransformSelected])
 
 	return <></>
 }

@@ -1,13 +1,14 @@
 import * as THREE from 'three'
-import * as React from 'react'
+import React from 'react'
 import { Size, useFrame, useThree } from '@react-three/fiber'
 
 // @ts-ignore
 import { AxisArrow } from './AxisArrow'
 import { PlaneSlider } from './PlaneSlider'
 import { AxisRotator } from './AxisRotator'
-// import { SphereScale } from './SphereScale'
 import { context, OnDragStartProps, resolveObject } from './context'
+
+import { useGlobalState } from '../../../GlobalState'
 
 const tV0 = new THREE.Vector3()
 const tV1 = new THREE.Vector3()
@@ -157,6 +158,10 @@ export const PivotControls = React.forwardRef<THREE.Group, PivotControlsProps>(
     const childrenRef = React.useRef<THREE.Group>(null!)
     const translation = React.useRef<[number, number, number]>([0, 0, 0])
 
+		const selected = useGlobalState((state) => state.selected)
+		const setIsTransforming = useGlobalState((state) => state.transforms.setIsTransforming)
+
+
     React.useEffect(() => {
       if (object) {
         const target = resolveObject(object)
@@ -214,6 +219,9 @@ export const PivotControls = React.forwardRef<THREE.Group, PivotControlsProps>(
           mL0.copy(ref.current.matrix)
           mW0.copy(ref.current.matrixWorld)
           onDragStart && onDragStart(props)
+
+					// setIsTransforming(true)
+
           invalidate()
         },
         onDrag: (mdW: THREE.Matrix4) => {
@@ -225,16 +233,19 @@ export const PivotControls = React.forwardRef<THREE.Group, PivotControlsProps>(
           mL0Inv.copy(mL0).invert()
           mdL.copy(mL).multiply(mL0Inv)
           if (autoTransform) ref.current.matrix.copy(mL)
-					
-					// Update the attached object, if there is any
-					const target = resolveObject(object)
-					if (target) target.matrix.copy(mL)
+
+				// Update the attached object, if there is any
+				const target = resolveObject(object)
+				if (target) target.matrix.copy(mL)
+				// if (target) selected.matrix.copy(mL)
 
           if (onDrag) onDrag(mL, mdL, mW, mdW)
           invalidate()
         },
         onDragEnd: () => {
           if (onDragEnd) onDragEnd()
+
+					// setIsTransforming(false)
 					
           invalidate()
         },
@@ -304,10 +315,6 @@ export const PivotControls = React.forwardRef<THREE.Group, PivotControlsProps>(
               {!disableAxes && activeAxes[0] && <AxisArrow axis={0} direction={xDir} />}
               {!disableAxes && activeAxes[1] && <AxisArrow axis={1} direction={yDir} />}
               {!disableAxes && activeAxes[2] && <AxisArrow axis={2} direction={zDir} />}
-
-              {/* {!disableAxes && activeAxes[0] && <SphereScale axis={0} direction={xDir} />} */}
-              {/* {!disableAxes && activeAxes[1] && <SphereScale axis={1} direction={yDir} />} */}
-              {/* {!disableAxes && activeAxes[2] && <SphereScale axis={2} direction={zDir} />} */}
 
               {/* {!disableSliders && activeAxes[0] && activeAxes[1] && <PlaneSlider axis={2} dir1={xDir} dir2={yDir} />} */}
               {!disableSliders && activeAxes[0] && activeAxes[2] && <PlaneSlider axis={1} dir1={zDir} dir2={xDir} />}

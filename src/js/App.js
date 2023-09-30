@@ -17,6 +17,8 @@ import Controls from './CANVAS/setup/Controls'
 import Background from './CANVAS/setup/Background'
 import Lighting from './CANVAS/setup/Lighting'
 
+import SceneObjects from './CANVAS/helpers/SceneObjects'
+
 export default function App() {
 	const initialPrompt = useGlobalState((state) => state.intro.initialPrompt)
 	const vrEnabled = useGlobalState((state) => state.vr.enabled)
@@ -34,6 +36,7 @@ export default function App() {
 						<Controls />
 						<Background />
 						<Lighting />
+						{/* <SceneObjects /> */}
 
 						<XR onSessionStart={() => setVrEnabled(true)} onSessionEnd={() => setVrEnabled(false)}>
 							{vrEnabled && <VRScene />}

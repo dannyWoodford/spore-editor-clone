@@ -1,43 +1,27 @@
 import React, { useMemo, useRef } from 'react'
-import { useThree, useFrame } from '@react-three/fiber'
+import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useXR } from '@react-three/xr'
 
 import { useGlobalState } from '../../../GlobalState'
+import RaycasterObjects from '../../helpers/RaycasterObjects'
 
 export default function Raycasting() {
 	const selected = useGlobalState((state) => state.selected)
 	const prevSelectedName = useGlobalState((state) => state.prevSelectedName)
-	const initialDragCreate = useGlobalState((state) => state.initialDragCreate)
+	const isTransforming = useGlobalState((state) => state.transforms.isTransforming)
 	const snapDistance = useGlobalState((state) => state.intro.snapDistance)
 	const snapping = useGlobalState((state) => state.intro.snapping)
 
-	const { scene } = useThree()
 	const { controllers } = useXR()
 
 	const raycaster = useMemo(() => new THREE.Raycaster(), [])
+	const getRaycasterObjects = RaycasterObjects()
 
 	const rayDir = useRef({
 		pos: new THREE.Vector3(),
 		dir: new THREE.Vector3(),
 	})
-
-	// ------ Raycasting ---------------------------------------------------------------------------------------------------------------------------------------
-	const rayCasterObjects = () => {
-		let raycastList = []
-		scene.traverse((child) => {
-			// Only include "ground" objects or created object
-
-			// Explanation of (child.userData.moveableObj === true && child.name !== selected.name)
-			// "child.userData.moveableObj === true" allows you to stack sceneObjects
-			// and "child.name !== selected.name" makes sure raycaster doesn't hit the current selected object and cause an infinite climb
-			if (child.userData.staticObj === true || (child.userData.moveableObj === true && child.name !== selected.name)) {
-				raycastList.push(child)
-			}
-		})
-
-		return raycastList
-	}
 
 	const onNavObjectMove = () => {
 		if (controllers.length > 0) {
@@ -46,7 +30,7 @@ export default function Raycasting() {
 			rayDir.current.dir.multiplyScalar(-1)
 			raycaster.set(rayDir.current.pos, rayDir.current.dir)
 
-			const intersects = raycaster.intersectObjects(rayCasterObjects())
+			const intersects = raycaster.intersectObjects(getRaycasterObjects)
 
 			if (intersects.length > 0) {
 				if (!selected) return
@@ -77,7 +61,7 @@ export default function Raycasting() {
 	}
 
 	useFrame(() => {
-		if (!initialDragCreate) return
+		if (!isTransforming) return
 
 		onNavObjectMove()
 	})

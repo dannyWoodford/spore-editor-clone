@@ -4,46 +4,35 @@ import * as THREE from 'three'
 import { useGlobalState } from '../../GlobalState'
 
 import useMousePosition from '../helpers/useMousePosition'
+import RaycasterObjects from '../helpers/RaycasterObjects'
 
 const Raycasting = () => {
 	const selected = useGlobalState((state) => state.selected)
 	const prevSelectedName = useGlobalState((state) => state.prevSelectedName)
-	const initialDragCreate = useGlobalState((state) => state.initialDragCreate)
+	const isTransforming = useGlobalState((state) => state.transforms.isTransforming)
 	const snapDistance = useGlobalState((state) => state.intro.snapDistance)
 	const snapping = useGlobalState((state) => state.intro.snapping)
 
-	const { scene, camera, invalidate } = useThree()
+	const { camera, invalidate } = useThree()
 
 	const raycaster = useMemo(() => new THREE.Raycaster(), [])
 	const pointer = useMousePosition()
-
-	// ------ Raycasting ---------------------------------------------------------------------------------------------------------------------------------------
-	const rayCasterObjects = () => {
-		let raycastList = []
-		scene.traverse((child) => {
-			// Only include "ground" objects or created object
-
-			// Explanation of (child.userData.moveableObj === true && child.name !== selected.name)
-			// "child.userData.moveableObj === true" allows you to stack sceneObjects
-			// and "child.name !== selected.name" makes sure raycaster doesn't hit the current selected object and cause an infinite climb
-			if (child.userData.staticObj === true || (child.userData.moveableObj === true && child.name !== selected.name)) {
-				raycastList.push(child)
-			}
-		})
-
-		return raycastList
-	}
+	const getRaycasterObjects = RaycasterObjects()
 
 	const onNavObjectMove = () => {
 		raycaster.setFromCamera(pointer, camera)
 
 		// See if the ray from the camera into the world hits one of our meshes
-		const intersects = raycaster.intersectObjects(rayCasterObjects())
+		const intersects = raycaster.intersectObjects(getRaycasterObjects)
 
 		if (intersects.length > 0) {
 			if (!selected) return
 
-			if (prevSelectedName === selected.name) return
+			if (prevSelectedName === selected.name) {
+				// console.log('%cprevSelectedName === selected.name', 'color:red;font-size:14px;', prevSelectedName === selected.name)
+				return
+			}
+
 
 			if (intersects[0].object.name === selected.name && intersects.length > 1) {
 				// console.log('fire 111')
@@ -57,7 +46,7 @@ const Raycasting = () => {
 					selected.position.set(intersects[1].point.x + -selected.size.x / 2, intersects[1].point.y, intersects[1].point.z + selected.size.z / 2)
 				}
 			} else {
-				// console.log('fire 222', selected.position)
+				// console.log('fire 222')
 
 				if (snapping) {
 					let offsetX = Math.round(intersects[0].point.x / snapDistance + -selected.size.x / 2) * snapDistance
@@ -80,7 +69,7 @@ const Raycasting = () => {
 	}
 
 	useFrame(() => {
-		if (!initialDragCreate) return
+		if (!isTransforming) return
 
 		onNavObjectMove()
 	})

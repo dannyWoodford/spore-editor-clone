@@ -1,5 +1,6 @@
 import React, { Suspense, useMemo } from 'react'
 import { Bvh } from '@react-three/drei'
+
 import { useGlobalState } from './../GlobalState'
 
 import Loading from './setup/Loading'
@@ -12,12 +13,12 @@ import Raycasting from './utils/Raycasting'
 import PivotControls from './utils/pivotControls/PivotControls'
 
 export default function Scene() {
-	const sceneObjects = useGlobalState((state) => state.sceneObjects)
+	const contentBrowserItems = useGlobalState((state) => state.contentBrowserItems)
 
-	const addSceneObjects = useMemo(() => {
-		if (!sceneObjects.length) return
+	const addContentBrowserItems = useMemo(() => {
+		if (!contentBrowserItems.length) return
 
-		return sceneObjects.map((obj, i) => {
+		return contentBrowserItems.map((obj, i) => {
 			if (obj) {
 				if (obj.type === 'model') {
 					return (
@@ -38,14 +39,14 @@ export default function Scene() {
 		})
 
 		// eslint-disable-next-line
-	}, [sceneObjects])
+	}, [contentBrowserItems])
 
 	return (
 		<group name='standard-scene'>
 			<DisplayLeva />
 
 			<Bvh firstHitOnly>
-				<Ground>{addSceneObjects}</Ground>
+				<Ground>{addContentBrowserItems}</Ground>
 			</Bvh>
 
 			<Drop />

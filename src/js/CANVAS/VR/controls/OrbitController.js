@@ -1,25 +1,21 @@
 import React, { useMemo, useRef, useState } from 'react'
-import { useThree, useFrame } from '@react-three/fiber'
+import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useXREvent, useController } from '@react-three/xr'
 
 import { useGlobalState } from '../../../GlobalState'
+import RaycasterObjects from '../../helpers/RaycasterObjects'
 
 export default function OrbitController() {
-	const selected = useGlobalState((state) => state.selected)
 	const setHudScale = useGlobalState((state) => state.vr.setHudScale)
 	const hudScale = useGlobalState((state) => state.vr.hudScale)
 
-	// const transformSelected = useGlobalState((state) => state.transformSelected)
-	// const prevSelectedName = useGlobalState((state) => state.prevSelectedName)
-	// const initialDragCreate = useGlobalState((state) => state.initialDragCreate)
-
 	const [orbitDrag, setOrbitDrag] = useState(false)
 
-	const { scene } = useThree()
 	const rightController = useController('right')
 
 	const raycaster = useMemo(() => new THREE.Raycaster(), [])
+	const getRaycasterObjects = RaycasterObjects()
 
 	const rayDir = useRef({
 		pos: new THREE.Vector3(),
@@ -28,30 +24,7 @@ export default function OrbitController() {
 
 	const targetLoc = useRef()
 
-	// ------ Raycasting ---------------------------------------------------------------------------------------------------------------------------------------
-	const rayCasterObjects = () => {
-		let raycastList = []
-		scene.traverse((child) => {
-			// Only include "ground" objects or created object
-
-			// Explanation of (child.userData.moveableObj === true && child.name !== selected.name)
-			// "child.userData.moveableObj === true" allows you to stack sceneObjects
-			// and "child.name !== selected.name" makes sure raycaster doesn't hit the current selected object and cause an infinite climb
-			if (child.userData.staticObj === true || (child.userData.moveableObj === true && child.name !== selected.name)) {
-				raycastList.push(child)
-			}
-		})
-
-		// console.log('raycastList', raycastList)
-
-		return raycastList
-	}
-
 	const selectStartHandler = () => {
-		// console.log('selected', selected)
-		// console.log('transformSelected', transformSelected)
-		// console.log('initialDragCreate', initialDragCreate)
-
 		setOrbitDrag(true)
 	}
 
@@ -69,13 +42,13 @@ export default function OrbitController() {
 			rayDir.current.dir.multiplyScalar(-1)
 			raycaster.set(rayDir.current.pos, rayDir.current.dir)
 
-			const intersects = raycaster.intersectObjects(rayCasterObjects())
+			const intersects = raycaster.intersectObjects(getRaycasterObjects)
 
 			if (intersects.length > 0) {
 				if ((intersects[0].object.userData.isHud === true || intersects[0].object.parent.userData.isHud === true) && !hudScale) {
 					// console.log('add')
 					setHudScale(true)
-				} else if ((intersects[0].object.userData.isHud !== true && intersects[0].object.parent.userData.isHud !== true) && hudScale) {
+				} else if (intersects[0].object.userData.isHud !== true && intersects[0].object.parent.userData.isHud !== true && hudScale) {
 					// console.log('remove', intersects[0].object.parent.userData.isHud)
 					setHudScale(false)
 				}
@@ -96,13 +69,13 @@ export default function OrbitController() {
 	}
 
 	useFrame(() => {
-		// if (initialDragCreate) return
+		// if (isTransforming) return
 
 		onIndicatorMove()
 
 		// onNavObjectMove()
 
-		// if (!initialDragCreate) {
+		// if (!isTransforming) {
 		// 	onIndicatorMove()
 		// } else {
 		// 	onNavObjectMove()

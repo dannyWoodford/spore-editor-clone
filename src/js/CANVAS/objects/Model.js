@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useMemo } from 'react'
 import * as THREE from 'three'
 import { useCursor, Gltf } from '@react-three/drei'
 
@@ -7,18 +7,22 @@ import { useGlobalState } from './../../GlobalState'
 export default function Model({ name, path }) {
 	const selected = useGlobalState((state) => state.selected)
 	const setSelected = useGlobalState((state) => state.setSelected)
+	const transformSelected = useGlobalState((state) => state.transformSelected)
 	const setTransformSelected = useGlobalState((state) => state.setTransformSelected)
-	const transformInitRot = useGlobalState((state) => state.transformInitRot)
+	const transformInitRot = useGlobalState((state) => state.transforms.transformInitRot)
+
+	const sceneObjects = useGlobalState((state) => state.sceneObjects)
+	const setSceneObjects = useGlobalState((state) => state.setSceneObjects)
 
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
 
 	const mesh = useRef()
-	const model = useRef()
 
 	useEffect(() => {
 		if (!mesh.current) return
 		if (selected?.name === name) {
+			console.log('ham_____________')
 			return
 		}
 
@@ -44,8 +48,20 @@ export default function Model({ name, path }) {
 			mesh.current.rotation.set(transformInitRot.x, transformInitRot.y, transformInitRot.z)
 		}
 
+		setSceneObjects([...sceneObjects, mesh.current])
+
 		// eslint-disable-next-line
 	}, [])
+
+		const colorHandler = useMemo(() => {
+			if (name === selected?.name) {
+				return <meshPhysicalMaterial color='green' />
+			} else if (name === transformSelected?.name) {
+				return <meshPhysicalMaterial color='blue' />
+			} else {
+				return <meshPhysicalMaterial color='orange' />
+			}
+		}, [name, selected, transformSelected])
 
 	return (
 		// Disable visibility initially and set to true in Raycasting.js once mouse position is converted to 3D space
@@ -61,13 +77,7 @@ export default function Model({ name, path }) {
 			onPointerOut={() => setHovered(false)}
 			visible={false}>
 			<group name='center-offset'>
-				<Gltf
-					ref={model}
-					src={process.env.PUBLIC_URL + path}
-					castShadow
-					receiveShadow
-					// inject={<meshPhysicalMaterial color='green' />}
-				/>
+				<Gltf src={process.env.PUBLIC_URL + path} castShadow receiveShadow inject={colorHandler} />
 			</group>
 		</group>
 	)

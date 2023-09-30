@@ -8,6 +8,9 @@ export default function Shape({ shape, name }) {
 	const setSelected = useGlobalState((state) => state.setSelected)
 	const setTransformSelected = useGlobalState((state) => state.setTransformSelected)
 
+	const sceneObjects = useGlobalState((state) => state.sceneObjects)
+	const setSceneObjects = useGlobalState((state) => state.setSceneObjects)
+
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
 
@@ -44,6 +47,8 @@ export default function Shape({ shape, name }) {
 
 		// add "size" attribute to Object3D so the height can be factored into placement on ground by raycaster
 		mesh.current.size = box3.getSize(size)
+
+		setSceneObjects([...sceneObjects, mesh.current])
 
 		// eslint-disable-next-line
 	}, [])
