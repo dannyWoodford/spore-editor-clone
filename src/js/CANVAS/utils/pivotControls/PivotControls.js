@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useControls } from 'leva'
 
 import { useGlobalState } from './../../../GlobalState'
 import { PivotControls as ObjectTransformer } from './index'
 
 export default function PivotControls() {
-	const transformSelected = useGlobalState((state) => state.sceneStore.transformSelected)
+	const transformSelected = useGlobalState((state) => state.sceneNoPersist.transformSelected)
 	const snapDistance = useGlobalState((state) => state.intro.snapDistance)
 	const snapAngle = useGlobalState((state) => state.intro.snapAngle)
 	const snapping = useGlobalState((state) => state.intro.snapping)
@@ -24,12 +24,7 @@ export default function PivotControls() {
 		[setSnapping]
 	)
 
-	useEffect(() => {
-		console.log('transformSelected', transformSelected)
-	}, [transformSelected])
-
 	return (
-		// <></>
 		<ObjectTransformer
 			object={transformSelected ? transformSelected : undefined}
 			visible={transformSelected}

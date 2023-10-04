@@ -5,11 +5,11 @@ import { useCursor, Gltf } from '@react-three/drei'
 import { useGlobalState } from './../../GlobalState'
 
 export default function Model({ name, path }) {
-	const selected = useGlobalState((state) => state.sceneStore.selected)
-	const setSelected = useGlobalState((state) => state.sceneStore.setSelected)
-	const transformSelected = useGlobalState((state) => state.sceneStore.transformSelected)
-	const setTransformSelected = useGlobalState((state) => state.sceneStore.setTransformSelected)
-	const transformInitRot = useGlobalState((state) => state.sceneStore.transforms.transformInitRot)
+	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
+	const setSelected = useGlobalState((state) => state.sceneNoPersist.setSelected)
+	const transformSelected = useGlobalState((state) => state.sceneNoPersist.transformSelected)
+	const setTransformSelected = useGlobalState((state) => state.sceneNoPersist.setTransformSelected)
+	const transformInitRot = useGlobalState((state) => state.sceneNoPersist.transforms.transformInitRot)
 
 	const sceneObjects = useGlobalState((state) => state.sceneStore.sceneObjects)
 	const setSceneObjects = useGlobalState((state) => state.sceneStore.setSceneObjects)

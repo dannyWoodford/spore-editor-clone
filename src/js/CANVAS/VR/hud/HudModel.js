@@ -6,12 +6,12 @@ import { Interactive, useXREvent } from '@react-three/xr'
 import { useGlobalState } from '../../../GlobalState'
 
 export default function HudModel({ name, path, type, rotation }) {
-	const contentBrowserItems = useGlobalState((state) => state.sceneStore.contentBrowserItems)
-	const setContentBrowserItems = useGlobalState((state) => state.sceneStore.setContentBrowserItems)
-	const selected = useGlobalState((state) => state.sceneStore.selected)
-	const setPrevSelectedName = useGlobalState((state) => state.sceneStore.setPrevSelectedName)
-	const isTransforming = useGlobalState((state) => state.sceneStore.transforms.isTransforming)
-	const setIsTransforming = useGlobalState((state) => state.sceneStore.transforms.setIsTransforming)
+	const contentBrowserItems = useGlobalState((state) => state.sceneNoPersist.contentBrowserItems)
+	const setContentBrowserItems = useGlobalState((state) => state.sceneNoPersist.setContentBrowserItems)
+	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
+	const setPrevSelectedName = useGlobalState((state) => state.sceneNoPersist.setPrevSelectedName)
+	const isTransforming = useGlobalState((state) => state.sceneNoPersist.transforms.isTransforming)
+	const setIsTransforming = useGlobalState((state) => state.sceneNoPersist.transforms.setIsTransforming)
 
 	const modelGroup = useRef()
 

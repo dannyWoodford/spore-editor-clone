@@ -43,8 +43,8 @@ export default function SceneObjects() {
 export function SceneObjectsHelper() {
 	const store = useGlobalState((state) => state)
 	const sceneObjects = useGlobalState((state) => state.sceneStore.sceneObjects)
-	const selected = useGlobalState((state) => state.sceneStore.selected)
-	const transformSelected = useGlobalState((state) => state.sceneStore.transformSelected)
+	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
+	const transformSelected = useGlobalState((state) => state.sceneNoPersist.transformSelected)
 
 	return (
 		<div className='scene-objects-helper'>

@@ -96,7 +96,7 @@ export const AxisRotator: React.FC<{ dir1: THREE.Vector3; dir2: THREE.Vector3; a
     plane: THREE.Plane
   } | null>(null)
   const [isHovered, setIsHovered] = React.useState(false)
-	const setTransformInitRot = useGlobalState((state) => state.sceneStore.transforms.setTransformInitRot)
+	const setTransformInitRot = useGlobalState((state) => state.sceneNoPersist.transforms.setTransformInitRot)
 	
 
   const onPointerDown = React.useCallback(

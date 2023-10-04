@@ -122,22 +122,22 @@ export const useGlobalState = create()(
 			sceneStore: {
 				sceneObjects: [],
 				setSceneObjects: (arr) => set((state) => ({ sceneStore: { ...state.sceneStore, sceneObjects: arr } })),
-				contentBrowserItems: [],
-				setContentBrowserItems: (arr) => set((state) => ({ sceneStore: { ...state.sceneStore, contentBrowserItems: arr } })),
-				selected: '',
-				setSelected: (mesh) => set((state) => ({ sceneStore: { ...state.sceneStore, selected: mesh } })),
-				transformSelected: '',
-				setTransformSelected: (mesh) => set((state) => ({ sceneStore: { ...state.sceneStore, transformSelected: mesh } })),
-				prevSelectedName: '',
-				setPrevSelectedName: (string) => set((state) => ({ sceneStore: { ...state.sceneStore, prevSelectedName: string } })),
-				transforms: {
-					transformInitRot: null,
-					setTransformInitRot: (rot) =>
-						set((state) => ({ sceneStore: { ...state.sceneStore, transforms: { ...state.sceneStore.transforms, transformInitRot: rot } } })),
-					isTransforming: false,
-					setIsTransforming: (bol) =>
-						set((state) => ({ sceneStore: { ...state.sceneStore, transforms: { ...state.sceneStore.transforms, isTransforming: bol } } })),
-				},
+				// contentBrowserItems: [],
+				// setContentBrowserItems: (arr) => set((state) => ({ sceneStore: { ...state.sceneStore, contentBrowserItems: arr } })),
+				// selected: '',
+				// setSelected: (mesh) => set((state) => ({ sceneStore: { ...state.sceneStore, selected: mesh } })),
+				// transformSelected: '',
+				// setTransformSelected: (mesh) => set((state) => ({ sceneStore: { ...state.sceneStore, transformSelected: mesh } })),
+				// prevSelectedName: '',
+				// setPrevSelectedName: (string) => set((state) => ({ sceneStore: { ...state.sceneStore, prevSelectedName: string } })),
+				// transforms: {
+				// 	transformInitRot: null,
+				// 	setTransformInitRot: (rot) =>
+				// 		set((state) => ({ sceneStore: { ...state.sceneStore, transforms: { ...state.sceneStore.transforms, transformInitRot: rot } } })),
+				// 	isTransforming: false,
+				// 	setIsTransforming: (bol) =>
+				// 		set((state) => ({ sceneStore: { ...state.sceneStore, transforms: { ...state.sceneStore.transforms, isTransforming: bol } } })),
+				// },
 			},
 		}),
 		{
@@ -146,7 +146,7 @@ export const useGlobalState = create()(
 				Object.fromEntries(
 					Object.entries(state).filter(([key]) => {
 						// persist all data except "projectNoPersist"
-						return !['projectNoPersist'].includes(key) && !['sceneStore'].includes(key)
+						return !['projectNoPersist'].includes(key) && !['sceneNoPersist'].includes(key)
 					})
 				),
 			name: 'user-store',

@@ -13,7 +13,7 @@ import Raycasting from './utils/Raycasting'
 import PivotControls from './utils/pivotControls/PivotControls'
 
 export default function Scene() {
-	const contentBrowserItems = useGlobalState((state) => state.sceneStore.contentBrowserItems)
+	const contentBrowserItems = useGlobalState((state) => state.sceneNoPersist.contentBrowserItems)
 
 	const addContentBrowserItems = useMemo(() => {
 		if (!contentBrowserItems.length) return

@@ -7,7 +7,7 @@ import { useControls, folder } from 'leva'
 export default function Background() {
 	const maxDistance = useGlobalState((state) => state.intro.maxDistance)
 	const vrEnabled = useGlobalState((state) => state.vr.enabled)
-	const setTransformSelected = useGlobalState((state) => state.sceneStore.setTransformSelected)
+	const setTransformSelected = useGlobalState((state) => state.sceneNoPersist.setTransformSelected)
 
 	const [nightSky] = useTexture([process.env.PUBLIC_URL + '/textures/FS002_Night.png'])
 

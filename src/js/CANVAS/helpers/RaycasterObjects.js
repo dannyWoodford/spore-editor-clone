@@ -3,7 +3,7 @@ import { useThree } from '@react-three/fiber'
 import { useGlobalState } from '../../GlobalState'
 
 export default function RaycasterObjects() {
-	const selected = useGlobalState((state) => state.sceneStore.selected)
+	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
 	const { scene } = useThree()
 
 	let raycasterObjectsArr = []

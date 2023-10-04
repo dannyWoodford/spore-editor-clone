@@ -4,9 +4,9 @@ import { useCursor } from '@react-three/drei'
 import { useGlobalState } from './../../GlobalState'
 
 export default function Shape({ shape, name }) {
-	const selected = useGlobalState((state) => state.sceneStore.selected)
-	const setSelected = useGlobalState((state) => state.sceneStore.setSelected)
-	const setTransformSelected = useGlobalState((state) => state.sceneStore.setTransformSelected)
+	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
+	const setSelected = useGlobalState((state) => state.sceneNoPersist.setSelected)
+	const setTransformSelected = useGlobalState((state) => state.sceneNoPersist.setTransformSelected)
 
 	const sceneObjects = useGlobalState((state) => state.sceneStore.sceneObjects)
 	const setSceneObjects = useGlobalState((state) => state.sceneStore.setSceneObjects)

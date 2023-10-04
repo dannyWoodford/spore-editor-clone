@@ -7,9 +7,9 @@ import { useGlobalState } from '../../../GlobalState'
 import RaycasterObjects from '../../helpers/RaycasterObjects'
 
 export default function Raycasting() {
-	const selected = useGlobalState((state) => state.sceneStore.selected)
-	const prevSelectedName = useGlobalState((state) => state.sceneStore.prevSelectedName)
-	const isTransforming = useGlobalState((state) => state.sceneStore.transforms.isTransforming)
+	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
+	const prevSelectedName = useGlobalState((state) => state.sceneNoPersist.prevSelectedName)
+	const isTransforming = useGlobalState((state) => state.sceneNoPersist.transforms.isTransforming)
 	const snapDistance = useGlobalState((state) => state.intro.snapDistance)
 	const snapping = useGlobalState((state) => state.intro.snapping)
 

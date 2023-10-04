@@ -158,8 +158,8 @@ export const PivotControls = React.forwardRef<THREE.Group, PivotControlsProps>(
     const childrenRef = React.useRef<THREE.Group>(null!)
     const translation = React.useRef<[number, number, number]>([0, 0, 0])
 
-		const selected = useGlobalState((state) => state.sceneStore.selected)
-		const setIsTransforming = useGlobalState((state) => state.sceneStore.transforms.setIsTransforming)
+		const selected = useGlobalState((state) => state.sceneNoPersist.selected)
+		const setIsTransforming = useGlobalState((state) => state.sceneNoPersist.transforms.setIsTransforming)
 
 
     React.useEffect(() => {

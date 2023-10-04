@@ -16,7 +16,7 @@ import Raycasting from './utils/Raycasting'
 // import TeleportTravel from './controls/TeleportTravel'
 
 export default function VRScene() {
-	const contentBrowserItems = useGlobalState((state) => state.sceneStore.contentBrowserItems)
+	const contentBrowserItems = useGlobalState((state) => state.sceneNoPersist.contentBrowserItems)
 	const isSetup = useGlobalState((state) => state.vr.isSetup)
 	const setIsSetup = useGlobalState((state) => state.vr.setIsSetup)
 
@@ -51,9 +51,6 @@ export default function VRScene() {
 		// eslint-disable-next-line
 	}, [contentBrowserItems])
 
-
-
-
 	const text = useRef()
 	const [textColor, setTextColor] = useState('red')
 
@@ -77,7 +74,7 @@ export default function VRScene() {
 
 		if (textColor === 'red') {
 			setTextColor('green')
-		} 
+		}
 	})
 
 	return (
