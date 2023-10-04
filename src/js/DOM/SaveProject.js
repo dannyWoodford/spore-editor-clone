@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { useGlobalState } from '../GlobalState'
 
 export default function SaveProject() {
-	const setProjectLoaded = useGlobalState((state) => state.projectIntro.setProjectLoaded)
-	const showSaveProjectPrompt = useGlobalState((state) => state.projectIntro.showSaveProjectPrompt)
-	const allProjects = useGlobalState((state) => state.allProjects)
-	const setAllProjects = useGlobalState((state) => state.setAllProjects)
-	const setCurrentProjectName = useGlobalState((state) => state.setCurrentProjectName)
+	const setProjectLoaded = useGlobalState((state) => state.projectNoPersist.setProjectLoaded)
+	const showSaveProjectPrompt = useGlobalState((state) => state.projectNoPersist.showSaveProjectPrompt)
+	const allProjects = useGlobalState((state) => state.projectStore.allProjects)
+	const setAllProjects = useGlobalState((state) => state.projectStore.setAllProjects)
+	const setCurrentProjectName = useGlobalState((state) => state.projectStore.setCurrentProjectName)
 
 	// Navigation
-	const returnHome = useGlobalState((state) => state.navigationMethods.returnHome)
+	const returnHome = useGlobalState((state) => state.projectStore.navigationMethods.returnHome)
 
 	const [name, setName] = useState('')
 

@@ -5,7 +5,7 @@ import { hydrateRoot } from 'react-dom/client'
 import { useGlobalState } from '../../GlobalState'
 
 export default function SceneObjects() {
-	const editorStart = useGlobalState((state) => state.projectIntro.editorStart)
+	const editorStart = useGlobalState((state) => state.projectNoPersist.editorStart)
 
 	useEffect(() => {
 		const html = `
@@ -42,9 +42,9 @@ export default function SceneObjects() {
 
 export function SceneObjectsHelper() {
 	const store = useGlobalState((state) => state)
-	const sceneObjects = useGlobalState((state) => state.sceneObjects)
-	const selected = useGlobalState((state) => state.selected)
-	const transformSelected = useGlobalState((state) => state.transformSelected)
+	const sceneObjects = useGlobalState((state) => state.sceneStore.sceneObjects)
+	const selected = useGlobalState((state) => state.sceneStore.selected)
+	const transformSelected = useGlobalState((state) => state.sceneStore.transformSelected)
 
 	return (
 		<div className='scene-objects-helper'>

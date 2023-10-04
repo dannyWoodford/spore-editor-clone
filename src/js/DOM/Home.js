@@ -2,18 +2,21 @@ import React, { useMemo, useCallback } from 'react'
 import { useGlobalState } from '../GlobalState'
 
 export default function Home() {
-	const setEditorStart = useGlobalState((state) => state.projectIntro.setEditorStart)
-	const setShowSaveProjectPrompt = useGlobalState((state) => state.projectIntro.setShowSaveProjectPrompt)
-	const setProjectLoaded = useGlobalState((state) => state.projectIntro.setProjectLoaded)
-	const allProjects = useGlobalState((state) => state.allProjects)
-	const setCurrentProjectName = useGlobalState((state) => state.setCurrentProjectName)
+	const setEditorStart = useGlobalState((state) => state.projectNoPersist.setEditorStart)
+	const setShowSaveProjectPrompt = useGlobalState((state) => state.projectNoPersist.setShowSaveProjectPrompt)
+	const setProjectLoaded = useGlobalState((state) => state.projectNoPersist.setProjectLoaded)
+	const allProjects = useGlobalState((state) => state.projectStore.allProjects)
+	const setCurrentProjectName = useGlobalState((state) => state.projectStore.setCurrentProjectName)
 
-	const existingProjectOnClickHandler = useCallback((projectName) => {
-		// Skip parcel prompt
-		setEditorStart(true)
-		setProjectLoaded(true)
-		setCurrentProjectName(projectName)
-	}, [setCurrentProjectName, setEditorStart, setProjectLoaded])
+	const existingProjectOnClickHandler = useCallback(
+		(projectName) => {
+			// Skip parcel prompt
+			setEditorStart(true)
+			setProjectLoaded(true)
+			setCurrentProjectName(projectName)
+		},
+		[setCurrentProjectName, setEditorStart, setProjectLoaded]
+	)
 
 	const projectsHandler = useMemo(() => {
 		if (!allProjects.length) return

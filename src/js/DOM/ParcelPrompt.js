@@ -2,19 +2,17 @@ import React, { useRef, useState, useEffect } from 'react'
 import { useGlobalState } from './../GlobalState'
 
 export default function ParcelPrompt() {
-	const editorStart = useGlobalState((state) => state.projectIntro.editorStart)
-	const setEditorStart = useGlobalState((state) => state.projectIntro.setEditorStart)
+	const editorStart = useGlobalState((state) => state.projectNoPersist.editorStart)
+	const setEditorStart = useGlobalState((state) => state.projectNoPersist.setEditorStart)
 	const defaultParcelTotal = useGlobalState((state) => state.intro.defaultParcelTotal)
-	
-	const currentProjectParcelTotal = useGlobalState((state) => state.getCurrentProject()?.parcelTotal)
-	const updateCurrentProject = useGlobalState((state) => state.updateCurrentProject)
+
+	const currentProjectParcelTotal = useGlobalState((state) => state.projectStore.getCurrentProject()?.parcelTotal)
+	const updateCurrentProject = useGlobalState((state) => state.projectStore.updateCurrentProject)
 
 	// Navigation
-	const deleteCurrentProject = useGlobalState((state) => state.deleteCurrentProject)
-
+	const deleteCurrentProject = useGlobalState((state) => state.projectStore.deleteCurrentProject)
 
 	const [count, setCount] = useState(typeof currentProjectParcelTotal == 'undefined' ? defaultParcelTotal : currentProjectParcelTotal)
-
 
 	const ogInput = useRef()
 	const mirrorInput = useRef()
@@ -28,7 +26,6 @@ export default function ParcelPrompt() {
 
 		// eslint-disable-next-line
 	}, [count])
-
 
 	return (
 		<div className={`parcel-prompt-bg ${editorStart ? 'hide-prompt' : ''}`}>

@@ -7,9 +7,9 @@ import useMousePosition from '../helpers/useMousePosition'
 import RaycasterObjects from '../helpers/RaycasterObjects'
 
 const Raycasting = () => {
-	const selected = useGlobalState((state) => state.selected)
-	const prevSelectedName = useGlobalState((state) => state.prevSelectedName)
-	const isTransforming = useGlobalState((state) => state.transforms.isTransforming)
+	const selected = useGlobalState((state) => state.sceneStore.selected)
+	const prevSelectedName = useGlobalState((state) => state.sceneStore.prevSelectedName)
+	const isTransforming = useGlobalState((state) => state.sceneStore.transforms.isTransforming)
 	const snapDistance = useGlobalState((state) => state.intro.snapDistance)
 	const snapping = useGlobalState((state) => state.intro.snapping)
 
@@ -32,7 +32,6 @@ const Raycasting = () => {
 				// console.log('%cprevSelectedName === selected.name', 'color:red;font-size:14px;', prevSelectedName === selected.name)
 				return
 			}
-
 
 			if (intersects[0].object.name === selected.name && intersects.length > 1) {
 				// console.log('fire 111')

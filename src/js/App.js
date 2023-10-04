@@ -22,8 +22,8 @@ import Lighting from './CANVAS/setup/Lighting'
 import SceneObjects from './CANVAS/helpers/SceneObjects'
 
 export default function App() {
-	const projectLoaded = useGlobalState((state) => state.projectIntro.projectLoaded)
-	const editorStart = useGlobalState((state) => state.projectIntro.editorStart)
+	const projectLoaded = useGlobalState((state) => state.projectNoPersist.projectLoaded)
+	const editorStart = useGlobalState((state) => state.projectNoPersist.editorStart)
 	const vrEnabled = useGlobalState((state) => state.vr.enabled)
 	const setVrEnabled = useGlobalState((state) => state.vr.setEnabled)
 

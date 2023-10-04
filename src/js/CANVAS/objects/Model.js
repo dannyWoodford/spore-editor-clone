@@ -5,14 +5,14 @@ import { useCursor, Gltf } from '@react-three/drei'
 import { useGlobalState } from './../../GlobalState'
 
 export default function Model({ name, path }) {
-	const selected = useGlobalState((state) => state.selected)
-	const setSelected = useGlobalState((state) => state.setSelected)
-	const transformSelected = useGlobalState((state) => state.transformSelected)
-	const setTransformSelected = useGlobalState((state) => state.setTransformSelected)
-	const transformInitRot = useGlobalState((state) => state.transforms.transformInitRot)
+	const selected = useGlobalState((state) => state.sceneStore.selected)
+	const setSelected = useGlobalState((state) => state.sceneStore.setSelected)
+	const transformSelected = useGlobalState((state) => state.sceneStore.transformSelected)
+	const setTransformSelected = useGlobalState((state) => state.sceneStore.setTransformSelected)
+	const transformInitRot = useGlobalState((state) => state.sceneStore.transforms.transformInitRot)
 
-	const sceneObjects = useGlobalState((state) => state.sceneObjects)
-	const setSceneObjects = useGlobalState((state) => state.setSceneObjects)
+	const sceneObjects = useGlobalState((state) => state.sceneStore.sceneObjects)
+	const setSceneObjects = useGlobalState((state) => state.sceneStore.setSceneObjects)
 
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
@@ -34,7 +34,6 @@ export default function Model({ name, path }) {
 		// const helper = new THREE.Box3Helper(box3, 0xffff00)
 		// mesh.current.add(helper)
 
-
 		// add "size" attribute to Object3D so the height can be factored into placement on ground by raycaster
 		mesh.current.size = box3.getSize(size)
 
@@ -43,7 +42,6 @@ export default function Model({ name, path }) {
 		// mesh.current.children[0].translateY(-(size.y / 2))
 		// mesh.current.children[0].translateZ(size.z / 2)
 
-		
 		if (transformInitRot !== null) {
 			mesh.current.rotation.set(transformInitRot.x, transformInitRot.y, transformInitRot.z)
 		}
@@ -53,15 +51,15 @@ export default function Model({ name, path }) {
 		// eslint-disable-next-line
 	}, [])
 
-		const colorHandler = useMemo(() => {
-			if (name === selected?.name) {
-				return <meshPhysicalMaterial color='green' />
-			} else if (name === transformSelected?.name) {
-				return <meshPhysicalMaterial color='blue' />
-			} else {
-				return <meshPhysicalMaterial color='orange' />
-			}
-		}, [name, selected, transformSelected])
+	const colorHandler = useMemo(() => {
+		if (name === selected?.name) {
+			return <meshPhysicalMaterial color='green' />
+		} else if (name === transformSelected?.name) {
+			return <meshPhysicalMaterial color='blue' />
+		} else {
+			return <meshPhysicalMaterial color='orange' />
+		}
+	}, [name, selected, transformSelected])
 
 	return (
 		// Disable visibility initially and set to true in Raycasting.js once mouse position is converted to 3D space
@@ -77,11 +75,11 @@ export default function Model({ name, path }) {
 			onPointerOut={() => setHovered(false)}
 			visible={false}>
 			<group name='center-offset'>
-				<Gltf 
-					src={process.env.PUBLIC_URL + path} 
-					castShadow 
-					receiveShadow 
-					// inject={colorHandler} 
+				<Gltf
+					src={process.env.PUBLIC_URL + path}
+					castShadow
+					receiveShadow
+					// inject={colorHandler}
 				/>
 			</group>
 		</group>

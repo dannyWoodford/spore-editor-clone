@@ -3,12 +3,12 @@ import { useThree } from '@react-three/fiber'
 import { useGlobalState } from '../../GlobalState'
 
 export default function Drop() {
-	const contentBrowserItems = useGlobalState((state) => state.contentBrowserItems)
-	const setContentBrowserItems = useGlobalState((state) => state.setContentBrowserItems)
-	const selected = useGlobalState((state) => state.selected)
-	const setPrevSelectedName = useGlobalState((state) => state.setPrevSelectedName)
-	const setIsTransforming = useGlobalState((state) => state.transforms.setIsTransforming)
-	const setTransformSelected = useGlobalState((state) => state.setTransformSelected)
+	const contentBrowserItems = useGlobalState((state) => state.sceneStore.contentBrowserItems)
+	const setContentBrowserItems = useGlobalState((state) => state.sceneStore.setContentBrowserItems)
+	const selected = useGlobalState((state) => state.sceneStore.selected)
+	const setPrevSelectedName = useGlobalState((state) => state.sceneStore.setPrevSelectedName)
+	const setIsTransforming = useGlobalState((state) => state.sceneStore.transforms.setIsTransforming)
+	const setTransformSelected = useGlobalState((state) => state.sceneStore.setTransformSelected)
 
 	const { gl } = useThree()
 

@@ -16,7 +16,7 @@ import Raycasting from './utils/Raycasting'
 // import TeleportTravel from './controls/TeleportTravel'
 
 export default function VRScene() {
-	const contentBrowserItems = useGlobalState((state) => state.contentBrowserItems)
+	const contentBrowserItems = useGlobalState((state) => state.sceneStore.contentBrowserItems)
 	const isSetup = useGlobalState((state) => state.vr.isSetup)
 	const setIsSetup = useGlobalState((state) => state.vr.setIsSetup)
 

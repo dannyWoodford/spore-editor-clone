@@ -3,7 +3,7 @@ import { useGlobalState } from './../GlobalState'
 import { allModels, allShapes } from './../ContentBrowserItems'
 
 const ContentBrowser = ({ isLeva = false }) => {
-	const editorStart = useGlobalState((state) => state.projectIntro.editorStart)
+	const editorStart = useGlobalState((state) => state.projectNoPersist.editorStart)
 
 	const [active, setActive] = useState('wall')
 

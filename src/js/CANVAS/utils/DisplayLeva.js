@@ -7,7 +7,7 @@ import { useGlobalState } from '../../GlobalState'
 // import ContentBrowser from '../../DOM/ContentBrowser'
 
 export default function DisplayLeva() {
-	const editorStart = useGlobalState((state) => state.projectIntro.editorStart)
+	const editorStart = useGlobalState((state) => state.projectNoPersist.editorStart)
 
 	useEffect(() => {
 		let levaControls = document.querySelector('#leva__root')

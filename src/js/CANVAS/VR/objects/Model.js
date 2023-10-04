@@ -5,13 +5,13 @@ import * as THREE from 'three'
 import { useGlobalState } from '../../../GlobalState'
 
 export default function Model({ name, path }) {
-	const selected = useGlobalState((state) => state.selected)
-	const setSelected = useGlobalState((state) => state.setSelected)
-	const setTransformSelected = useGlobalState((state) => state.setTransformSelected)
+	const selected = useGlobalState((state) => state.sceneStore.selected)
+	const setSelected = useGlobalState((state) => state.sceneStore.setSelected)
+	const setTransformSelected = useGlobalState((state) => state.sceneStore.setTransformSelected)
 	const hudScale = useGlobalState((state) => state.vr.hudScale)
 
-	const sceneObjects = useGlobalState((state) => state.sceneObjects)
-	const setSceneObjects = useGlobalState((state) => state.setSceneObjects)
+	const sceneObjects = useGlobalState((state) => state.sceneStore.sceneObjects)
+	const setSceneObjects = useGlobalState((state) => state.sceneStore.setSceneObjects)
 
 	const mesh = useRef()
 
