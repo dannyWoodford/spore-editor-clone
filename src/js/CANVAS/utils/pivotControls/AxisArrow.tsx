@@ -5,8 +5,6 @@ import { Line } from '@react-three/drei'
 import { Html } from '@react-three/drei'
 import { context } from './context'
 
-import { useGlobalState } from '../../../GlobalState'
-
 const vec1 = new THREE.Vector3()
 const vec2 = new THREE.Vector3()
 
@@ -63,10 +61,6 @@ export const AxisArrow: React.FC<{ direction: THREE.Vector3; axis: 0 | 1 | 2 }> 
   const clickInfo = React.useRef<{ clickPoint: THREE.Vector3; dir: THREE.Vector3 } | null>(null)
   const offset0 = React.useRef<number>(0)
   const [isHovered, setIsHovered] = React.useState(false)
-	const parcelTotal = useGlobalState((state) => state.intro.parcelTotal)
-	const transformSelected = useGlobalState((state) => state.transformSelected)
-	const selected = useGlobalState((state) => state.selected)
-
 
   const onPointerDown = React.useCallback(
     (e: ThreeEvent<PointerEvent>) => {

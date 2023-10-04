@@ -2,11 +2,19 @@ import React, { useRef, useState, useEffect } from 'react'
 import { useGlobalState } from './../GlobalState'
 
 export default function ParcelPrompt() {
-	const initialPrompt = useGlobalState((state) => state.intro.initialPrompt)
-	const setInitialPrompt = useGlobalState((state) => state.intro.setInitialPrompt)
-	const changeParcelTotal = useGlobalState((state) => state.intro.changeParcelTotal)
+	const editorStart = useGlobalState((state) => state.projectIntro.editorStart)
+	const setEditorStart = useGlobalState((state) => state.projectIntro.setEditorStart)
+	const defaultParcelTotal = useGlobalState((state) => state.intro.defaultParcelTotal)
+	
+	const currentProjectParcelTotal = useGlobalState((state) => state.getCurrentProject()?.parcelTotal)
+	const updateCurrentProject = useGlobalState((state) => state.updateCurrentProject)
 
-	const [count, setCount] = useState(3)
+	// Navigation
+	const deleteCurrentProject = useGlobalState((state) => state.deleteCurrentProject)
+
+
+	const [count, setCount] = useState(typeof currentProjectParcelTotal == 'undefined' ? defaultParcelTotal : currentProjectParcelTotal)
+
 
 	const ogInput = useRef()
 	const mirrorInput = useRef()
@@ -16,13 +24,14 @@ export default function ParcelPrompt() {
 		mirrorInput.current.value = count
 		ogInput.current.value = count
 
-		changeParcelTotal(count)
+		updateCurrentProject({ parcelTotal: count })
 
 		// eslint-disable-next-line
 	}, [count])
 
+
 	return (
-		<div className={`parcel-prompt-bg ${initialPrompt ? 'hide-prompt' : ''}`}>
+		<div className={`parcel-prompt-bg ${editorStart ? 'hide-prompt' : ''}`}>
 			<div className='parcel-prompt'>
 				<h1 className='title'>Base Dimensions</h1>
 				<hr id='divider'></hr>
@@ -51,8 +60,10 @@ export default function ParcelPrompt() {
 				</div>
 				<p className='text note'>*Note: To place structures on your land, you must own enough consecutive parcels</p>
 				<div className='button-container'>
-					<button className='button cancel'>Cancel</button>
-					<button className='button ready' onClick={() => setInitialPrompt()}>
+					<button className='button cancel' onClick={() => deleteCurrentProject()}>
+						Cancel
+					</button>
+					<button className='button ready' onClick={() => setEditorStart(true)}>
 						Ready
 					</button>
 				</div>

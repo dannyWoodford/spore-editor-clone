@@ -77,7 +77,12 @@ export default function Model({ name, path }) {
 			onPointerOut={() => setHovered(false)}
 			visible={false}>
 			<group name='center-offset'>
-				<Gltf src={process.env.PUBLIC_URL + path} castShadow receiveShadow inject={colorHandler} />
+				<Gltf 
+					src={process.env.PUBLIC_URL + path} 
+					castShadow 
+					receiveShadow 
+					// inject={colorHandler} 
+				/>
 			</group>
 		</group>
 	)

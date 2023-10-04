@@ -7,25 +7,25 @@ import { useGlobalState } from '../../GlobalState'
 // import ContentBrowser from '../../DOM/ContentBrowser'
 
 export default function DisplayLeva() {
-	const initialPrompt = useGlobalState((state) => state.intro.initialPrompt)
+	const editorStart = useGlobalState((state) => state.projectIntro.editorStart)
 
 	useEffect(() => {
 		let levaControls = document.querySelector('#leva__root')
 		levaControls.style.display = 'none'
 
-		if (initialPrompt) {
+		if (editorStart) {
 			levaControls.style.display = 'block'
 		} else {
 			levaControls.style.display = 'none'
 		}
-	}, [initialPrompt])
+	}, [editorStart])
 
 	// useEffect(() => {
 	// 	const html = `
 	// 	<div id="leva-controls-container"></div>
 	// `
 
-	// 	if (initialPrompt) {
+	// 	if (editorStart) {
 	// 		let levaMainContainer = document.querySelector('.leva-c-kWgxhW-bCBHqk-fill-false ')
 	// 		levaMainContainer.style.width = '30%'
 
@@ -43,7 +43,7 @@ export default function DisplayLeva() {
 	// 		levaControlsContainer.appendChild(template)
 	// 		hydrateRoot(container, <ContentBrowser isLeva={true} />)
 	// 	}
-	// }, [initialPrompt])
+	// }, [editorStart])
 
 	return <></>
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useControls } from 'leva'
 
 import { useGlobalState } from './../../../GlobalState'
@@ -24,17 +24,23 @@ export default function PivotControls() {
 		[setSnapping]
 	)
 
+	useEffect(() => {
+		console.log('transformSelected', transformSelected)
+	}, [transformSelected])
+
 	return (
-		<ObjectTransformer
-			object={transformSelected ? transformSelected : undefined}
-			visible={transformSelected}
-			depthTest={false}
-			lineWidth={2}
-			scale={1.5}
-			translationSnap={snapping ? snapDistance : null}
-			rotationSnap={snapping ? snapAngle : null}
-			/** Anchor point, like BBAnchor, each axis can be between -1/0/+1 */
-			anchor={[-1, -1, -1]}
-		/>
+		<>
+		</>
+		// <ObjectTransformer
+		// 	object={transformSelected ? transformSelected : undefined}
+		// 	visible={transformSelected}
+		// 	depthTest={false}
+		// 	lineWidth={2}
+		// 	scale={1.5}
+		// 	translationSnap={snapping ? snapDistance : null}
+		// 	rotationSnap={snapping ? snapAngle : null}
+		// 	/** Anchor point, like BBAnchor, each axis can be between -1/0/+1 */
+		// 	anchor={[-1, -1, -1]}
+		// />
 	)
 }

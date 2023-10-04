@@ -1,13 +1,15 @@
-import React, { useMemo, useRef, useEffect } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { Plane, Box, Circle, MeshReflectorMaterial } from '@react-three/drei'
 import { useControls, folder } from 'leva'
 
 import { useGlobalState } from './../../GlobalState'
 
 const Ground = ({ children }) => {
-	const parcelTotal = useGlobalState((state) => state.intro.parcelTotal)
+	const defaultParcelTotal = useGlobalState((state) => state.intro.defaultParcelTotal)
+	const currentProjectParcelTotal = useGlobalState((state) => state.getCurrentProject().parcelTotal)
+	let parcelTotal = typeof currentProjectParcelTotal == 'undefined' ? defaultParcelTotal : currentProjectParcelTotal;
+
 	const maxDistance = useGlobalState((state) => state.intro.maxDistance)
-	const transformSelected = useGlobalState((state) => state.transformSelected)
 
 	const childrenGroup = useRef()
 
@@ -65,20 +67,6 @@ const Ground = ({ children }) => {
 			</group>
 		)
 	}, [parcelTotal, material, reflectiveConfig])
-
-		// useEffect(() => {
-		// 	if (!childrenGroup.current) return
-
-		// 	console.log('childrenGroup', childrenGroup.current)
-
-		// 	if (transformSelected) {
-		// 		console.log('transformSelected.name', transformSelected.name)
-		// 		let theResult = childrenGroup.current.getObjectByName(transformSelected.name, true)
-
-		// 		console.log('theResult', theResult)
-		// 	}
-		// }, [childrenGroup, transformSelected])
-
 
 	return (
 		<group position={[0, 0, 0]} name='ground'>

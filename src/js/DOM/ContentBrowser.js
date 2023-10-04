@@ -3,7 +3,7 @@ import { useGlobalState } from './../GlobalState'
 import { allModels, allShapes } from './../ContentBrowserItems'
 
 const ContentBrowser = ({ isLeva = false }) => {
-	const initialPrompt = useGlobalState((state) => state.intro.initialPrompt)
+	const editorStart = useGlobalState((state) => state.projectIntro.editorStart)
 
 	const [active, setActive] = useState('wall')
 
@@ -40,6 +40,8 @@ const ContentBrowser = ({ isLeva = false }) => {
 	}
 
 	const addModelItems = useMemo(() => {
+		console.log('addModelItems')
+
 		return Object.entries(allModels).map((obj, index) => {
 			if (obj[1].modelType === active) {
 				return (
@@ -73,7 +75,7 @@ const ContentBrowser = ({ isLeva = false }) => {
 	}, [])
 
 	return (
-		<div className={`content-browser ${initialPrompt ? 'show' : ''} ${isLeva ? 'isLeva' : ''}`}>
+		<div className={`content-browser ${editorStart ? 'show' : ''} ${isLeva ? 'isLeva' : ''}`}>
 			<div className='top-bar'>
 				<h1 className='top-bar-title'>{active}</h1>
 			</div>

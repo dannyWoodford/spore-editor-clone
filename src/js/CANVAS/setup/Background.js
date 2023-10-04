@@ -57,7 +57,7 @@ export default function Background() {
 				onClick={(e) => {
 					e.stopPropagation()
 
-					setTransformSelected()
+					setTransformSelected('')
 				}}
 				userData={{ staticObj: true }}>
 				<meshBasicMaterial side={THREE.BackSide} map={nightSky} />
