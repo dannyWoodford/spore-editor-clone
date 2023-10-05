@@ -10,8 +10,9 @@ export default function Model({ name, path }) {
 	const setTransformSelected = useGlobalState((state) => state.sceneNoPersist.setTransformSelected)
 	const hudScale = useGlobalState((state) => state.vr.hudScale)
 
-	const sceneObjects = useGlobalState((state) => state.sceneStore.sceneObjects)
-	const setSceneObjects = useGlobalState((state) => state.sceneStore.setSceneObjects)
+	// update sceneObjects on currentProject
+	const updateCurrentProject = useGlobalState((state) => state.projectStore.updateCurrentProject)
+	const currentProjectSceneObjects = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjects)
 
 	const mesh = useRef()
 
@@ -34,7 +35,7 @@ export default function Model({ name, path }) {
 		// mesh.current.children[0].translateY(-(size.y / 2))
 		// mesh.current.children[0].translateZ(size.x / 2)
 
-		setSceneObjects([...sceneObjects, mesh.current])
+		updateCurrentProject({ sceneObjects: [...currentProjectSceneObjects, mesh.current] })
 
 		// eslint-disable-next-line
 	}, [])

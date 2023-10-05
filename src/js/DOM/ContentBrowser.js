@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { useGlobalState } from './../GlobalState'
 import { allModels, allShapes } from './../ContentBrowserItems'
 
 const ContentBrowser = ({ isLeva = false }) => {
 	const editorStart = useGlobalState((state) => state.projectNoPersist.editorStart)
 
+	// ContentBrowser sub-types
+	// wall, item, floor, roof
 	const [active, setActive] = useState('wall')
 
-	// sub-types
-	// wall, item, floor, roof
-
-	const images = {}
+	const images = useRef({})
 
 	useEffect(() => {
 		const elems = document.querySelectorAll('.item')
@@ -22,26 +21,27 @@ const ContentBrowser = ({ isLeva = false }) => {
 			image.setAttribute('style', `position: absolute; left: 0px; top: 0px; width: 80px; height: 80px; z-index: -1;`)
 			image.src = source
 
-			images[source] = image
+			images.current[source] = image
 		}
 	})
 
-	const onDragStartHandler = (e) => {
-		e.dataTransfer.setData(`name=${e.target.dataset.name}`, '')
-		e.dataTransfer.setData(`type=${e.target.dataset.type}`, '')
-		e.dataTransfer.setData(`path=${e.target.dataset.path}`, '')
+	const onDragStartHandler = useCallback(
+		(e) => {
+			e.dataTransfer.setData(`name=${e.target.dataset.name}`, '')
+			e.dataTransfer.setData(`type=${e.target.dataset.type}`, '')
+			e.dataTransfer.setData(`path=${e.target.dataset.path}`, '')
 
-		const source = process.env.PUBLIC_URL + e.target.querySelector('img').src
+			const source = process.env.PUBLIC_URL + e.target.querySelector('img').src
 
-		const img = images[source]
-		document.body.appendChild(img)
+			const img = images.current[source]
+			document.body.appendChild(img)
 
-		e.dataTransfer.setDragImage(img, 0, 0)
-	}
+			e.dataTransfer.setDragImage(img, 0, 0)
+		},
+		[images]
+	)
 
 	const addModelItems = useMemo(() => {
-		console.log('addModelItems')
-
 		return Object.entries(allModels).map((obj, index) => {
 			if (obj[1].modelType === active) {
 				return (
@@ -61,7 +61,7 @@ const ContentBrowser = ({ isLeva = false }) => {
 				return null
 			}
 		})
-	}, [active])
+	}, [active, onDragStartHandler])
 
 	const addShapeItems = useMemo(() => {
 		return Object.entries(allShapes).map((obj, index) => {
@@ -72,7 +72,7 @@ const ContentBrowser = ({ isLeva = false }) => {
 				</div>
 			)
 		})
-	}, [])
+	}, [onDragStartHandler])
 
 	return (
 		<div className={`content-browser ${editorStart ? 'show' : ''} ${isLeva ? 'isLeva' : ''}`}>

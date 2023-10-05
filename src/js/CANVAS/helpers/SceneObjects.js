@@ -42,7 +42,7 @@ export default function SceneObjects() {
 
 export function SceneObjectsHelper() {
 	const store = useGlobalState((state) => state)
-	const sceneObjects = useGlobalState((state) => state.sceneStore.sceneObjects)
+	const currentProjectSceneObjects = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjects)
 	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
 	const transformSelected = useGlobalState((state) => state.sceneNoPersist.transformSelected)
 
@@ -56,8 +56,8 @@ export function SceneObjectsHelper() {
 				<p className='text'>transformSelected</p>
 				<i className='arrow right'></i>
 			</button>
-			<button className='button' onClick={() => console.log('sceneObjects', sceneObjects)}>
-				<p className='text'>sceneObjects</p>
+			<button className='button' onClick={() => console.log('currentProjectSceneObjects', currentProjectSceneObjects)}>
+				<p className='text'>SceneObjects</p>
 				<i className='arrow right'></i>
 			</button>
 			<button className='button' onClick={() => console.log('store', store)}>

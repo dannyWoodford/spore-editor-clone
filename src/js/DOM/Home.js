@@ -42,6 +42,15 @@ export default function Home() {
 				<h1 className='title'>Username</h1>
 				<hr id='divider'></hr>
 				<p className='text'>Please choose a workspace size by inputting parcel dimensions</p>
+				<button
+					className='button'
+					onClick={() => {
+						localStorage.removeItem('user-store')
+						window.location.reload()
+					}}>
+					<p className='text'>RESET Store</p>
+					<i className='arrow right'></i>
+				</button>
 			</div>
 			<div className='projects home-panel'>
 				<h1 className='title'>Projects</h1>

@@ -68,9 +68,8 @@ export const useGlobalState = create()(
 				},
 				updateCurrentProject: (updateObj) => {
 					const getCurrentProject = get().projectStore.getCurrentProject()
-
-					const setAllProjects = get().projectStore.setAllProjects
 					const allProjects = get().projectStore.allProjects
+					const setAllProjects = get().projectStore.setAllProjects
 
 					for (const key in updateObj) {
 						if (updateObj.hasOwnProperty(key)) {
@@ -78,10 +77,6 @@ export const useGlobalState = create()(
 							if (!getCurrentProject.hasOwnProperty(key)) {
 								// If it doesn't exist, add it to the getCurrentProject object
 								getCurrentProject[key] = updateObj[key]
-							} else if (typeof updateObj[key] === 'object' && typeof getCurrentProject[key] === 'object') {
-								// If both properties are objects, recursively merge them
-								console.log('recursive')
-								// UpdateCurrentProject(getCurrentProject[key], updateObj[key])
 							} else {
 								// Otherwise, update the property in the getCurrentProject object
 								getCurrentProject[key] = updateObj[key]
@@ -118,26 +113,6 @@ export const useGlobalState = create()(
 					setIsTransforming: (bol) =>
 						set((state) => ({ sceneNoPersist: { ...state.sceneNoPersist, transforms: { ...state.sceneNoPersist.transforms, isTransforming: bol } } })),
 				},
-			},
-			sceneStore: {
-				sceneObjects: [],
-				setSceneObjects: (arr) => set((state) => ({ sceneStore: { ...state.sceneStore, sceneObjects: arr } })),
-				// contentBrowserItems: [],
-				// setContentBrowserItems: (arr) => set((state) => ({ sceneStore: { ...state.sceneStore, contentBrowserItems: arr } })),
-				// selected: '',
-				// setSelected: (mesh) => set((state) => ({ sceneStore: { ...state.sceneStore, selected: mesh } })),
-				// transformSelected: '',
-				// setTransformSelected: (mesh) => set((state) => ({ sceneStore: { ...state.sceneStore, transformSelected: mesh } })),
-				// prevSelectedName: '',
-				// setPrevSelectedName: (string) => set((state) => ({ sceneStore: { ...state.sceneStore, prevSelectedName: string } })),
-				// transforms: {
-				// 	transformInitRot: null,
-				// 	setTransformInitRot: (rot) =>
-				// 		set((state) => ({ sceneStore: { ...state.sceneStore, transforms: { ...state.sceneStore.transforms, transformInitRot: rot } } })),
-				// 	isTransforming: false,
-				// 	setIsTransforming: (bol) =>
-				// 		set((state) => ({ sceneStore: { ...state.sceneStore, transforms: { ...state.sceneStore.transforms, isTransforming: bol } } })),
-				// },
 			},
 		}),
 		{

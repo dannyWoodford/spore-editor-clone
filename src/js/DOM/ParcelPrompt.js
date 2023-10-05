@@ -8,8 +8,6 @@ export default function ParcelPrompt() {
 
 	const currentProjectParcelTotal = useGlobalState((state) => state.projectStore.getCurrentProject()?.parcelTotal)
 	const updateCurrentProject = useGlobalState((state) => state.projectStore.updateCurrentProject)
-
-	// Navigation
 	const deleteCurrentProject = useGlobalState((state) => state.projectStore.deleteCurrentProject)
 
 	const [count, setCount] = useState(typeof currentProjectParcelTotal == 'undefined' ? defaultParcelTotal : currentProjectParcelTotal)

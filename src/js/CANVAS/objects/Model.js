@@ -11,8 +11,9 @@ export default function Model({ name, path }) {
 	const setTransformSelected = useGlobalState((state) => state.sceneNoPersist.setTransformSelected)
 	const transformInitRot = useGlobalState((state) => state.sceneNoPersist.transforms.transformInitRot)
 
-	const sceneObjects = useGlobalState((state) => state.sceneStore.sceneObjects)
-	const setSceneObjects = useGlobalState((state) => state.sceneStore.setSceneObjects)
+	// update sceneObjects on currentProject
+	const updateCurrentProject = useGlobalState((state) => state.projectStore.updateCurrentProject)
+	const currentProjectSceneObjects = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjects)
 
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
@@ -46,7 +47,7 @@ export default function Model({ name, path }) {
 			mesh.current.rotation.set(transformInitRot.x, transformInitRot.y, transformInitRot.z)
 		}
 
-		setSceneObjects([...sceneObjects, mesh.current])
+		updateCurrentProject({ sceneObjects: [...currentProjectSceneObjects, mesh.current] })
 
 		// eslint-disable-next-line
 	}, [])

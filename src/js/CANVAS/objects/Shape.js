@@ -8,8 +8,9 @@ export default function Shape({ shape, name }) {
 	const setSelected = useGlobalState((state) => state.sceneNoPersist.setSelected)
 	const setTransformSelected = useGlobalState((state) => state.sceneNoPersist.setTransformSelected)
 
-	const sceneObjects = useGlobalState((state) => state.sceneStore.sceneObjects)
-	const setSceneObjects = useGlobalState((state) => state.sceneStore.setSceneObjects)
+	// update sceneObjects on currentProject
+	const updateCurrentProject = useGlobalState((state) => state.projectStore.updateCurrentProject)
+	const currentProjectSceneObjects = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjects)
 
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
@@ -48,7 +49,7 @@ export default function Shape({ shape, name }) {
 		// add "size" attribute to Object3D so the height can be factored into placement on ground by raycaster
 		mesh.current.size = box3.getSize(size)
 
-		setSceneObjects([...sceneObjects, mesh.current])
+		updateCurrentProject({ sceneObjects: [...currentProjectSceneObjects, mesh.current] })
 
 		// eslint-disable-next-line
 	}, [])
