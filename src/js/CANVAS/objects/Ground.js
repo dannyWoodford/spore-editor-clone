@@ -6,7 +6,7 @@ import { useGlobalState } from './../../GlobalState'
 
 const Ground = ({ children }) => {
 	const defaultParcelTotal = useGlobalState((state) => state.intro.defaultParcelTotal)
-	const currentProjectParcelTotal = useGlobalState((state) => state.projectStore.getCurrentProject().parcelTotal)
+	const currentProjectParcelTotal = useGlobalState((state) => state.projectStore.getCurrentProject()?.parcelTotal)
 	let parcelTotal = typeof currentProjectParcelTotal == 'undefined' ? defaultParcelTotal : currentProjectParcelTotal;
 
 	const maxDistance = useGlobalState((state) => state.intro.maxDistance)

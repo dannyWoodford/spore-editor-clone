@@ -88,6 +88,10 @@
 		z-index: -1;
 	}
 
+	.button.navigate:after {
+		background-color: #f6531c;
+	}
+
 	.button:main,
 	.button:focus {
 		user-select: auto;

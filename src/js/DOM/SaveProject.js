@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useGlobalState } from '../GlobalState'
 
 export default function SaveProject() {
@@ -11,6 +11,8 @@ export default function SaveProject() {
 	// Navigation
 	const returnHome = useGlobalState((state) => state.projectStore.navigationMethods.returnHome)
 
+	const textInput = useRef()
+
 	const [name, setName] = useState('')
 
 	const setProjectHandler = () => {
@@ -18,12 +20,19 @@ export default function SaveProject() {
 			name: name,
 			thumbnail: '/content-browser/models/Roof_Slant_Red_01.png',
 			sceneObjects: [],
+			sceneObjectNames: [],
 		}
 
 		setAllProjects([...allProjects, newObj])
 		setProjectLoaded(true)
 		setCurrentProjectName(name)
 	}
+
+	useEffect(() => {
+		if (showSaveProjectPrompt) {
+			textInput.current.focus()
+		}
+	}, [showSaveProjectPrompt])
 
 	return (
 		<div className={`save-project-bg ${showSaveProjectPrompt ? '' : 'hide-prompt'}`}>
@@ -32,7 +41,7 @@ export default function SaveProject() {
 
 				<form>
 					<label>Structure Name</label>
-					<input type='text' value={name} onChange={(e) => setName(e.target.value)} />
+					<input type='text' ref={textInput} value={name} onChange={(e) => setName(e.target.value)} />
 				</form>
 
 				<p className='text note'>You will be able to place your structure on the web app home page</p>

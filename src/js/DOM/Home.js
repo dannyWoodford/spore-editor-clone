@@ -2,6 +2,7 @@ import React, { useMemo, useCallback } from 'react'
 import { useGlobalState } from '../GlobalState'
 
 export default function Home() {
+	const store = useGlobalState((state) => state)
 	const setEditorStart = useGlobalState((state) => state.projectNoPersist.setEditorStart)
 	const setShowSaveProjectPrompt = useGlobalState((state) => state.projectNoPersist.setShowSaveProjectPrompt)
 	const setProjectLoaded = useGlobalState((state) => state.projectNoPersist.setProjectLoaded)
@@ -49,6 +50,10 @@ export default function Home() {
 						window.location.reload()
 					}}>
 					<p className='text'>RESET Store</p>
+					<i className='arrow right'></i>
+				</button>
+				<button className='button' onClick={() => console.log('store', store)}>
+					<p className='text'>store</p>
 					<i className='arrow right'></i>
 				</button>
 			</div>

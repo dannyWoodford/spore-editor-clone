@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import '../css/main.scss'
 import { VRButton, XR } from '@react-three/xr'
 import { Canvas } from '@react-three/fiber'
@@ -19,13 +19,17 @@ import Controls from './CANVAS/setup/Controls'
 import Background from './CANVAS/setup/Background'
 import Lighting from './CANVAS/setup/Lighting'
 
-import SceneObjects from './CANVAS/helpers/SceneObjects'
+import InjectUIToLeva from './CANVAS/helpers/InjectUIToLeva'
 
 export default function App() {
 	const projectLoaded = useGlobalState((state) => state.projectNoPersist.projectLoaded)
 	const editorStart = useGlobalState((state) => state.projectNoPersist.editorStart)
 	const vrEnabled = useGlobalState((state) => state.vr.enabled)
 	const setVrEnabled = useGlobalState((state) => state.vr.setEnabled)
+
+	useEffect(() => {
+		// console.log('projectLoaded', projectLoaded)
+	}, [projectLoaded])
 
 	return (
 		<div className='App'>
@@ -35,34 +39,30 @@ export default function App() {
 					<SaveProject />
 				</>
 			)}
-			{projectLoaded && (
-				<>
-					<ParcelPrompt />
-					<ContentBrowser />
-					{editorStart && <VRButton />}
-					<div className='bg-canvas'>
-						{/* frameloop will not be respected while in a VR session. */}
-						<Canvas frameloop='demand' shadows>
-							<Suspense fallback={<Loading />}>
-								<Controls />
-								<Background />
-								<Lighting />
-								<SceneObjects />
+			{projectLoaded && <ParcelPrompt />}
+			<ContentBrowser />
+			{editorStart && <VRButton />}
+			<div className='bg-canvas'>
+				{/* frameloop will not be respected while in a VR session. */}
+				<Canvas frameloop='demand' shadows>
+					<Suspense fallback={<Loading />}>
+						<Controls />
+						<Background />
+						<Lighting />
+						<InjectUIToLeva />
 
-								<XR onSessionStart={() => setVrEnabled(true)} onSessionEnd={() => setVrEnabled(false)}>
-									{vrEnabled && <VRScene />}
-								</XR>
+						<XR onSessionStart={() => setVrEnabled(true)} onSessionEnd={() => setVrEnabled(false)}>
+							{vrEnabled && <VRScene />}
+						</XR>
 
-								{!vrEnabled && <Scene />}
-							</Suspense>
+						{!vrEnabled && <Scene />}
+					</Suspense>
 
-							<AdaptiveDpr pixelated />
-							<AdaptiveEvents />
-							<Stats className='stats' />
-						</Canvas>
-					</div>
-				</>
-			)}
+					<AdaptiveDpr pixelated />
+					<AdaptiveEvents />
+					<Stats className='stats' />
+				</Canvas>
+			</div>
 		</div>
 	)
 }
