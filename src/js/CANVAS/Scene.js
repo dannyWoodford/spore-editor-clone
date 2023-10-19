@@ -42,33 +42,33 @@ export default function Scene() {
 		// eslint-disable-next-line
 	}, [contentBrowserItems])
 
-	const addStoredSceneObjects = useMemo(() => {
-		if (!currentProjectSceneObjects.length) return
+	// const addStoredSceneObjects = useMemo(() => {
+	// 	if (!currentProjectSceneObjects.length) return
 
-		console.log('currentProjectSceneObjects', currentProjectSceneObjects)
+	// 	// console.log('currentProjectSceneObjects', currentProjectSceneObjects)
 
-		// return currentProjectSceneObjects.map((obj, i) => {
-		// 	if (obj) {
-		// 		if (obj.type === 'model') {
-		// 			return (
-		// 				<group key={i}>
-		// 					<Suspense fallback={<Loading />}>
-		// 						<Model name={obj.name + '-' + i} path={obj.path} />
-		// 					</Suspense>
-		// 				</group>
-		// 			)
-		// 		} else if (obj.type === 'shape') {
-		// 			return <Shape shape={obj.name} key={i} name={obj.name + '-' + i} />
-		// 		} else {
-		// 			return null
-		// 		}
-		// 	} else {
-		// 		return null
-		// 	}
-		// })
+	// 	// return currentProjectSceneObjects.map((obj, i) => {
+	// 	// 	if (obj) {
+	// 	// 		if (obj.type === 'model') {
+	// 	// 			return (
+	// 	// 				<group key={i}>
+	// 	// 					<Suspense fallback={<Loading />}>
+	// 	// 						<Model name={obj.name + '-' + i} path={obj.path} />
+	// 	// 					</Suspense>
+	// 	// 				</group>
+	// 	// 			)
+	// 	// 		} else if (obj.type === 'shape') {
+	// 	// 			return <Shape shape={obj.name} key={i} name={obj.name + '-' + i} />
+	// 	// 		} else {
+	// 	// 			return null
+	// 	// 		}
+	// 	// 	} else {
+	// 	// 		return null
+	// 	// 	}
+	// 	// })
 
-		// eslint-disable-next-line
-	}, [currentProjectSceneObjects])
+	// 	// eslint-disable-next-line
+	// }, [currentProjectSceneObjects])
 
 	return (
 		<group name='standard-scene'>
@@ -77,7 +77,7 @@ export default function Scene() {
 			<Bvh firstHitOnly>
 				<Ground>
 					{addContentBrowserItems}
-					{addStoredSceneObjects}
+					{/* {addStoredSceneObjects} */}
 				</Ground>
 			</Bvh>
 

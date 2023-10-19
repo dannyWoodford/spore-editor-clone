@@ -23,7 +23,7 @@ export default function Model({ name, path }) {
 	useEffect(() => {
 		if (!mesh.current) return
 		if (selected?.name === name) {
-			console.log('ham_____________')
+			// console.log('ham_____________')
 			return
 		}
 
