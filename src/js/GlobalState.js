@@ -22,6 +22,8 @@ export const useGlobalState = create()(
 				setSnapping: (bol) => set((state) => ({ intro: { ...state.intro, snapping: bol } })),
 			},
 			projectNoPersist: {
+				levaUIInjected: false,
+				setLevaUIInjected: (bol) => set((state) => ({ projectNoPersist: { ...state.projectNoPersist, levaUIInjected: bol } })),
 				showSaveProjectPrompt: false,
 				setShowSaveProjectPrompt: (bol) => set((state) => ({ projectNoPersist: { ...state.projectNoPersist, showSaveProjectPrompt: bol } })),
 				projectLoaded: false,
