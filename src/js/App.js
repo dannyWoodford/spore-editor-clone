@@ -21,6 +21,9 @@ import Lighting from './CANVAS/setup/Lighting'
 
 import InjectUIToLeva from './CANVAS/helpers/InjectUIToLeva'
 
+import TerrainManager from './CANVAS/objects/terrain/TerrainManager'
+
+
 export default function App() {
 	const projectLoaded = useGlobalState((state) => state.projectNoPersist.projectLoaded)
 	const editorStart = useGlobalState((state) => state.projectNoPersist.editorStart)
@@ -44,12 +47,16 @@ export default function App() {
 			{editorStart && <VRButton />}
 			<div className='bg-canvas'>
 				{/* frameloop will not be respected while in a VR session. */}
-				<Canvas frameloop='demand' shadows>
+				<Canvas 
+				frameloop='demand' 
+				shadows>
 					<Suspense fallback={<Loading />}>
 						<Controls />
 						<Background />
 						<Lighting />
 						<InjectUIToLeva />
+
+						<TerrainManager />
 
 						<XR onSessionStart={() => setVrEnabled(true)} onSessionEnd={() => setVrEnabled(false)}>
 							{vrEnabled && <VRScene />}

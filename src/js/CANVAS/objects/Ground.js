@@ -62,7 +62,10 @@ const Ground = ({ children }) => {
 						e.stopPropagation()
 					}}
 					receiveShadow>
-					<meshLambertMaterial color={'lightgrey'} transparent={true} opacity={0.9} />
+					<meshLambertMaterial color={'lightgrey'} transparent={true} 
+					// opacity={0.9} 
+						opacity={0.0} 
+					/>
 				</Box>
 			</group>
 		)

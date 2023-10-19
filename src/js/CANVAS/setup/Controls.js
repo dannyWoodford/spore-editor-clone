@@ -13,7 +13,9 @@ export default function Controls() {
 
 	return (
 		<>
-			<OrbitControls makeDefault maxPolarAngle={Math.PI / 2.05} maxDistance={maxDistance} />
+			<OrbitControls makeDefault 
+			// maxPolarAngle={Math.PI / 2.05} 
+			maxDistance={maxDistance} />
 			<PerspectiveCamera name="main-cam" makeDefault fov={45} position={[40, 15, 0]} />
 		</>
 	)
