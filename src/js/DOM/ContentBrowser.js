@@ -6,8 +6,8 @@ const ContentBrowser = ({ isLeva = false }) => {
 	const editorStart = useGlobalState((state) => state.projectNoPersist.editorStart)
 
 	// ContentBrowser sub-types
-	// wall, item, floor, roof
-	const [active, setActive] = useState('wall')
+	// test, wall, item, floor, roof
+	const [active, setActive] = useState('test')
 
 	const images = useRef({})
 
@@ -81,6 +81,10 @@ const ContentBrowser = ({ isLeva = false }) => {
 			</div>
 			<div className='content-container'>
 				<div className='side-bar'>
+					<div className={`tab ${active === 'test' ? 'active' : ''}`} onClick={() => setActive('test')}>
+						{/* <h3 className='tab-name'>Wall</h3> */}
+						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/content-browser/shapes/sphere.svg'} />
+					</div>
 					<div className={`tab ${active === 'wall' ? 'active' : ''}`} onClick={() => setActive('wall')}>
 						{/* <h3 className='tab-name'>Wall</h3> */}
 						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/icons/wall.svg'} />
@@ -102,8 +106,9 @@ const ContentBrowser = ({ isLeva = false }) => {
 						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/content-browser/shapes/octahedron.svg'} />
 					</div>
 				</div>
-				<div className='content-container-main' style={{ borderRadius: active === 'wall' ? '0 8px 8px 8px' : '8px 8px 8px 8px' }}>
+				<div className='content-container-main' style={{ borderRadius: active === 'test' ? '0 8px 8px 8px' : '8px 8px 8px 8px' }}>
 					<div className={`content --shapes ${active === 'shapes' ? 'active' : ''}`}>{addShapeItems}</div>
+					<div className={`content --models ${active === 'test' ? 'active' : ''}`}>{addModelItems}</div>
 					<div className={`content --models ${active === 'wall' ? 'active' : ''}`}>{addModelItems}</div>
 					<div className={`content --models ${active === 'roof' ? 'active' : ''}`}>{addModelItems}</div>
 					<div className={`content --models ${active === 'floor' ? 'active' : ''}`}>{addModelItems}</div>

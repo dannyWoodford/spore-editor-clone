@@ -47,7 +47,7 @@ export default function Model({ name, path }) {
 			mesh.current.rotation.set(transformInitRot.x, transformInitRot.y, transformInitRot.z)
 		}
 
-		updateCurrentProject({ sceneObjects: [...currentProjectSceneObjects, mesh.current] })
+		// updateCurrentProject({ sceneObjects: [...currentProjectSceneObjects, mesh.current] })
 
 		// eslint-disable-next-line
 	}, [])

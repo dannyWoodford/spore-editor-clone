@@ -1,6 +1,7 @@
 import { extend, useLoader } from '@react-three/fiber'
 import { shaderMaterial } from '@react-three/drei'
 import { TextureLoader } from 'three'
+import { useControls } from 'leva'
 
 extend({
 	SlopeBlendMaterial: shaderMaterial(
@@ -37,12 +38,18 @@ extend({
 })
 
 const MountainMaterial = () => {
-	const [flatTexture, slopeTexture] = useLoader(TextureLoader, [
+	  const { cartoon } = useControls('Terrain', {
+			cartoon: false,
+		})
+
+	const [flatTexture, slopeTexture, toonFlatTexture, toonSlopeTexture] = useLoader(TextureLoader, [
 		process.env.PUBLIC_URL + '/textures/terrain/grass.jpg',
 		process.env.PUBLIC_URL + '/textures/terrain/rock.jpg',
+		process.env.PUBLIC_URL + '/textures/terrain/toon_grass.jpeg',
+		process.env.PUBLIC_URL + '/textures/terrain/toon_rock2.jpeg',
 	])
 
-	return <slopeBlendMaterial tFlat={flatTexture} tSlope={slopeTexture} />
+	return <slopeBlendMaterial tFlat={cartoon ? toonFlatTexture : flatTexture} tSlope={cartoon ? toonSlopeTexture : slopeTexture} />
 }
 
 export default MountainMaterial
