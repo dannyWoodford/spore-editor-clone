@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react'
+import React, { Suspense } from 'react'
 import '../css/main.scss'
 import { VRButton, XR } from '@react-three/xr'
 import { Canvas } from '@react-three/fiber'
@@ -26,10 +26,6 @@ export default function App() {
 	const editorStart = useGlobalState((state) => state.projectNoPersist.editorStart)
 	const vrEnabled = useGlobalState((state) => state.vr.enabled)
 	const setVrEnabled = useGlobalState((state) => state.vr.setEnabled)
-
-	useEffect(() => {
-		// console.log('projectLoaded', projectLoaded)
-	}, [projectLoaded])
 
 	return (
 		<div className='App'>

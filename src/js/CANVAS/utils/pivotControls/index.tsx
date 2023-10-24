@@ -8,7 +8,6 @@ import { PlaneSlider } from './PlaneSlider'
 import { AxisRotator } from './AxisRotator'
 import { context, OnDragStartProps, resolveObject } from './context'
 
-import { useGlobalState } from '../../../GlobalState'
 
 const tV0 = new THREE.Vector3()
 const tV1 = new THREE.Vector3()
@@ -157,10 +156,6 @@ export const PivotControls = React.forwardRef<THREE.Group, PivotControlsProps>(
     const gizmoRef = React.useRef<THREE.Group>(null!)
     const childrenRef = React.useRef<THREE.Group>(null!)
     const translation = React.useRef<[number, number, number]>([0, 0, 0])
-
-		const selected = useGlobalState((state) => state.sceneNoPersist.selected)
-		const setIsTransforming = useGlobalState((state) => state.sceneNoPersist.transforms.setIsTransforming)
-
 
     React.useEffect(() => {
       if (object) {
