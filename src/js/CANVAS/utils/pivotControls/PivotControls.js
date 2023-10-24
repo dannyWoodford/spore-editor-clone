@@ -3,6 +3,7 @@ import { useControls } from 'leva'
 
 import { useGlobalState } from './../../../GlobalState'
 import { PivotControls as ObjectTransformer } from './index'
+import { updateObjectInArray } from '../../helpers/HelperFunctions'
 
 export default function PivotControls() {
 	const transformSelected = useGlobalState((state) => state.sceneNoPersist.transformSelected)
@@ -10,6 +11,10 @@ export default function PivotControls() {
 	const snapAngle = useGlobalState((state) => state.intro.snapAngle)
 	const snapping = useGlobalState((state) => state.intro.snapping)
 	const setSnapping = useGlobalState((state) => state.intro.setSnapping)
+
+	// update sceneObjects on currentProject
+	const currentProjectSceneObjectData = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjectData)
+	const updateCurrentProject = useGlobalState((state) => state.projectStore.updateCurrentProject)
 
 	useControls(
 		'Position Snapping',
@@ -24,6 +29,16 @@ export default function PivotControls() {
 		[setSnapping]
 	)
 
+	const saveTransformData = () => {
+		const getObject = currentProjectSceneObjectData.find((obj) => obj.name === transformSelected.name)
+
+		getObject.matrix = transformSelected.matrix.elements
+
+		const updatedData = updateObjectInArray(currentProjectSceneObjectData, getObject)
+
+		updateCurrentProject({ sceneObjectData: updatedData })
+	}
+
 	return (
 		<ObjectTransformer
 			object={transformSelected ? transformSelected : undefined}
@@ -35,6 +50,7 @@ export default function PivotControls() {
 			rotationSnap={snapping ? snapAngle : null}
 			/** Anchor point, like BBAnchor, each axis can be between -1/0/+1 */
 			anchor={[-1, -1, -1]}
+			onDragEnd={saveTransformData}
 		/>
 	)
 }

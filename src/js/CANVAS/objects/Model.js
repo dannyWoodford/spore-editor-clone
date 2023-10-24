@@ -4,7 +4,7 @@ import { useCursor, Gltf } from '@react-three/drei'
 
 import { useGlobalState } from './../../GlobalState'
 
-export default function Model({ name, path }) {
+export default function Model({ name, path, matrix = null, rebuilt = false }) {
 	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
 	const setSelected = useGlobalState((state) => state.sceneNoPersist.setSelected)
 	const transformSelected = useGlobalState((state) => state.sceneNoPersist.transformSelected)
@@ -13,7 +13,7 @@ export default function Model({ name, path }) {
 
 	// update sceneObjects on currentProject
 	const updateCurrentProject = useGlobalState((state) => state.projectStore.updateCurrentProject)
-	const currentProjectSceneObjects = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjects)
+	const currentProjectSceneObjectData = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjectData)
 
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
@@ -23,31 +23,33 @@ export default function Model({ name, path }) {
 	useEffect(() => {
 		if (!mesh.current) return
 		if (selected?.name === name) {
-			console.log('ham_____________')
+			// console.log('ham_____________')
 			return
 		}
-
-		setSelected(mesh.current)
 
 		let box3 = new THREE.Box3().setFromObject(mesh.current)
 		let size = new THREE.Vector3()
 
-		// const helper = new THREE.Box3Helper(box3, 0xffff00)
-		// mesh.current.add(helper)
-
 		// add "size" attribute to Object3D so the height can be factored into placement on ground by raycaster
 		mesh.current.size = box3.getSize(size)
-
-		// Fix model origin. In real project this should be done on model side in blender
-		// mesh.current.children[0].translateX(-(size.x / 2))
-		// mesh.current.children[0].translateY(-(size.y / 2))
-		// mesh.current.children[0].translateZ(size.z / 2)
 
 		if (transformInitRot !== null) {
 			mesh.current.rotation.set(transformInitRot.x, transformInitRot.y, transformInitRot.z)
 		}
 
-		updateCurrentProject({ sceneObjects: [...currentProjectSceneObjects, mesh.current] })
+		if (rebuilt) {
+			matrix.decompose(mesh.current.position, mesh.current.quaternion, mesh.current.scale)
+		} else {
+			setSelected(mesh.current)
+
+			const newObj = {
+				name: name,
+				matrix: mesh.current.matrix.elements,
+				storedPath: path,
+				type: 'model',
+			}
+			updateCurrentProject({ sceneObjectData: [...currentProjectSceneObjectData, newObj] })
+		}
 
 		// eslint-disable-next-line
 	}, [])
@@ -74,7 +76,8 @@ export default function Model({ name, path }) {
 			}}
 			onPointerOver={() => setHovered(true)}
 			onPointerOut={() => setHovered(false)}
-			visible={false}>
+			// no need to set visibility to true in raycaster for rebuilt objects
+			visible={rebuilt ? true : false}>
 			<group name='center-offset'>
 				<Gltf
 					src={process.env.PUBLIC_URL + path}

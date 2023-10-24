@@ -3,14 +3,14 @@ import * as THREE from 'three'
 import { useCursor } from '@react-three/drei'
 import { useGlobalState } from './../../GlobalState'
 
-export default function Shape({ shape, name }) {
+export default function Shape({ shape, name, matrix = null, rebuilt = false }) {
 	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
 	const setSelected = useGlobalState((state) => state.sceneNoPersist.setSelected)
 	const setTransformSelected = useGlobalState((state) => state.sceneNoPersist.setTransformSelected)
 
 	// update sceneObjects on currentProject
 	const updateCurrentProject = useGlobalState((state) => state.projectStore.updateCurrentProject)
-	const currentProjectSceneObjects = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjects)
+	const currentProjectSceneObjectData = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjectData)
 
 	const [hovered, setHovered] = useState(false)
 	useCursor(hovered)
@@ -41,15 +41,26 @@ export default function Shape({ shape, name }) {
 			return
 		}
 
-		setSelected(mesh.current)
-
 		let box3 = new THREE.Box3().setFromObject(mesh.current)
 		let size = new THREE.Vector3()
 
 		// add "size" attribute to Object3D so the height can be factored into placement on ground by raycaster
 		mesh.current.size = box3.getSize(size)
 
-		updateCurrentProject({ sceneObjects: [...currentProjectSceneObjects, mesh.current] })
+		if (rebuilt) {
+			console.log('rebuilt', name)
+			matrix.decompose(mesh.current.position, mesh.current.quaternion, mesh.current.scale)
+		} else {
+			console.log('new', name)
+			setSelected(mesh.current)
+
+			const newObj = {
+				name: name,
+				matrix: mesh.current.matrix.elements,
+				type: 'shape',
+			}
+			updateCurrentProject({ sceneObjectData: [...currentProjectSceneObjectData, newObj] })
+		}
 
 		// eslint-disable-next-line
 	}, [])

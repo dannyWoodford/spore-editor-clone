@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import { useThree, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useGlobalState } from '../../GlobalState'
 
 import useMousePosition from '../helpers/useMousePosition'
 import RaycasterObjects from '../helpers/RaycasterObjects'
+import { updateObjectInArray } from '../helpers/HelperFunctions'
 
 const Raycasting = () => {
 	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
@@ -12,6 +13,10 @@ const Raycasting = () => {
 	const isTransforming = useGlobalState((state) => state.sceneNoPersist.transforms.isTransforming)
 	const snapDistance = useGlobalState((state) => state.intro.snapDistance)
 	const snapping = useGlobalState((state) => state.intro.snapping)
+
+	// update sceneObjects on currentProject
+	const currentProjectSceneObjectData = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjectData)
+	const updateCurrentProject = useGlobalState((state) => state.projectStore.updateCurrentProject)
 
 	const { camera, invalidate } = useThree()
 
@@ -72,6 +77,22 @@ const Raycasting = () => {
 
 		onNavObjectMove()
 	})
+
+	useEffect(() => {
+		if (!isTransforming) {
+			if (!selected) return
+
+			const getObject = currentProjectSceneObjectData.find((obj) => obj.name === selected.name)
+
+			getObject.matrix = selected.matrix.elements
+
+			const updatedData = updateObjectInArray(currentProjectSceneObjectData, getObject)
+
+			updateCurrentProject({ sceneObjectData: updatedData })
+		}
+
+		// eslint-disable-next-line
+	}, [isTransforming])
 
 	return <></>
 }

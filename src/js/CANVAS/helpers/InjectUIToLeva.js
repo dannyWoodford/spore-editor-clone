@@ -49,8 +49,7 @@ export default function InjectUIToLeva() {
 
 export function SceneObjectsHelper() {
 	const store = useGlobalState((state) => state)
-	const currentProjectSceneObjects = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjects)
-	const currentProjectSceneObjectNames = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjectNames)
+	const currentProjectSceneObjectData = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjectData)
 	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
 	const transformSelected = useGlobalState((state) => state.sceneNoPersist.transformSelected)
 
@@ -67,12 +66,8 @@ export function SceneObjectsHelper() {
 				<p className='text'>transformSelected</p>
 				<i className='arrow right'></i>
 			</button>
-			<button className='button' onClick={() => console.log('currentProjectSceneObjects', currentProjectSceneObjects)}>
-				<p className='text'>SceneObjects</p>
-				<i className='arrow right'></i>
-			</button>
-			<button className='button navigate' onClick={() => console.log('currentProjectSceneObjectNames', currentProjectSceneObjectNames)}>
-				<p className='text'>SceneObjects Names</p>
+			<button className='button navigate' onClick={() => console.log('currentProjectSceneObjectData', currentProjectSceneObjectData)}>
+				<p className='text'>SceneObjects Data</p>
 				<i className='arrow right'></i>
 			</button>
 			<button className='button' onClick={() => console.log('store', store)}>

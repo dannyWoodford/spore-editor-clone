@@ -31,7 +31,21 @@ export const useGlobalState = create()(
 				editorStart: false,
 				setEditorStart: (bol) => set((state) => ({ projectNoPersist: { ...state.projectNoPersist, editorStart: bol } })),
 				reset: () =>
-					set((state) => ({ projectNoPersist: { ...state.projectNoPersist, showSaveProjectPrompt: false, projectLoaded: false, editorStart: false } })),
+					set((state) => ({
+						projectNoPersist: {
+							...state.projectNoPersist,
+							showSaveProjectPrompt: false,
+							projectLoaded: false,
+							editorStart: false,
+						},
+						sceneNoPersist: {
+							...state.sceneNoPersist,
+							contentBrowserItems: [],
+							selected: '',
+							transformSelected: '',
+							prevSelectedName: '',
+						},
+					})),
 			},
 			projectStore: {
 				currentProjectName: '',
@@ -131,3 +145,4 @@ export const useGlobalState = create()(
 		}
 	)
 )
+

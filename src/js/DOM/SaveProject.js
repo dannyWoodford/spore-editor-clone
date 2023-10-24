@@ -19,8 +19,7 @@ export default function SaveProject() {
 		let newObj = {
 			name: name,
 			thumbnail: '/content-browser/models/Roof_Slant_Red_01.png',
-			sceneObjects: [],
-			sceneObjectNames: [],
+			sceneObjectData: [],
 		}
 
 		setAllProjects([...allProjects, newObj])
