@@ -2,30 +2,15 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useGlobalState } from '../GlobalState'
 
 export default function SaveProject() {
-	const setProjectLoaded = useGlobalState((state) => state.projectNoPersist.setProjectLoaded)
 	const showSaveProjectPrompt = useGlobalState((state) => state.projectNoPersist.showSaveProjectPrompt)
-	const allProjects = useGlobalState((state) => state.projectStore.allProjects)
-	const setAllProjects = useGlobalState((state) => state.projectStore.setAllProjects)
-	const setCurrentProjectName = useGlobalState((state) => state.projectStore.setCurrentProjectName)
 
 	// Navigation
 	const returnHome = useGlobalState((state) => state.projectStore.navigationMethods.returnHome)
+	const createNewProject = useGlobalState((state) => state.projectStore.navigationMethods.createNewProject)
 
 	const textInput = useRef()
 
 	const [name, setName] = useState('')
-
-	const setProjectHandler = () => {
-		let newObj = {
-			name: name,
-			thumbnail: '/content-browser/models/Roof_Slant_Red_01.png',
-			sceneObjectData: [],
-		}
-
-		setAllProjects([...allProjects, newObj])
-		setProjectLoaded(true)
-		setCurrentProjectName(name)
-	}
 
 	useEffect(() => {
 		if (showSaveProjectPrompt) {
@@ -48,7 +33,7 @@ export default function SaveProject() {
 					<button className='button cancel' onClick={() => returnHome()}>
 						Abandon
 					</button>
-					<button className='button ready' onClick={() => setProjectHandler()}>
+					<button className='button ready' onClick={() => createNewProject(name)}>
 						Save
 					</button>
 				</div>

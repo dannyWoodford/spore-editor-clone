@@ -110,6 +110,22 @@ export const useGlobalState = create()(
 						resetProjectIntro()
 						setCurrentProjectName('')
 					},
+					createNewProject: (name) => {
+						const setAllProjects = get().projectStore.setAllProjects
+						const setProjectLoaded = get().projectNoPersist.setProjectLoaded
+						const setCurrentProjectName = get().projectStore.setCurrentProjectName
+						const allProjects = get().projectStore.allProjects
+
+						let newObj = {
+							name: name,
+							thumbnail: '/content-browser/models/Roof_Slant_Red_01.png',
+							sceneObjectData: [],
+						}
+
+						setAllProjects([...allProjects, newObj])
+						setProjectLoaded(true)
+						setCurrentProjectName(name)
+					}
 				},
 			},
 			sceneNoPersist: {
