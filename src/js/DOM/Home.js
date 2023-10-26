@@ -7,7 +7,7 @@ export default function Home() {
 	const setShowSaveProjectPrompt = useGlobalState((state) => state.projectNoPersist.setShowSaveProjectPrompt)
 	const setProjectLoaded = useGlobalState((state) => state.projectNoPersist.setProjectLoaded)
 	const allProjects = useGlobalState((state) => state.projectStore.allProjects)
-	const setCurrentProjectName = useGlobalState((state) => state.projectStore.setCurrentProjectName)
+	const setCurrentProjectName = useGlobalState((state) => state.projectNoPersist.setCurrentProjectName)
 
 	const existingProjectOnClickHandler = useCallback(
 		(projectName) => {

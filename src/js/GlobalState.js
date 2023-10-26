@@ -22,6 +22,8 @@ export const useGlobalState = create()(
 				setSnapping: (bol) => set((state) => ({ intro: { ...state.intro, snapping: bol } })),
 			},
 			projectNoPersist: {
+				currentProjectName: '',
+				setCurrentProjectName: (string) => set((state) => ({ projectNoPersist: { ...state.projectNoPersist, currentProjectName: string } })),
 				levaUIInjected: false,
 				setLevaUIInjected: (bol) => set((state) => ({ projectNoPersist: { ...state.projectNoPersist, levaUIInjected: bol } })),
 				showSaveProjectPrompt: false,
@@ -37,6 +39,7 @@ export const useGlobalState = create()(
 							showSaveProjectPrompt: false,
 							projectLoaded: false,
 							editorStart: false,
+							currentProjectName: '',
 						},
 						sceneNoPersist: {
 							...state.sceneNoPersist,
@@ -48,8 +51,6 @@ export const useGlobalState = create()(
 					})),
 			},
 			projectStore: {
-				currentProjectName: '',
-				setCurrentProjectName: (string) => set((state) => ({ projectStore: { ...state.projectStore, currentProjectName: string } })),
 				allProjects: [
 					// {
 					// 	name: 'dummy name',
@@ -60,7 +61,7 @@ export const useGlobalState = create()(
 				],
 				setAllProjects: (arr) => set((state) => ({ projectStore: { ...state.projectStore, allProjects: arr } })),
 				getCurrentProject: () => {
-					const currentProjectName = get().projectStore.currentProjectName
+					const currentProjectName = get().projectNoPersist.currentProjectName
 					const allProjects = get().projectStore.allProjects
 
 					const foundObject = allProjects.find((obj) => obj.name === currentProjectName)
@@ -69,7 +70,7 @@ export const useGlobalState = create()(
 					return foundObject || null
 				},
 				deleteCurrentProject: () => {
-					const currentProjectName = get().projectStore.currentProjectName
+					const currentProjectName = get().projectNoPersist.currentProjectName
 					const returnHome = get().projectStore.navigationMethods.returnHome
 
 					const allProjects = get().projectStore.allProjects
@@ -104,7 +105,7 @@ export const useGlobalState = create()(
 				},
 				navigationMethods: {
 					returnHome: () => {
-						const setCurrentProjectName = get().projectStore.setCurrentProjectName
+						const setCurrentProjectName = get().projectNoPersist.setCurrentProjectName
 						const resetProjectIntro = get().projectNoPersist.reset
 
 						resetProjectIntro()
@@ -113,7 +114,7 @@ export const useGlobalState = create()(
 					createNewProject: (name) => {
 						const setAllProjects = get().projectStore.setAllProjects
 						const setProjectLoaded = get().projectNoPersist.setProjectLoaded
-						const setCurrentProjectName = get().projectStore.setCurrentProjectName
+						const setCurrentProjectName = get().projectNoPersist.setCurrentProjectName
 						const allProjects = get().projectStore.allProjects
 
 						let newObj = {
@@ -125,7 +126,7 @@ export const useGlobalState = create()(
 						setAllProjects([...allProjects, newObj])
 						setProjectLoaded(true)
 						setCurrentProjectName(name)
-					}
+					},
 				},
 			},
 			sceneNoPersist: {

@@ -262,15 +262,17 @@
 				background: rgba($color-bg-atlas-blue, 0.4);
 				border: 2px solid rgba(#00000099, 0.4);
 				border-radius: 16px;
+				overflow: hidden;
 				cursor: pointer;
 
 				.plus {
 					width: 30%;
 					filter: invert(1);
+					height: 100%;
 				}
 
 				img {
-					height: 100%;
+					max-width: 100%;
 				}
 			}
 
@@ -278,7 +280,6 @@
 				padding: 5px 30px;
 				display: flex;
 				flex-direction: column;
-				// text-align: left;
 				height: 100%;
 				justify-content: center;
 
