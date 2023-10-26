@@ -53,7 +53,10 @@ const ContentBrowser = ({ isLeva = false }) => {
 						data-path={obj[1].path}
 						draggable='true'
 						onDragStart={(e) => onDragStartHandler(e)}>
-						<img alt='' src={process.env.PUBLIC_URL + obj[1].thumbnail} />
+						<div id='thumbnail-container'>
+							<div id='dummy'></div>
+							<img alt='' src={process.env.PUBLIC_URL + obj[1].thumbnail} />
+						</div>
 						<h4>{obj[1].displayName}</h4>
 					</div>
 				)
@@ -67,7 +70,10 @@ const ContentBrowser = ({ isLeva = false }) => {
 		return Object.entries(allShapes).map((obj, index) => {
 			return (
 				<div key={index} className='item' data-type={obj[1].type} data-name={obj[0]} data-path='' draggable='true' onDragStart={(e) => onDragStartHandler(e)}>
-					<img alt='' src={process.env.PUBLIC_URL + obj[1].thumbnail} />
+					<div id='thumbnail-container'>
+						<div id='dummy'></div>
+						<img alt='' src={process.env.PUBLIC_URL + obj[1].thumbnail} />
+					</div>
 					<h4>{obj[1].displayName}</h4>
 				</div>
 			)
@@ -76,9 +82,9 @@ const ContentBrowser = ({ isLeva = false }) => {
 
 	return (
 		<div className={`content-browser ${editorStart ? 'show' : ''} ${isLeva ? 'isLeva' : ''}`}>
-			<div className='top-bar'>
+			{/* <div className='top-bar'>
 				<h1 className='top-bar-title'>{active}</h1>
-			</div>
+			</div> */}
 			<div className='content-container'>
 				<div className='side-bar'>
 					<div className={`tab ${active === 'wall' ? 'active' : ''}`} onClick={() => setActive('wall')}>
@@ -102,7 +108,10 @@ const ContentBrowser = ({ isLeva = false }) => {
 						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/content-browser/shapes/octahedron.svg'} />
 					</div>
 				</div>
-				<div className='content-container-main' style={{ borderRadius: active === 'wall' ? '0 8px 8px 8px' : '8px 8px 8px 8px' }}>
+				<div className='content-container-main'>
+					<div className='top-bar'>
+						<h1 className='top-bar-title'>{active}</h1>
+					</div>
 					<div className={`content --shapes ${active === 'shapes' ? 'active' : ''}`}>{addShapeItems}</div>
 					<div className={`content --models ${active === 'wall' ? 'active' : ''}`}>{addModelItems}</div>
 					<div className={`content --models ${active === 'roof' ? 'active' : ''}`}>{addModelItems}</div>

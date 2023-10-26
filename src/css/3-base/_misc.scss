@@ -11,6 +11,7 @@ body,
 	font-family: $font-family, sans-serif;
 	outline: none;
 	background: $color-black;
+	text-shadow: $color-black 0 3px 1px;
 }
 
 .bg-canvas {
