@@ -47,6 +47,9 @@ export default function Shape({ shape, name, matrix = null, rebuilt = false }) {
 		// add "size" attribute to Object3D so the height can be factored into placement on ground by raycaster
 		mesh.current.size = box3.getSize(size)
 
+		// Adjust shape origin because model origins are offset in raycaster and its easier to alter the shapes then fix all the origins of the models in blender
+		mesh.current.children[0].translateY(size.y / 2)
+
 		if (rebuilt) {
 			matrix.decompose(mesh.current.position, mesh.current.quaternion, mesh.current.scale)
 		} else {
@@ -59,12 +62,6 @@ export default function Shape({ shape, name, matrix = null, rebuilt = false }) {
 				type: 'shape',
 			}
 
-			// Fix model origin. In real project this should be done on model side in blender
-			console.log('mesh.current', mesh.current)
-			// mesh.current.translateX(-(size.x / 2))
-			// mesh.current.translateY(-(size.y / 2))
-			// mesh.current.translateZ(size.x / 2)
-
 			updateCurrentProject({ sceneObjectData: [...currentProjectSceneObjectData, newObj] })
 		}
 
@@ -73,7 +70,7 @@ export default function Shape({ shape, name, matrix = null, rebuilt = false }) {
 
 	return (
 		// Disable visibility initially and set to true in Raycasting.js once mouse position is converted to 3D space
-		<mesh
+		<group
 			ref={mesh}
 			name={name}
 			userData={{ moveableObj: true }}
@@ -83,11 +80,13 @@ export default function Shape({ shape, name, matrix = null, rebuilt = false }) {
 			}}
 			onPointerOver={() => setHovered(true)}
 			onPointerOut={() => setHovered(false)}
-			visible={rebuilt ? true : false}
-			castShadow
-			receiveShadow>
-			<primitive object={allShapes[shape]} />
-			<meshLambertMaterial color={allColors[shape]} />
-		</mesh>
+			visible={rebuilt ? true : false}>
+			<group name='center-offset'>
+				<mesh castShadow receiveShadow>
+					<primitive object={allShapes[shape]} />
+					<meshLambertMaterial color={allColors[shape]} />
+				</mesh>
+			</group>
+		</group>
 	)
 }
