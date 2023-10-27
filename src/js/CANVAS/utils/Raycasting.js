@@ -39,7 +39,6 @@ const Raycasting = () => {
 			}
 
 			if (intersects[0].object.name === selected.name && intersects.length > 1) {
-				// console.log('fire 111')
 
 				if (snapping) {
 					let offsetX = Math.round(intersects[0].point.x / snapDistance + -selected.size.x / 2) * snapDistance
@@ -50,7 +49,6 @@ const Raycasting = () => {
 					selected.position.set(intersects[1].point.x + -selected.size.x / 2, intersects[1].point.y, intersects[1].point.z + selected.size.z / 2)
 				}
 			} else {
-				// console.log('fire 222')
 
 				if (snapping) {
 					let offsetX = Math.round(intersects[0].point.x / snapDistance + -selected.size.x / 2) * snapDistance
