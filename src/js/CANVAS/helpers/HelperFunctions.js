@@ -1,6 +1,5 @@
-// import { useCallback } from 'react'
-// import { useThree } from '@react-three/fiber'
-// import { useGlobalState } from './../../GlobalState'
+import { useCallback } from 'react'
+import { useGlobalState } from './../../GlobalState'
 
 export function updateObjectInArray(array, objectToUpdate) {
 	const updatedArray = array.map((obj) => {
@@ -14,17 +13,21 @@ export function updateObjectInArray(array, objectToUpdate) {
 	return updatedArray
 }
 
-// export function useUpdateProjectThumbnail() {
-// 	const { gl, scene, camera } = useThree()
-// 	const updateCurrentProject = useGlobalState((state) => state.projectStore.updateCurrentProject)
+export function useSaveTransformData(objToUpdate) {
+	const updateCurrentProject = useGlobalState((state) => state.projectStore.updateCurrentProject)
+	const currentProjectSceneObjectData = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjectData)
 
-// 	const updateThumbnail = useCallback(() => {
-// 		gl.render(scene, camera)
-// 		const screenshot = gl.domElement.toDataURL('image/jpeg', 0.1)
+	const saveTransformData = useCallback(() => {
+		if (!objToUpdate) return
 
-// 		updateCurrentProject({ thumbnail: screenshot })
+		const getObject = currentProjectSceneObjectData.find((obj) => obj.name === objToUpdate.name)
 
-// 	}, [camera, gl, scene, updateCurrentProject])
+		getObject.matrix = objToUpdate.matrix.elements
 
-// 	return { updateThumbnail }
-// }
+		const updatedData = updateObjectInArray(currentProjectSceneObjectData, getObject)
+
+		updateCurrentProject({ sceneObjectData: updatedData })
+	}, [currentProjectSceneObjectData, updateCurrentProject, objToUpdate])
+
+	return { saveTransformData }
+}

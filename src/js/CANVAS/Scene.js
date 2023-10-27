@@ -18,6 +18,7 @@ export default function Scene() {
 	const contentBrowserItems = useGlobalState((state) => state.sceneNoPersist.contentBrowserItems)
 	const currentProjectSceneObjectData = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjectData)
 
+
 	const addContentBrowserItems = useMemo(() => {
 		if (!contentBrowserItems.length) return
 
