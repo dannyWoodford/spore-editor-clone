@@ -23,9 +23,12 @@ export default function SaveProject() {
 			<div className='save-project'>
 				<p className='text'>Ready to save your structure?</p>
 
-				<form>
+				<form className='save-project-form'>
 					<label>Structure Name</label>
-					<input type='text' ref={textInput} value={name} onChange={(e) => setName(e.target.value)} />
+					<div className='angled-input-div'>
+						<input className='angled-input' type='text' ref={textInput} value={name} onChange={(e) => setName(e.target.value)} />
+						<span className='add-angle'></span>
+					</div>
 				</form>
 
 				<p className='text note'>You will be able to place your structure on the web app home page</p>
