@@ -41,82 +41,113 @@ const ContentBrowser = ({ isLeva = false }) => {
 		[images]
 	)
 
-	const addModelItems = useMemo(() => {
-		return Object.entries(allModels).map((obj, index) => {
-			if (obj[1].modelType === active) {
-				return (
-					<div
-						key={index}
-						className='item'
-						data-type={obj[1].type}
-						data-name={obj[0]}
-						data-path={obj[1].path}
-						draggable='true'
-						onDragStart={(e) => onDragStartHandler(e)}>
-						<div id='thumbnail-container'>
-							<div id='dummy'></div>
-							<img alt='' src={process.env.PUBLIC_URL + obj[1].thumbnail} />
-						</div>
-						<h4>{obj[1].displayName}</h4>
-					</div>
-				)
-			} else {
-				return null
-			}
-		})
-	}, [active, onDragStartHandler])
+	const [inputVal, setInputVal] = useState('')
 
-	const addShapeItems = useMemo(() => {
-		return Object.entries(allShapes).map((obj, index) => {
-			return (
-				<div key={index} className='item' data-type={obj[1].type} data-name={obj[0]} data-path='' draggable='true' onDragStart={(e) => onDragStartHandler(e)}>
-					<div id='thumbnail-container'>
-						<div id='dummy'></div>
-						<img alt='' src={process.env.PUBLIC_URL + obj[1].thumbnail} />
-					</div>
-					<h4>{obj[1].displayName}</h4>
-				</div>
-			)
-		})
-	}, [onDragStartHandler])
+	const addModelItems = useMemo(() => {
+		if (!editorStart) return
+
+		if (active === 'shapes') {
+			return Object.entries(allShapes)
+				.filter((obj) => {
+					if (inputVal === '') {
+						return obj
+					} else if (obj[0].toLowerCase().includes(inputVal.toLowerCase())) {
+						return obj
+					}
+
+					return null
+				})
+				.map((obj, index) => {
+					return (
+						<div
+							key={index}
+							className='item'
+							data-type={obj[1].type}
+							data-name={obj[0]}
+							data-path=''
+							draggable='true'
+							onDragStart={(e) => onDragStartHandler(e)}>
+							<div id='thumbnail-container'>
+								<div id='dummy'></div>
+								<img alt='' src={process.env.PUBLIC_URL + obj[1].thumbnail} />
+							</div>
+							<h4>{obj[1].displayName}</h4>
+						</div>
+					)
+				})
+		} else {
+			return Object.entries(allModels)
+				.filter((obj) => {
+					if (inputVal === '') {
+						return obj
+					} else if (obj[0].toLowerCase().includes(inputVal.toLowerCase())) {
+						return obj
+					}
+
+					return null
+				})
+				.map((obj, index) => {
+					if (obj[1].modelType === active) {
+						return (
+							<div
+								key={index}
+								className='item'
+								data-type={obj[1].type}
+								data-name={obj[0]}
+								data-path={obj[1].path}
+								draggable='true'
+								onDragStart={(e) => onDragStartHandler(e)}>
+								<div id='thumbnail-container'>
+									<div id='dummy'></div>
+									<img alt='' src={process.env.PUBLIC_URL + obj[1].thumbnail} />
+								</div>
+								<h4>{obj[1].displayName}</h4>
+							</div>
+						)
+					} else {
+						return null
+					}
+				})
+		}
+	}, [editorStart, active, onDragStartHandler, inputVal])
 
 	return (
 		<div className={`content-browser ${editorStart ? 'show' : ''} ${isLeva ? 'isLeva' : ''}`}>
-			{/* <div className='top-bar'>
-				<h1 className='top-bar-title'>{active}</h1>
-			</div> */}
 			<div className='content-container'>
 				<div className='side-bar'>
 					<div className={`tab ${active === 'wall' ? 'active' : ''}`} onClick={() => setActive('wall')}>
-						{/* <h3 className='tab-name'>Wall</h3> */}
 						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/icons/wall.svg'} />
 					</div>
 					<div className={`tab ${active === 'roof' ? 'active' : ''}`} onClick={() => setActive('roof')}>
-						{/* <h3 className='tab-name'>Roof</h3> */}
 						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/icons/roof.svg'} />
 					</div>
 					<div className={`tab ${active === 'floor' ? 'active' : ''}`} onClick={() => setActive('floor')}>
-						{/* <h3 className='tab-name'>Floor</h3> */}
 						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/icons/floor.svg'} />
 					</div>
 					<div className={`tab ${active === 'item' ? 'active' : ''}`} onClick={() => setActive('item')}>
-						{/* <h3 className='tab-name'>Items</h3> */}
 						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/icons/items.svg'} />
 					</div>
 					<div className={`tab ${active === 'shapes' ? 'active' : ''}`} onClick={() => setActive('shapes')}>
-						{/* <h3 className='tab-name'>Shapes</h3> */}
 						<img className='tab-icon' alt='' src={process.env.PUBLIC_URL + '/content-browser/shapes/octahedron.svg'} />
 					</div>
 				</div>
 				<div className='content-container-main'>
 					<div className='top-bar'>
-						<h1 className='top-bar-title'>{active}</h1>
+						<input
+							className='top-bar-search'
+							type='text'
+							value={inputVal}
+							onChange={(e) => {
+								setInputVal(e.target.value)
+							}}
+							placeholder={`search ${active}s...`}
+						/>
 					</div>
-					<div className={`content --shapes ${active === 'shapes' ? 'active' : ''}`}>{addShapeItems}</div>
 					<div className={`content --models ${active === 'wall' ? 'active' : ''}`}>{addModelItems}</div>
 					<div className={`content --models ${active === 'roof' ? 'active' : ''}`}>{addModelItems}</div>
 					<div className={`content --models ${active === 'floor' ? 'active' : ''}`}>{addModelItems}</div>
 					<div className={`content --models ${active === 'item' ? 'active' : ''}`}>{addModelItems}</div>
+					<div className={`content --shapes ${active === 'shapes' ? 'active' : ''}`}>{addModelItems}</div>
 				</div>
 			</div>
 		</div>

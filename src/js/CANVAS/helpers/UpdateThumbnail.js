@@ -4,6 +4,8 @@ import { useGlobalState } from './../../GlobalState'
 
 export default function UpdateThumbnail() {
 	const { gl, scene, camera } = useThree()
+
+	const editorStart = useGlobalState((state) => state.projectNoPersist.editorStart)
 	const updateCurrentProject = useGlobalState((state) => state.projectStore.updateCurrentProject)
 	const currentProjectSceneObjectData = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjectData)
 
@@ -15,11 +17,11 @@ export default function UpdateThumbnail() {
 	}, [camera, gl, scene, updateCurrentProject])
 
 	useEffect(() => {
-		if (!currentProjectSceneObjectData?.length) return
-
-		// Update Project thumbnail when currentProjectSceneObjectData changes
-		updateThumbnail()
-	}, [currentProjectSceneObjectData, updateThumbnail])
+		if (currentProjectSceneObjectData?.length || editorStart) {
+			// Update Project thumbnail when currentProjectSceneObjectData changes
+			updateThumbnail()
+		}
+	}, [editorStart, currentProjectSceneObjectData, updateThumbnail])
 
 	return null
 }

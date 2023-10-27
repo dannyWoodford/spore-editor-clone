@@ -28,19 +28,22 @@
 	}
 
 	.top-bar {
-		width: 100%;
-		border-radius: 8px;
 		position: relative;
 		display: block;
-		color: $color-white;
-		background: rgba($color-bg-secondary, 0.6);
-		margin-bottom: 5px;
-		border: 1px solid $color-bg-secondary;
+		margin-bottom: 15px;
+		margin-right: calc(4% + 5px);
 
-		.top-bar-title {
+		.top-bar-search {
+			border-radius: 8px;
+			border: 1px solid $color-bg-secondary;
 			text-align: center;
-			margin: 5px;
+			margin: 0;
 			text-transform: uppercase;
+			width: 100%;
+			font-family: $font-family;
+			font-size: 24px;
+			padding: 10px 0 5px;
+			color: $color-grey;
 		}
 	}
 
@@ -68,7 +71,7 @@
 				cursor: pointer;
 				padding: 10px 4px;
 				background: $color-bg-secondary-dark;
-				border-color: rgba($color-bg-secondary, 0.2);
+				border-color: rgba($color-bg-secondary, 0.4);
 				border-style: solid;
 				border-width: 1px 0 1px 1px;
 				pointer-events: auto;
@@ -97,9 +100,10 @@
 			display: flex;
 			flex-direction: column;
 			background: $color-bg-primary;
-			padding: 15px 20px;
+			padding: 15px 5px 5px 20px;
+			margin-bottom: -15px;
 			border-radius: 16px;
-			border-color: rgba($color-bg-secondary, 0.2);
+			border-color: rgba($color-bg-secondary, 0.4);
 			border-style: solid;
 			border-width: 1px 1px 1px 0;
 			pointer-events: auto;
@@ -143,7 +147,6 @@
 			flex-direction: column;
 			align-items: center;
 			cursor: grab;
-			// padding: 5px;
 			color: $color-white;
 
 			h4 {
@@ -152,10 +155,6 @@
 				flex-grow: 1;
 				margin: 0;
 				margin-top: 4px;
-				// margin: 4px;
-				// display: flex;
-				// justify-content: center;
-				// align-items: center;
 			}
 
 			#thumbnail-container {

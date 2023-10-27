@@ -20,7 +20,7 @@ export default function Scene() {
 
 	const addContentBrowserItems = useMemo(() => {
 		if (!contentBrowserItems.length) return
-		
+
 		return contentBrowserItems.map((obj, i) => {
 			if (obj) {
 				// console.log('%cNEW cobj.name', 'color:lightblue;font-size:14px;', obj)
@@ -65,7 +65,7 @@ export default function Scene() {
 						</group>
 					)
 				} else if (obj.type === 'shape') {
-					return <Shape shape={obj.name} key={i} name={obj.name + '-rebuild'} rebuilt={true} matrix={new THREE.Matrix4().fromArray(obj.matrix)} />
+					return <Shape shape={obj.storedShape} key={i} name={obj.name + '-rebuild'} rebuilt={true} matrix={new THREE.Matrix4().fromArray(obj.matrix)} />
 				} else {
 					return null
 				}

@@ -48,17 +48,23 @@ export default function Shape({ shape, name, matrix = null, rebuilt = false }) {
 		mesh.current.size = box3.getSize(size)
 
 		if (rebuilt) {
-			console.log('rebuilt', name)
 			matrix.decompose(mesh.current.position, mesh.current.quaternion, mesh.current.scale)
 		} else {
-			console.log('new', name)
 			setSelected(mesh.current)
 
 			const newObj = {
 				name: name,
 				matrix: mesh.current.matrix.elements,
+				storedShape: shape,
 				type: 'shape',
 			}
+
+			// Fix model origin. In real project this should be done on model side in blender
+			console.log('mesh.current', mesh.current)
+			// mesh.current.translateX(-(size.x / 2))
+			// mesh.current.translateY(-(size.y / 2))
+			// mesh.current.translateZ(size.x / 2)
+
 			updateCurrentProject({ sceneObjectData: [...currentProjectSceneObjectData, newObj] })
 		}
 
@@ -77,7 +83,7 @@ export default function Shape({ shape, name, matrix = null, rebuilt = false }) {
 			}}
 			onPointerOver={() => setHovered(true)}
 			onPointerOut={() => setHovered(false)}
-			visible={false}
+			visible={rebuilt ? true : false}
 			castShadow
 			receiveShadow>
 			<primitive object={allShapes[shape]} />

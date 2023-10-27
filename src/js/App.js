@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react'
+import React, { Suspense } from 'react'
 import '../css/main.scss'
 import { VRButton, XR } from '@react-three/xr'
 import { Canvas } from '@react-three/fiber'
@@ -21,7 +21,6 @@ import Lighting from './CANVAS/setup/Lighting'
 import UpdateThumbnail from './CANVAS/helpers/UpdateThumbnail'
 
 import InjectUIToLeva from './CANVAS/helpers/InjectUIToLeva'
-
 
 export default function App() {
 	const projectLoaded = useGlobalState((state) => state.projectNoPersist.projectLoaded)
