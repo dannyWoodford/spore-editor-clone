@@ -8,6 +8,7 @@ export default function Home() {
 	const setProjectLoaded = useGlobalState((state) => state.projectNoPersist.setProjectLoaded)
 	const allProjects = useGlobalState((state) => state.projectStore.allProjects)
 	const setCurrentProjectName = useGlobalState((state) => state.projectNoPersist.setCurrentProjectName)
+	const deleteProjectByName = useGlobalState((state) => state.projectStore.deleteProjectByName)
 
 	const existingProjectOnClickHandler = useCallback(
 		(projectName) => {
@@ -25,6 +26,16 @@ export default function Home() {
 		return allProjects.map((project, i) => {
 			return (
 				<div className='project' key={i} onClick={() => existingProjectOnClickHandler(project.name)}>
+					<button
+						className='delete-project-button'
+						onClick={(e) => {
+							e.stopPropagation()
+
+							deleteProjectByName(project.name)
+						}}>
+						<img className='delete-icon' alt='' src={process.env.PUBLIC_URL + '/icons/delete.svg'} />
+					</button>
+
 					<div className='thumbnail'>
 						<img alt='' src={process.env.PUBLIC_URL + project.thumbnail} />
 					</div>
@@ -35,7 +46,7 @@ export default function Home() {
 				</div>
 			)
 		})
-	}, [allProjects, existingProjectOnClickHandler])
+	}, [allProjects, existingProjectOnClickHandler, deleteProjectByName])
 
 	return (
 		<div className={`home`}>

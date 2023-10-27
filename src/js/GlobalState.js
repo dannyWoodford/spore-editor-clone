@@ -83,6 +83,16 @@ export const useGlobalState = create()(
 					setAllProjects(allProjectsClone)
 					returnHome()
 				},
+				deleteProjectByName: (name) => {
+					const allProjects = get().projectStore.allProjects
+					let allProjectsClone = [...allProjects]
+
+					const setAllProjects = get().projectStore.setAllProjects
+
+					allProjectsClone = allProjectsClone.filter((item) => item.name !== name)
+
+					setAllProjects(allProjectsClone)
+				},
 				updateCurrentProject: (updateObj) => {
 					const getCurrentProject = get().projectStore.getCurrentProject()
 					const allProjects = get().projectStore.allProjects

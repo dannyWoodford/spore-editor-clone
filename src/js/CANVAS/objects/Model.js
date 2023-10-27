@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
 import { useCursor, Gltf } from '@react-three/drei'
 
@@ -7,7 +7,6 @@ import { useGlobalState } from './../../GlobalState'
 export default function Model({ name, path, matrix = null, rebuilt = false }) {
 	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
 	const setSelected = useGlobalState((state) => state.sceneNoPersist.setSelected)
-	const transformSelected = useGlobalState((state) => state.sceneNoPersist.transformSelected)
 	const setTransformSelected = useGlobalState((state) => state.sceneNoPersist.setTransformSelected)
 	const transformInitRot = useGlobalState((state) => state.sceneNoPersist.transforms.transformInitRot)
 
@@ -54,15 +53,15 @@ export default function Model({ name, path, matrix = null, rebuilt = false }) {
 		// eslint-disable-next-line
 	}, [])
 
-	const colorHandler = useMemo(() => {
-		if (name === selected?.name) {
-			return <meshPhysicalMaterial color='green' />
-		} else if (name === transformSelected?.name) {
-			return <meshPhysicalMaterial color='blue' />
-		} else {
-			return <meshPhysicalMaterial color='orange' />
-		}
-	}, [name, selected, transformSelected])
+	// const colorHandler = useMemo(() => {
+	// 	if (name === selected?.name) {
+	// 		return <meshPhysicalMaterial color='green' />
+	// 	} else if (name === transformSelected?.name) {
+	// 		return <meshPhysicalMaterial color='blue' />
+	// 	} else {
+	// 		return <meshPhysicalMaterial color='orange' />
+	// 	}
+	// }, [name, selected, transformSelected])
 
 	return (
 		// Disable visibility initially and set to true in Raycasting.js once mouse position is converted to 3D space
