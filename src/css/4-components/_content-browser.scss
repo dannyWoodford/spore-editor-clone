@@ -29,21 +29,26 @@
 
 	.top-bar {
 		position: relative;
-		display: block;
+		display: flex;
+		flex-direction: row;
 		margin-bottom: 15px;
 		margin-right: calc(4% + 5px);
 
 		.top-bar-search {
-			border-radius: 8px;
+			border-radius: 4px;
 			border: 1px solid $color-bg-secondary;
 			text-align: center;
 			margin: 0;
 			text-transform: uppercase;
 			width: 100%;
 			font-family: $font-family;
-			font-size: 24px;
+			font-size: 22px;
 			padding: 10px 0 5px;
 			color: $color-grey;
+		}
+
+		.search-icon {
+			padding-left: 4px;
 		}
 	}
 

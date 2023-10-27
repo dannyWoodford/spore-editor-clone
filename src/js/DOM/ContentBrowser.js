@@ -142,6 +142,7 @@ const ContentBrowser = ({ isLeva = false }) => {
 							}}
 							placeholder={`search ${active}s...`}
 						/>
+						<img className='search-icon' alt='' src={process.env.PUBLIC_URL + '/icons/search-options.svg'} />
 					</div>
 					<div className={`content --models ${active === 'wall' ? 'active' : ''}`}>{addModelItems}</div>
 					<div className={`content --models ${active === 'roof' ? 'active' : ''}`}>{addModelItems}</div>
