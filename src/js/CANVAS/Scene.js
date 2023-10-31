@@ -29,12 +29,12 @@ export default function Scene() {
 					return (
 						<group key={i}>
 							<Suspense fallback={<Loading />}>
-								<Model name={obj.name + '-' + i} path={obj.path} />
+								<Model name={obj.name} path={obj.path} />
 							</Suspense>
 						</group>
 					)
 				} else if (obj.type === 'shape') {
-					return <Shape shape={obj.name} key={i} name={obj.name + '-' + i} />
+					return <Shape shape={obj.name} key={i} name={obj.name} />
 				} else {
 					return null
 				}
@@ -60,12 +60,12 @@ export default function Scene() {
 					return (
 						<group key={i}>
 							<Suspense fallback={<Loading />}>
-								<Model name={obj.name + '-rebuild'} path={obj.storedPath} rebuilt={true} matrix={new THREE.Matrix4().fromArray(obj.matrix)} />
+								<Model name={obj.name} path={obj.storedPath} rebuilt={true} matrix={new THREE.Matrix4().fromArray(obj.matrix)} />
 							</Suspense>
 						</group>
 					)
 				} else if (obj.type === 'shape') {
-					return <Shape shape={obj.storedShape} key={i} name={obj.name + '-rebuild'} rebuilt={true} matrix={new THREE.Matrix4().fromArray(obj.matrix)} />
+					return <Shape shape={obj.storedShape} key={i} name={obj.name} rebuilt={true} matrix={new THREE.Matrix4().fromArray(obj.matrix)} />
 				} else {
 					return null
 				}

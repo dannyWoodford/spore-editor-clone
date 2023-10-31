@@ -5,7 +5,6 @@ import { useCursor, Gltf } from '@react-three/drei'
 import { useGlobalState } from './../../GlobalState'
 
 export default function Model({ name, path, matrix = null, rebuilt = false }) {
-	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
 	const setSelected = useGlobalState((state) => state.sceneNoPersist.setSelected)
 	const setTransformSelected = useGlobalState((state) => state.sceneNoPersist.setTransformSelected)
 	const transformInitRot = useGlobalState((state) => state.sceneNoPersist.transforms.transformInitRot)
@@ -21,10 +20,6 @@ export default function Model({ name, path, matrix = null, rebuilt = false }) {
 
 	useEffect(() => {
 		if (!mesh.current) return
-		if (selected?.name === name) {
-			// console.log('ham_____________')
-			return
-		}
 
 		let box3 = new THREE.Box3().setFromObject(mesh.current)
 		let size = new THREE.Vector3()
@@ -37,16 +32,19 @@ export default function Model({ name, path, matrix = null, rebuilt = false }) {
 		}
 
 		if (rebuilt) {
+			mesh.current.name = name
 			matrix.decompose(mesh.current.position, mesh.current.quaternion, mesh.current.scale)
 		} else {
+			mesh.current.name = name + '-' + mesh.current.uuid
 			setSelected(mesh.current)
-
+			
 			const newObj = {
-				name: name,
+				name: mesh.current.name,
 				matrix: mesh.current.matrix.elements,
 				storedPath: path,
 				type: 'model',
 			}
+
 			updateCurrentProject({ sceneObjectData: [...currentProjectSceneObjectData, newObj] })
 		}
 
@@ -67,7 +65,6 @@ export default function Model({ name, path, matrix = null, rebuilt = false }) {
 		// Disable visibility initially and set to true in Raycasting.js once mouse position is converted to 3D space
 		<group
 			ref={mesh}
-			name={name}
 			userData={{ moveableObj: true }}
 			onClick={(e) => {
 				e.stopPropagation()

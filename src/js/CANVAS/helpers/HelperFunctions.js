@@ -22,6 +22,11 @@ export function useSaveTransformData(objToUpdate) {
 
 		const getObject = currentProjectSceneObjectData.find((obj) => obj.name === objToUpdate.name)
 
+		if (!getObject) {
+			console.log('%cNO getObject', 'color:red;font-size:18px;', getObject, objToUpdate.name)
+			return
+		}
+
 		getObject.matrix = objToUpdate.matrix.elements
 
 		const updatedData = updateObjectInArray(currentProjectSceneObjectData, getObject)
