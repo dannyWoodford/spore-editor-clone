@@ -38,7 +38,7 @@ export default function PivotControls() {
 			rotationSnap={snapping ? snapAngle : null}
 			/** Anchor point, like BBAnchor, each axis can be between -1/0/+1 */
 			anchor={[-1, -1, -1]}
-			onDragEnd={saveTransformData}
+			onDragEnd={() => saveTransformData()}
 		/>
 	)
 }

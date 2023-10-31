@@ -75,7 +75,7 @@ export default function Home() {
 					{projectsHandler}
 
 					<div className='project'>
-						<div className='thumbnail' onClick={() => setShowSaveProjectPrompt(true)}>
+						<div className='thumbnail new' onClick={() => setShowSaveProjectPrompt(true)}>
 							<img className='plus' alt='' src={process.env.PUBLIC_URL + '/icons/plus.svg'} />
 						</div>
 						<div className='info'>

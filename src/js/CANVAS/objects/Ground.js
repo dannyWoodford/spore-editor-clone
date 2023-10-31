@@ -73,7 +73,7 @@ const Ground = ({ children }) => {
 			{addBaseParcel}
 
 			{enabled && (
-				<Circle args={[maxDistance]} position={[0, -1.75, 0]} name='platform-base' userData={{ staticObj: true }} rotation={[-Math.PI / 2, 0, 0]}>
+				<Circle args={[maxDistance * 2]} position={[0, -0.5, 0]} name='platform-base' userData={{ staticObj: true }} rotation={[-Math.PI / 2, 0, 0]}>
 					<meshBasicMaterial color='#00570d' />
 				</Circle>
 			)}
