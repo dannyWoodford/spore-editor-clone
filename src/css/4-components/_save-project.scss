@@ -35,6 +35,8 @@
 	align-items: center;
 	text-align: center;
 	padding: 20px 5%;
+	font-family: $font-family;
+	text-shadow: $color-black 0 3px 1px;
 
 	.text {
 		font-size: 22px;

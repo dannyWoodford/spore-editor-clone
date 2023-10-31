@@ -36,6 +36,8 @@
 	align-items: center;
 	text-align: center;
 	padding: 6px 20px;
+	font-family: $font-family;
+	text-shadow: $color-black 0 3px 1px;
 
 	.title {
 		font-size: 40px;
