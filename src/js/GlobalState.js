@@ -47,6 +47,8 @@ export const useGlobalState = create()(
 							selected: '',
 							transformSelected: '',
 							prevSelectedName: '',
+							anchor: 1,
+							deleteObjectName: '',
 						},
 					})),
 			},
@@ -148,6 +150,10 @@ export const useGlobalState = create()(
 				setTransformSelected: (mesh) => set((state) => ({ sceneNoPersist: { ...state.sceneNoPersist, transformSelected: mesh } })),
 				prevSelectedName: '',
 				setPrevSelectedName: (string) => set((state) => ({ sceneNoPersist: { ...state.sceneNoPersist, prevSelectedName: string } })),
+				anchor: 1,
+				setAnchor: (num) => set((state) => ({ sceneNoPersist: { ...state.sceneNoPersist, anchor: num } })),
+				deleteObjectName: '',
+				setDeleteObjectName: (string) => set((state) => ({ sceneNoPersist: { ...state.sceneNoPersist, deleteObjectName: string } })),
 				transforms: {
 					transformInitRot: null,
 					setTransformInitRot: (rot) =>

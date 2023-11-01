@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo } from 'react'
 import { Plane, Box, Circle, MeshReflectorMaterial } from '@react-three/drei'
 import { useControls, folder } from 'leva'
 
@@ -10,8 +10,6 @@ const Ground = ({ children }) => {
 	let parcelTotal = typeof currentProjectParcelTotal == 'undefined' ? defaultParcelTotal : currentProjectParcelTotal;
 
 	const maxDistance = useGlobalState((state) => state.intro.maxDistance)
-
-	const childrenGroup = useRef()
 
 	const { enabled, material, ...reflectiveConfig } = useControls('Ground', {
 		enabled: { value: false },
@@ -77,7 +75,7 @@ const Ground = ({ children }) => {
 					<meshBasicMaterial color='#00570d' />
 				</Circle>
 			)}
-			<group name='children-group' ref={childrenGroup}>
+			<group name='children-group'>
 				{children}
 			</group>
 		</group>

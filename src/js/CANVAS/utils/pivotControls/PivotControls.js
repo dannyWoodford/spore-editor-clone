@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useControls } from 'leva'
 
 import { useGlobalState } from './../../../GlobalState'
@@ -11,6 +11,7 @@ export default function PivotControls() {
 	const snapAngle = useGlobalState((state) => state.intro.snapAngle)
 	const snapping = useGlobalState((state) => state.intro.snapping)
 	const setSnapping = useGlobalState((state) => state.intro.setSnapping)
+	const anchor = useGlobalState((state) => state.sceneNoPersist.anchor)
 
 	useControls(
 		'Position Snapping',
@@ -27,6 +28,20 @@ export default function PivotControls() {
 
 	const { saveTransformData } = useSaveTransformData(transformSelected)
 
+	const anchorHandler = useMemo(() => {
+		if (anchor === 1) {
+			return [-1, -1, -1]
+		} else if (anchor === 2) {
+			return [1, -1, -1]
+		} else if (anchor === 3) {
+			return [1, -1, 1]
+		} else if (anchor === 4) {
+			return [-1, -1, 1]
+		} else {
+			return [-1, -1, -1]
+		}
+	}, [anchor])
+
 	return (
 		<ObjectTransformer
 			object={transformSelected ? transformSelected : undefined}
@@ -37,7 +52,7 @@ export default function PivotControls() {
 			translationSnap={snapping ? snapDistance : null}
 			rotationSnap={snapping ? snapAngle : null}
 			/** Anchor point, like BBAnchor, each axis can be between -1/0/+1 */
-			anchor={[-1, -1, -1]}
+			anchor={anchorHandler}
 			onDragEnd={() => saveTransformData()}
 		/>
 	)

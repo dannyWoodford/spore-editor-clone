@@ -36,3 +36,23 @@ export function useSaveTransformData(objToUpdate) {
 
 	return { saveTransformData }
 }
+
+export function useDeleteObject(objToDelete) {
+	const updateCurrentProject = useGlobalState((state) => state.projectStore.updateCurrentProject)
+	const currentProjectSceneObjectData = useGlobalState((state) => state.projectStore.getCurrentProject()?.sceneObjectData)
+	const setDeleteObjectName = useGlobalState((state) => state.sceneNoPersist.setDeleteObjectName)
+
+	const deleteObject = useCallback(() => {
+		if (!objToDelete) return
+
+		let sceneObjectClone = [...currentProjectSceneObjectData]
+
+		sceneObjectClone = sceneObjectClone.filter((item) => item.name !== objToDelete.name)
+
+		setDeleteObjectName(objToDelete.name)
+
+		updateCurrentProject({ sceneObjectData: sceneObjectClone })
+	}, [currentProjectSceneObjectData, updateCurrentProject, objToDelete, setDeleteObjectName])
+
+	return { deleteObject }
+}

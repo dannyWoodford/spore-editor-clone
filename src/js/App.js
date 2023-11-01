@@ -9,6 +9,7 @@ import { useGlobalState } from './GlobalState'
 import Loading from './CANVAS/setup/Loading'
 import Scene from './CANVAS/Scene'
 import ContentBrowser from './DOM/ContentBrowser'
+import ObjectData from './DOM/ObjectData'
 import ParcelPrompt from './DOM/ParcelPrompt'
 import SaveProject from './DOM/SaveProject'
 import Home from './DOM/Home'
@@ -19,6 +20,7 @@ import Controls from './CANVAS/setup/Controls'
 import Background from './CANVAS/setup/Background'
 import Lighting from './CANVAS/setup/Lighting'
 import UpdateThumbnail from './CANVAS/helpers/UpdateThumbnail'
+import DeleteObject from './CANVAS/helpers/DeleteObject'
 
 import InjectUIToLeva from './CANVAS/helpers/InjectUIToLeva'
 
@@ -38,6 +40,7 @@ export default function App() {
 			)}
 			{projectLoaded && <ParcelPrompt />}
 			<ContentBrowser />
+			<ObjectData />
 			{editorStart && <VRButton />}
 			<div className='bg-canvas'>
 				{/* frameloop will not be respected while in a VR session. */}
@@ -56,6 +59,7 @@ export default function App() {
 					</Suspense>
 
 					<UpdateThumbnail />
+					<DeleteObject />
 					<AdaptiveDpr pixelated />
 					<AdaptiveEvents />
 					<Stats className='stats' />

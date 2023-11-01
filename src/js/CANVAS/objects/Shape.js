@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
 import { useCursor } from '@react-three/drei'
-import { useGlobalState } from './../../GlobalState'
+import { useGlobalState } from '../../GlobalState'
 
 export default function Shape({ shape, name, matrix = null, rebuilt = false }) {
 	const selected = useGlobalState((state) => state.sceneNoPersist.selected)
