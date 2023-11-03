@@ -4,7 +4,7 @@ import { useCursor, Gltf } from '@react-three/drei'
 
 import { useGlobalState } from './../../GlobalState'
 
-export default function Model({ name, path, matrix = null, rebuilt = false }) {
+export default function Model({ name, path, matrix = null, rebuilt = false, modeltype }) {
 	const setSelected = useGlobalState((state) => state.sceneNoPersist.setSelected)
 	const setTransformSelected = useGlobalState((state) => state.sceneNoPersist.setTransformSelected)
 	const transformInitRot = useGlobalState((state) => state.sceneNoPersist.transforms.transformInitRot)
@@ -37,12 +37,13 @@ export default function Model({ name, path, matrix = null, rebuilt = false }) {
 		} else {
 			mesh.current.name = name + '-' + mesh.current.uuid
 			setSelected(mesh.current)
-			
+
 			const newObj = {
 				name: mesh.current.name,
 				matrix: mesh.current.matrix.elements,
 				storedPath: path,
 				type: 'model',
+				modeltype: modeltype,
 			}
 
 			updateCurrentProject({ sceneObjectData: [...currentProjectSceneObjectData, newObj] })
@@ -79,6 +80,8 @@ export default function Model({ name, path, matrix = null, rebuilt = false }) {
 					src={process.env.PUBLIC_URL + path}
 					castShadow
 					receiveShadow
+					scale={modeltype === 'city' ? [3, 3, 3] : [1, 1, 1]}
+					rotation={modeltype === 'city' ? [0, Math.PI / 2, 0] : [0, 0, 0]}
 					// inject={colorHandler}
 				/>
 			</group>

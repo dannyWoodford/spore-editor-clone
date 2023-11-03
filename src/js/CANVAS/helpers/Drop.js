@@ -14,9 +14,10 @@ export default function Drop() {
 
 	const createNewObject = (arr) => {
 		let newObj = {
-			name: '',
-			type: '',
-			path: '',
+			// name: '',
+			// type: '',
+			// path: '',
+			// modeltype: '',
 		}
 
 		arr.forEach((str) => {
@@ -26,6 +27,8 @@ export default function Drop() {
 				newObj['type'] = str.substring(5)
 			} else if (str.startsWith('path=')) {
 				newObj['path'] = str.substring(5)
+			} else if (str.startsWith('modeltype=')) {
+				newObj['modeltype'] = str.substring(10)
 			}
 		})
 

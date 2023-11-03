@@ -29,7 +29,7 @@ export default function Scene() {
 					return (
 						<group key={i}>
 							<Suspense fallback={<Loading />}>
-								<Model name={obj.name} path={obj.path} />
+								<Model name={obj.name} path={obj.path} modeltype={obj.modeltype} />
 							</Suspense>
 						</group>
 					)
@@ -60,7 +60,7 @@ export default function Scene() {
 					return (
 						<group key={i}>
 							<Suspense fallback={<Loading />}>
-								<Model name={obj.name} path={obj.storedPath} rebuilt={true} matrix={new THREE.Matrix4().fromArray(obj.matrix)} />
+								<Model name={obj.name} path={obj.storedPath} modeltype={obj.modeltype} rebuilt={true} matrix={new THREE.Matrix4().fromArray(obj.matrix)} />
 							</Suspense>
 						</group>
 					)
