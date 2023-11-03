@@ -21,8 +21,10 @@ import Background from './CANVAS/setup/Background'
 import Lighting from './CANVAS/setup/Lighting'
 import UpdateThumbnail from './CANVAS/helpers/UpdateThumbnail'
 import DeleteObject from './CANVAS/helpers/DeleteObject'
-
 import InjectUIToLeva from './CANVAS/helpers/InjectUIToLeva'
+
+import TerrainManager from './CANVAS/objects/terrain/TerrainManager'
+
 
 export default function App() {
 	const projectLoaded = useGlobalState((state) => state.projectNoPersist.projectLoaded)
@@ -50,6 +52,8 @@ export default function App() {
 						<Background />
 						<Lighting />
 						<InjectUIToLeva />
+
+						<TerrainManager />
 
 						<XR onSessionStart={() => setVrEnabled(true)} onSessionEnd={() => setVrEnabled(false)}>
 							{vrEnabled && <VRScene />}
