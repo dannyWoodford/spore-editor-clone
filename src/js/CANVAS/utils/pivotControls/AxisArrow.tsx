@@ -100,7 +100,7 @@ export const AxisArrow: React.FC<{ direction: THREE.Vector3; axis: 0 | 1 | 2 }> 
 
 				if (axis === 1) {
 					// dont translate on y axis through floor
-					offset = Math.max(offset, 0 - offset0.current)
+					// offset = Math.max(offset, 0 - offset0.current)
 				}
 
 				if (axis === 0) {
