@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
 import * as THREE from 'three'
-import { allModels } from '../../../ContentBrowserItems'
+import combinedObjects from '../../../ContentBrowserItems/index'
 
 import HudModel from './HudModel'
 
 export default function ItemFactory() {
 	const addModelItems = useMemo(() => {
-		let items = Object.entries(allModels).map((obj, index) => {
+		let items = Object.entries(combinedObjects).map((obj, index) => {
 			return (
 				<block
 					name='item'
@@ -35,7 +35,7 @@ export default function ItemFactory() {
 		while (items.length) {
 			rows.push(items.splice(0, 3))
 		}
-		
+
 		return (
 			<block
 				name='topSubBlock'

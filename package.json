@@ -6,11 +6,13 @@
 		"@react-three/drei": "^9.79.4",
 		"@react-three/fiber": "^8.13.5",
 		"@react-three/xr": "^5.7.1",
+		"@shopify/screenshot-glb": "^1.9.1",
 		"@testing-library/jest-dom": "^5.17.0",
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
 		"@types/three": "^0.146.0",
 		"breakpoint-sass": "^3.0.0",
+		"fs-extra": "^11.1.1",
 		"leva": "^0.9.35",
 		"lodash.clamp": "^4.0.3",
 		"react": "^18.2.0",
@@ -26,7 +28,8 @@
 		"start": "GENERATE_SOURCEMAP=false export HTTPS=true&&SSL_CRT_FILE=cert.pem&&SSL_KEY_FILE=key.pem react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"generateContentBrowserItems": "node src/js/generateContentBrowserItems.js"
 	},
 	"eslintConfig": {
 		"extends": [
